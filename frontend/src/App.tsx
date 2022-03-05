@@ -20,20 +20,20 @@ function App() {
 
             {connected_address !== undefined ?
                 (
-                <>
-                <div id='navbar' >
-                    <input type='button' id={pageSelected === 'Home' ? 'selected' : ''} value='Home' onClick={() => setPageSelected('Home')} />
-                    <input type='button' id={pageSelected === 'Marketplace' ? 'selected' : ''} value='Marketplace' onClick={() => setPageSelected('Marketplace')} />
-                </div>
-            <>
-                {
-                    pageSelected === 'Home' && <Home />
-                }
-                {
-                    pageSelected === 'Marketplace' && <Marketplace />
-                }
-            </>
-            </>
+                    <>
+                        <div id='navbar' >
+                            <input type='button' id={pageSelected === 'Home' ? 'selected' : ''} value='Home' onClick={() => setPageSelected('Home')} />
+                            <input type='button' id={pageSelected === 'Marketplace' ? 'selected' : ''} value='Marketplace' onClick={() => setPageSelected('Marketplace')} />
+                        </div>
+                        <>
+                            {
+                                pageSelected === 'Home' && <Home />
+                            }
+                            {
+                                pageSelected === 'Marketplace' && <Marketplace />
+                            }
+                        </>
+                    </>
 
 
                 )
