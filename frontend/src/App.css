@@ -37,3 +37,27 @@
     margin: 1vw;
     background-color: rgb(194, 194, 194);
 }
+
+#lp{
+    display: flex;
+    justify-content: space-evenly;
+}
+#left{
+    display: flex;
+    flex-direction: column;
+}
+
+#currency_exchange{
+    background-color: rgb(201, 201, 201);
+    margin-bottom: 5vh;
+    outline: solid black;
+}
+
+#stake{
+    outline: solid black;
+}
+
+#general_store{
+    background-color: azure;
+    outline: solid black;
+}

@@ -4,6 +4,7 @@ import './App.css';
 import { Home } from './Home';
 import { Marketplace } from './Marketplace';
 import { ethers } from 'ethers';
+import { LiquidityPools } from './LiquidityPools';
 
 function App() {
 
@@ -11,11 +12,11 @@ function App() {
     const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | undefined>(undefined);
     // connection to the Etherum network (READ ONLY)
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | undefined>(undefined);
-    
+
     const [pageSelected, setPageSelected] = useState<string>('Home');
 
     // needs to hook to metamask
-    const connect_wallet = async() => {
+    const connect_wallet = async () => {
         // A Web3Provider wraps a standard Web3 provider, which is
         // what MetaMask injects as window.ethereum into each page
         const provider = new ethers.providers.Web3Provider((window as any).ethereum)
@@ -31,6 +32,8 @@ function App() {
         setProvider(provider);
     }
 
+
+
     return (
 
         <div className="App">
@@ -40,6 +43,8 @@ function App() {
                         <div id='navbar' >
                             <input type='button' id={pageSelected === 'Home' ? 'selected' : ''} value='Home' onClick={() => setPageSelected('Home')} />
                             <input type='button' id={pageSelected === 'Marketplace' ? 'selected' : ''} value='Marketplace' onClick={() => setPageSelected('Marketplace')} />
+                            <input type='button' id={pageSelected === 'LiquidityPools' ? 'selected' : ''} value='Liquidity Pools' onClick={() => setPageSelected('LiquidityPools')} />
+
                         </div>
                         <>
                             {
@@ -47,6 +52,9 @@ function App() {
                             }
                             {
                                 pageSelected === 'Marketplace' && <Marketplace />
+                            }
+                            {
+                                pageSelected === 'LiquidityPools' && <LiquidityPools />
                             }
                         </>
                     </>
