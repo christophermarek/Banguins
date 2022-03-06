@@ -7,7 +7,7 @@ const client = create({url:`https://ipfs.infura.io:5001/api/v0`})
 export const generate_nfts_and_upload = async (req: Request, res: Response): Promise<void> => {
     try {
 
-        const wallet_id = req.params.wallet_id;
+        const wallet_id = req.params.wallet_address;
 
         // REPEAT 7 TIMES?
 
