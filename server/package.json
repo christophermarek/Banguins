@@ -7,7 +7,7 @@
         "build": "tsc",
         "startDev": "concurrently \"tsc -w\" \"nodemon dist/app.js\"",
         "start": "node dist/app.js",
-        "postinstall": "tsc"
+        "postinstall": "tsc --prefix server"
     },
     "author": "",
     "license": "ISC",
