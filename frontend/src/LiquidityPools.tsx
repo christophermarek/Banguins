@@ -6,19 +6,7 @@ interface LiquidityPoolsProps {
 
 export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
 
-    interface store_item {
-        img_src: string,
-        quantity: number,
-        item_name: string,
-        item_desc: string
-    }
-
-    const placeholder_items: store_item[] = [
-        { img_src: 'n/a', quantity: 20, item_name: 'Fish', item_desc: 'Heals the users active penguin for 40% of their health' },
-        { img_src: 'n/a', quantity: 20, item_name: 'Frozen Fins', item_desc: 'Active Penguin Deals 10% more damage for the remainder of the battle ' },
-        { img_src: 'n/a', quantity: 20, item_name: 'item name', item_desc: 'This is an item description where the item is described' },
-        { img_src: 'n/a', quantity: 20, item_name: 'item name', item_desc: 'This is an item description where the item is described' }
-    ]
+   
 
 
     const [currInput, setCurrInput] = useState<string>('');
@@ -79,8 +67,8 @@ export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
                     </div>
                 </div>
 
-                <div id='general_store'>
-                    <h1>General Store</h1>
+                <div id='staked_stats'>
+                    <h1>Staking Stats</h1>
                     <ul>
                         {placeholder_items.map((item, index) =>
                             <li key={index}>
