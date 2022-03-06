@@ -4,10 +4,11 @@
     "description": "",
     "main": "/dist/server.js",
     "scripts": {
-        "build": "tsc",
+        "build": "npm run tsc",
         "startDev": "concurrently \"tsc -w\" \"nodemon dist/app.js\"",
         "start": "node dist/app.js",
-        "postinstall": "tsc --prefix server"
+        "tsc": "tsc",
+        "postinstall": "npm run tsc"
     },
     "author": "",
     "license": "ISC",
