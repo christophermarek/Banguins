@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_nfts_and_upload = void 0;
 const ipfs_http_client_1 = require("ipfs-http-client");
 // connect with pinata
-const client = (0, ipfs_http_client_1.create)({ url: `https://ipfs.infura.io:5001/api/v0` });
+const client = ipfs_http_client_1.create({ url: `https://ipfs.infura.io:5001/api/v0` });
 const generate_nfts_and_upload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const wallet_id = req.params.wallet_address;

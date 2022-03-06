@@ -5,6 +5,7 @@
       "rootDir": "./",
       "esModuleInterop": true,
       "outDir": "dist/",
+      "skipLibCheck": true
     },
     "include": ["./**/*"],
     "exclude": ["./types/*.ts", "node_modules", ".vscode"]
