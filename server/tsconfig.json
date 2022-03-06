@@ -3,6 +3,9 @@
       "module": "commonjs",
       "target": "es6",
       "rootDir": "./",
-      "esModuleInterop": true
-    }
+      "esModuleInterop": true,
+      "outDir": "dist/",
+    },
+    "include": ["./**/*"],
+    "exclude": ["./types/*.ts", "node_modules", ".vscode"]
   }
