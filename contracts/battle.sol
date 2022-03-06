@@ -2,22 +2,39 @@
 pragma solidity >=0.8.0;
 
 import "nft.sol";
+import "players.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract Battle {
-    BTokens private _tokens;
-    uint256 private battleCounter;
+contract Battle is AccessControl {
+    // Fixed reward for currency
+    uint256 public constant CRNCY_WIN_AMOUNT = 100;
 
-    constructor(BTokens tokens) {
-        _tokens = tokens;
+    // Instance of BTokens to access balances of tokens for each player
+    BTokens private tokens;
+    Players private players;
+
+    constructor(BTokens _tokens, Players _players) {
+        tokens = _tokens;
+        players = _players;
     }
 
-    function startBattle(address player1, address player2, uint256 energy_amount1, uint256 energy_amount2) external {
-        uint256 NRGY = _tokens.getNRGYConstant();
-        _tokens.safeTransferFrom(player1, address(this), NRGY, energy_amount1, "");
-        _tokens.safeTransferFrom(player2, address(this), NRGY, energy_amount2, "");
+    modifier checkAdmin() {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to start a battle");
+        _;
     }
 
-    function endBattle(address victor) {
+    // Players submit their energy before a battle starts
+    // In cases of disconnecting or rage quitting the energy will still be consumed
+    function startBattle(address playerOne, address playerTwo, uint256 energyAmountOne, uint256 energyAmountTwo) external checkAdmin {
+        // Burn tokens
+        tokens.burn(playerOne, tokens.getNRGYConstant(), energyAmountOne);
+        tokens.burn(playerTwo, tokens.getNRGYConstant(), energyAmountTwo);
+    }
 
+    // Reward CRNCY to victor and update player stats
+    function endBattle(address victor, address loser) external checkAdmin {
+        players.increaseWins(victor);
+        players.increaseLosses(loser);
+        tokens.mint(victor, tokens.getCRNCYConstant(), CRNCY_WIN_AMOUNT, "");
     }
 }
