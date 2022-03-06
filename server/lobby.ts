@@ -51,7 +51,6 @@ export const join_lobby = async (req: Request, res: Response): Promise<void> => 
         const cards = req.body.cards;
         const param_lobby_id = req.body.lobby_id;
         // check for errors?
-
         
         // check if lobby_id exists in lobbies
         if(lobbies[param_lobby_id] === undefined){
