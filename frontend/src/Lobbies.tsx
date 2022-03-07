@@ -31,11 +31,13 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
         socket.on("battle", (data) => {
             console.log(data);
             if('winner' in data){
+                get_lobbies();
                 setBattleView(false);
                 setBattle(undefined)
                 alert(JSON.stringify(data))
                 window.location.reload();
             }else if('opponent_left' in data){
+                get_lobbies();
                 alert('Opponent left your lobby, refreshing');
                 window.location.reload();
             }else{
@@ -161,7 +163,6 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
                                 {lobbies !== undefined && lobbies.length > 0 &&
                                     lobbies.map((lobby_info: lobbies_display) =>
                                         <div className='lobby'>
-                                            <p>Opened At: {lobby_info.date_created}</p>
                                             <p>Oponent: {lobby_info.opponent_id}</p>
                                             <input type='button' value='Join Lobby' onClick={(() => join_lobby(lobby_info.lobby_id))} />
                                         </div>
