@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
+        //THIS LOGIC DOES NOT WORK
         // for(let i = 0; i < lobbies.length; i++){
         //     if(lobbies[i].player1_conn && lobbies[i].player1_conn === connId){
         //         // remove lobby from list

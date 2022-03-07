@@ -70,11 +70,11 @@ export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
                 <div id='staked_stats'>
                     <h1>Staking Stats</h1>
                     <ul>
-                        {placeholder_items.map((item, index) =>
+                        {/* {placeholder_items.map((item, index) =>
                             <li key={index}>
                                 {item.item_name}: {item.item_desc} Quantity: {item.quantity}
                             </li>
-                        )}
+                        )} */}
                     </ul>
                 </div>
 
