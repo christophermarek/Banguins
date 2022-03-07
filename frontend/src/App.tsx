@@ -37,7 +37,7 @@ function App() {
     return (
 
         <div className="App">
-            {provider !== undefined && signer !== undefined ?
+            {provider === undefined && signer === undefined ?
                 (
                     <>
                         <div id='navbar' >

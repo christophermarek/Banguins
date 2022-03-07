@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios"
 
 import { useEffect, useState } from "react";
 import { BattleView } from "./BattleView";
+import { socket, socket_id } from "./socket";
 
 let baseUrl: string
 // is production
@@ -27,6 +28,23 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
 
         loadDataFromServer()
 
+        socket.on("battle", (data) => {
+            console.log(data);
+            if('winner' in data){
+                setBattleView(false);
+                setBattle(undefined)
+                alert(JSON.stringify(data))
+                window.location.reload();
+            }else if('opponent_left' in data){
+                alert('Opponent left your lobby, refreshing');
+                window.location.reload();
+            }else{
+                setBattle(data);
+                setBattleView(true);
+            }
+
+        })
+
     }, []);
 
     const [battleView, setBattleView] = useState<boolean>(false);
@@ -36,6 +54,19 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
     const [createdLobbyId, setCreatedLobbyId] = useState<any>(undefined);
 
     const [lobbies, setLobbies] = useState<any>([]);
+    // cant define interfaces because this is just placeholder for now
+    const [battle, setBattle] = useState<any>();
+
+    interface card{
+        health: number,
+        attack: number,
+        address: string
+    }
+
+    const placeholder_cards: card[] = []
+    for(let i = 0; i < 3; i++){
+        placeholder_cards[i] = {health: i, attack: 1, address: `#0xaqwqesad${i}`}
+    }
 
     // unimplemented
     interface lobbies_display {
@@ -51,12 +82,11 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
 
     const join_lobby = async(lobby_id: number) => {
         if (window.confirm(`Are you sure you want to join this lobby?`)) {
-            let cards_selected = ['0xasdsadsadasd', '0xasdasdasdsad', '0xzx12213213'];
             // post server
             try {
                 const response: AxiosResponse<any> = await axios.post(
                     baseUrl + "/join_lobby",
-                    { wallet: '0xwallet', cards: cards_selected, lobby_id: lobby_id }
+                    { wallet: '0xwallet', cards: placeholder_cards, lobby_id: lobby_id , socketId: socket_id}
                 )
 
                 console.log(response.data);
@@ -82,14 +112,14 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
     }
 
     // cards_selected is the array of card address's
-    const createLobby = async (cards_selected: string[]) => {
+    const createLobby = async (cards_selected: card[]) => {
         setCreateLobbySelected(false);
 
         // post server
         try {
             const response: AxiosResponse<any> = await axios.post(
                 baseUrl + "/create_lobby",
-                { wallet: '0xwallet', cards: cards_selected }
+                { wallet: '0xwallet', cards: cards_selected, socketId: socket_id }
             )
 
             alert(`Successfully created lobby with id=${response.data.lobby_id}, now wait in lobbies until opponent joined`);
@@ -103,9 +133,10 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
 
     return (
         <>
-            {battleView ?
+            {battleView ? 
                 (
-                    <BattleView setBattleView={setBattleView} />
+                    battle !== undefined &&
+                        <BattleView setBattleView={setBattleView} battle={battle} />
                 )
                 :
                 (
@@ -115,9 +146,7 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
                                 <p>Card1 selected</p>
                                 <p>Card2 selected</p>
                                 <p>Card3 selected</p>
-                                <input type='button' value='Create Lobby' onClick={() => createLobby(
-                                    ['0xasdsadsadasd', '0xasdasdasdsad', '0xzx12213213']
-                                )} />
+                                <input type='button' value='Create Lobby' onClick={() => createLobby(placeholder_cards)} />
                             </div>
                         }
                         <input type='button' value='Go Back' onClick={() => setLobbiesSelected(false)} />
