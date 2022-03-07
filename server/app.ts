@@ -14,11 +14,13 @@ const http = require('http');
 // SOCKET IO DEFAULTS TO PORT 8000, how do i change or make both use the same port
 const server = http.createServer(app);
 export const io: Server = new Server(server,
-    {cors: {
-        // change this to frontend prod url when we get there
-        origin: "*",
-        methods: ["GET", "POST"]
-    }});
+    {
+        cors: {
+            // change this to frontend prod url when we get there
+            origin: "*",
+            methods: ["GET", "POST"]
+        }
+    });
 
 
 io.on('connection', (socket) => {
@@ -32,29 +34,33 @@ io.on('connection', (socket) => {
     socket.on(('battle'), (socket) => {
         process_socket_message(connId, socket)
     })
-    
+
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        //THIS LOGIC DOES NOT WORK
-        // for(let i = 0; i < lobbies.length; i++){
-        //     if(lobbies[i].player1_conn && lobbies[i].player1_conn === connId){
-        //         // remove lobby from list
-        //         lobbies.splice(i, 1);
-        //         if(lobbies[i].player2_conn !== ''){
-        //             io.to(lobbies[i].player2_conn).emit('battle', {opponent_left: true})
-        //             break;
-        //         }
-        //     }
-        //     if(lobbies[i].player2_conn && lobbies[i].player2_conn === connId){
-        //         // remove lobby from list
-        //         lobbies.splice(i, 1);
-        //         if(lobbies[i].player1_conn !== ''){
-        //             io.to(lobbies[i].player1_conn).emit('battle', {opponent_left: true})
-        //             break;
-        //         }
-        //     }
-        // }
+        let index: number;
+        let isPlayer1: boolean = false;
+        for (let i = 0; i < lobbies.length; i++) {
+            if (lobbies[i].player1_conn && lobbies[i].player1_conn === connId) {
+                index = i;
+                isPlayer1 = true;
+            }
+            if (lobbies[i].player2_conn && lobbies[i].player2_conn === connId) {
+                index = i;
+                isPlayer1 = false;
+            }
+        }
+        if (index !== undefined) {
+            // notify other player of disconnect
+            // if (isPlayer1) {
+            //     if(lobbies[index].player2_conn != ''){
+            //         io.emit()
+            //     }
+            // }
+            lobbies.splice(index, 1);
+
+        }
+
     });
 });
 
@@ -71,7 +77,7 @@ app.use(routes)
 
 // This is for heroku, heroku dynamically assigns port
 server.listen(process.env.PORT || port, () => {
-  console.log(`Server is running on port ${port}.`);
+    console.log(`Server is running on port ${port}.`);
 });
 
 
