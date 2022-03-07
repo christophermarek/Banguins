@@ -75,7 +75,7 @@ export const join_lobby = async (req: Request, res: Response): Promise<void> => 
 
         io.to(lobbies[param_lobby_id].player1_conn).emit('battle', lobbies[param_lobby_id]);
         io.to(lobbies[param_lobby_id].player2_conn).emit('battle', lobbies[param_lobby_id]);
-
+        // send start battle to smart contract
 
 
     } catch (error) {

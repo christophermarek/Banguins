@@ -38,29 +38,28 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        let index: number;
-        let isPlayer1: boolean = false;
-        for (let i = 0; i < lobbies.length; i++) {
-            if (lobbies[i].player1_conn && lobbies[i].player1_conn === connId) {
-                index = i;
-                isPlayer1 = true;
-            }
-            if (lobbies[i].player2_conn && lobbies[i].player2_conn === connId) {
-                index = i;
-                isPlayer1 = false;
-            }
-        }
-        if (index !== undefined) {
-            // notify other player of disconnect
-            // if (isPlayer1) {
-            //     if(lobbies[index].player2_conn != ''){
-            //         io.emit()
-            //     }
-            // }
-            lobbies.splice(index, 1);
+        // let index: number;
+        // let isPlayer1: boolean = false;
+        // for (let i = 0; i < lobbies.length; i++) {
+        //     if (lobbies[i].player1_conn && lobbies[i].player1_conn === connId) {
+        //         index = i;
+        //         isPlayer1 = true;
+        //     }
+        //     if (lobbies[i].player2_conn && lobbies[i].player2_conn === connId) {
+        //         index = i;
+        //         isPlayer1 = false;
+        //     }
+        // }
+        // if (index !== undefined) {
+        //     // notify other player of disconnect
+        //     // if (isPlayer1) {
+        //     //     if(lobbies[index].player2_conn != ''){
+        //     //         io.emit()
+        //     //     }
+        //     // }
+        //     lobbies.splice(index, 1);
 
-        }
-
+        // }
     });
 });
 

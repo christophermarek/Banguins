@@ -29,7 +29,6 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected }) => {
         loadDataFromServer()
 
         socket.on("battle", (data) => {
-            console.log(data);
             if('winner' in data){
                 get_lobbies();
                 setBattleView(false);

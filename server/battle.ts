@@ -35,7 +35,6 @@ export const process_socket_message = (socket_id, msg: { move: card, target: str
                 if (lobbies[i].battle.player1move !== null && lobbies[i].battle.player1move !== null) {
                     // calculate move on cards (random chance who goes first)
                     if (Math.random() >= 0.5) {
-
                         io.to(lobbies[i].player1_conn).emit('battle', {winner: lobbies[i].player1_addr});
                         io.to(lobbies[i].player2_conn).emit('battle', {winner: lobbies[i].player1_addr});
                     } else {
