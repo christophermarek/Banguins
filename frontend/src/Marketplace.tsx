@@ -72,10 +72,10 @@ export const Marketplace: React.FC<MarketPlaceProps> = ({ }) => {
                     <div id='mint_pack'>
                         <p>Mint a Pack for 3 MATIC</p>
                         <p>Limit 3 packs per week.</p>
-                        <input type='text' value={currInput} onChange={(event) => setMintPackNum(event.target.value)} />
+                        {/* <input type='text' value={currInput} onChange={(event) => setMintPackNum(event.target.value)} /> */}
                         <p>For {calculateNumberPacksCost()} MATIC</p>//
 
-                        <input type='button' value='Mint Pack' onClick={() => mintPack()} />
+                        {/* <input type='button' value='Mint Pack' onClick={() => mintPack()} /> */}
                     </div>
 
                     <div id='stake'>
