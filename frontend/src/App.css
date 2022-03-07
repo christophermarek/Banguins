@@ -1,12 +1,24 @@
+/* Global Styling */
+body{
+    margin: 0;
+}
+h1, h2{
+    display: block;
+    text-align: center;
+}
+
+
+
+
 
 #selected{
-    color: grey;
+    color: #0000FF;
 }
 
 #allcards{
     padding-top: 1vh;
     padding-bottom: 1vh;
-    background-color: rgb(238, 238, 238);
+    background-color: #cdf6fc;
     row-gap: 2vh;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
@@ -17,14 +29,14 @@
 }
 
 .card{
-    outline: solid black;
-    background-color: rgb(187, 187, 187);
+    background-color: #CDF6FC;
     width: 10vw;
     height: 20vh;
     margin-left: 1vw;
     margin-right: 1vw;
 
 }
+
 
 .lobby_display{
     display: flex;
@@ -38,26 +50,108 @@
     background-color: rgb(194, 194, 194);
 }
 
+/* navbar / header */
+#navbar{
+    padding: 15px;
+    background-color: #CDF6FC;
+    display: flex;
+    justify-content: flex-end;
+}
+#navbar input{
+    background-color:#00E0FF;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 25px;
+    font-weight: 700;
+    
+}
+/* Liquidity Pool Page*/
+
+
 #lp{
     display: flex;
-    justify-content: space-evenly;
+    /*justify-content: space-between;*/
 }
 #left{
     display: flex;
     flex-direction: column;
+    width: 45%;
+    margin: 0 3% 0 2%;
 }
 
-#currency_exchange{
-    background-color: rgb(201, 201, 201);
-    margin-bottom: 5vh;
-    outline: solid black;
+.cstake, .estake{
+    display: flex;
+    
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+#stakebutton{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-#stake{
-    outline: solid black;
+#cstake input{margin-left: 0;}
+
+
+#leftinner{
+    background-color: #CDF6FC;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    display: block;
+    width: 90%;
 }
+
+#innerright, #innerleft{
+    width: 50%;
+}
+
+#currency_exchange, #staked_stats, #stake{
+    background-color:#CDF6FC;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    display: block;
+    width: 90%;
+}
+
+#currency_exchange{display: flex;}
+
+#staked_stats div#statTable{
+background-color: #0000FF;
+width: 90%;
+margin-left: 5%;
+margin-right: 5%;
+height: 45px;
+border-radius: 15px;
+}
+
+#staked_stats div#statChart{
+    height: 250;
+
+}
+
+
+
+
+/*#stake{outline: solid black;}*/
+
+/* Marketplace */
 
 #general_store{
-    background-color: azure;
+    background-color: #CDF6FC;
     outline: solid black;
 }
+
+
+#left input{
+    display: block;
+}
+
+
+#left, #right{
+width: 50%;
+height: 500px;
+margin: 0;
+}
+#left, #innerleft{
+border-right: 1px solid #000000;}
