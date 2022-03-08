@@ -1,3 +1,39 @@
+<<<<<<< Updated upstream
+=======
+
+/* modifiers */
+
+.flex{display:flex;}
+.row{flex-direction: row;}
+
+#left, .innerleft{
+    border-right: 1px solid #000000;}
+
+input.txtInput{
+    width: 30px;
+    height:30px;
+    font-weight: 900;
+    border: 3px solid black;
+    margin: 10px;
+    text-align: center;
+    font-size: large;
+
+}
+
+
+/* Global Styling */
+body{
+    margin: 0;
+}
+h1, h2, h3{
+    display: block;
+    text-align: center;
+}
+
+
+
+
+>>>>>>> Stashed changes
 
 #selected{
     color: grey;
@@ -42,9 +78,10 @@
     display: flex;
     justify-content: space-evenly;
 }
-#left{
+#left, #right{
     display: flex;
     flex-direction: column;
+<<<<<<< Updated upstream
 }
 
 #currency_exchange{
@@ -55,9 +92,111 @@
 
 #stake{
     outline: solid black;
+=======
+    width: 45%;
+    margin: 0 3% 0 2%;
+}
+
+.cstake, .estake{
+    display: flex;
+    font-size: 1.5em;    
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+#stakebutton{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#cstake input{margin-left: 0;}
+
+
+#leftinner{
+    background-color: #CDF6FC;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    display: block;
+    width: 90%;
+}
+
+.innerright, .innerleft{
+    width: 50%;
+}
+.innerright{display: flex;
+flex-direction: column;}
+#swapVal h1, #swapVal h3, .swapVal h1, .swapVal h3{margin: 0;}
+
+
+#currency_exchange, #staked_stats, #stake{
+    background-color:#CDF6FC;
+    margin-bottom: 15px;
+    display: block;
+    
+}
+#staked_stats, #stake{
+margin-left: 30px;
+width: 90%;
+}
+#leftinner, #stake, #staked_stats{
+    border-radius: 15px;
+}
+
+#staked_stats{
+    padding-bottom: 15px;
+    margin-top: 0px;
+    height: 500px;
+}
+
+#currency_exchange{
+    display: flex;
+    align-items: center;
+}
+
+#staked_stats div#statTable{
+background-color: #0000FF;
+width: 90%;
+margin-left: 5%;
+margin-right: 5%;
+height: 100px;
+border-radius: 15px;
+}
+
+#staked_stats div#statChart{
+    height: 100;
+
+>>>>>>> Stashed changes
 }
 
 #general_store{
     background-color: azure;
     outline: solid black;
+<<<<<<< Updated upstream
 }
+=======
+}
+
+
+#left input{
+    display: block;
+}
+
+
+#left, #right{
+width: 50%;
+height: 500px;
+margin: 0;
+}
+
+
+.innerleft,.innerright{justify-content: space-evenly;}
+.innerright, .cenrig{flex-direction: row; align-items: center;font-weight:900;}
+.cenrig input{margin-right: 15px;}
+
+#stakebutton, #swapButton {
+    background-color: white;
+    font-size: 21px;
+    border-radius: 3px;
+    font-weight: 600;
+    padding: 8px 12px 8px 12px;
+}
+>>>>>>> Stashed changes
