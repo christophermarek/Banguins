@@ -5,12 +5,18 @@ interface lobby_i{
     lobby_id: number
     player1_addr: string,
     player1_conn: string,
-    player1_cards: [],
+    player1_cards: card[],
     player2_addr: string,
     player2_conn: string,
-    player2_cards: [],
+    player2_cards: card[],
     lobby_status: string
     battle: {round: number, player1move: any, player2move: any}
+}
+
+export interface card {
+    health: number,
+    attack: number,
+    address: string
 }
 
 export let lobbies: lobby_i[] = [];

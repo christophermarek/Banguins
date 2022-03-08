@@ -7,7 +7,14 @@ h1, h2{
     text-align: center;
 }
 
+.dead_card{
+    outline: solid red !important;
+    pointer-events: none;
+}
 
+.card{
+    margin: 1%;
+}
 
 .selected_card{
     outline: solid black;
