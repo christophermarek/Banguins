@@ -53,11 +53,13 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
     const [battleView, setBattleView] = useState<boolean>(false);
 
     // https://banguins.herokuapp.com/
+    // lobby id returned from server after successful lobby creation
     const [createdLobbyId, setCreatedLobbyId] = useState<any>(undefined);
 
     const [lobbies, setLobbies] = useState<any>([]);
     // cant define interfaces because this is just placeholder for now
     const [battle, setBattle] = useState<any>();
+
 
 
     const [selectedCards, setSelectedCards] = useState<any>([]);
@@ -123,7 +125,6 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
     // cards_selected is the array of card address's
     const createLobby = async () => {
         if (selectedCards.length !== 3) {
-            console.log('error')
             alert('Only Select 3 cards');
             return;
         }
@@ -145,6 +146,7 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
             )
 
             alert(`Successfully created lobby with id=${response.data.lobby_id}, now wait in lobbies until opponent joined`);
+            setCreatedLobbyId(response.data.lobby_id);
             loadDataFromServer()
         } catch (error: any) {
             alert('Error creating lobby');
@@ -202,8 +204,8 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
                             <>
                                 {lobbies !== undefined && lobbies.length > 0 &&
                                     lobbies.map((lobby_info: lobbies_display) =>
-                                        <div className='lobby'>
-                                            <p>Oponent: {lobby_info.opponent_id}</p>
+                                        <div className={`lobby ${lobby_info.lobby_id === createdLobbyId ? 'created_lobby' : ''}`}>
+                                            <p>Oponent: {lobby_info.lobby_id === createdLobbyId ? 'This is your lobby' : lobby_info.opponent_id} </p>
                                             <input type='button' value='Join Lobby' onClick={(() => join_lobby(lobby_info.lobby_id))} />
                                         </div>
                                     )

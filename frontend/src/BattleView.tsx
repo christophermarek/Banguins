@@ -50,9 +50,9 @@ export const BattleView: React.FC<BattleViewProps> = ({ setBattleView, battle })
         <>
             <input type='button' value='Leave Battle' onClick={() => leaveBattle()} />
             <h1>Battle {you?.addr} VS {opponent?.addr}</h1>
-            <div id='opponent'>
+            <div id='opponent' className={'battlecards_container'}>
                 {opponent !== undefined && opponent.cards.map((card: any) =>
-                    <div>
+                    <div className={card.address === target ? 'selected_card' : ''}>
                         <p>{card.address}</p>
                         <p>Health: {card.health}</p>
                         <p>Attack :{card.attack}</p>
@@ -60,7 +60,7 @@ export const BattleView: React.FC<BattleViewProps> = ({ setBattleView, battle })
                     </div>
                 )}
             </div>
-            <div id='you'>
+            <div id='you' className="battlecards_container">
                 {you !== undefined && you.cards.map((card: any) =>
                     <div>
                         <p>{card.address}</p>

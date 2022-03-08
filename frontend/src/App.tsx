@@ -20,7 +20,7 @@ function App() {
     // unimplemented
     let placeholder_cards: card[] = []
     for (let i = 0; i < 3; i++) {
-        placeholder_cards[i] = { health: i, attack: 1, address: `#0xaqwqesad${i}` }
+        placeholder_cards[i] = { health: i+1, attack: i+1, address: `#0xaqwqesad${i}` }
     }
     
 
