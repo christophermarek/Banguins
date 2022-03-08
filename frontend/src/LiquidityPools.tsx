@@ -49,28 +49,6 @@ export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
             <div id='lp'>
 
                 <div id='left'>
-<<<<<<< Updated upstream
-
-                    <div id='currency_exchange'>
-                        <p>Exchange currency for energy</p>
-                        <p>Currency</p>
-                        <input type='text' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
-                        <p>For {calculateEnergyExchange()} Energy</p>
-
-                        <input type='button' value='Exchange' onClick={() => exchangeCurrency()} />
-                    </div>
-
-                    <div id='stake'>
-                        <div>
-                            <p>Currency</p>
-                            <input type='text' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
-                        </div>
-                        <div>
-                            <p>Energy</p>
-                            <input type='text' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
-                        </div>
-                        <input type='button' value='Stake' onClick={() => stakeCurrency()} />
-=======
                     <div id='leftinner'>
                         <h1 className='title center'>SWAP</h1>
                         <div id='currency_exchange'>
@@ -105,7 +83,6 @@ export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
                     <div className="innerright">
                         <div className="swapVal"><h1>{exchangeValue()}</h1><h3>{setCurrency()}</h3></div>
                         <input id="stakebutton" className="center" type='button' value='Stake' onClick={() => stakeCurrency()} />
->>>>>>> Stashed changes
                     </div>
                     </div>
                     </div>

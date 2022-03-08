@@ -1,6 +1,18 @@
-<<<<<<< Updated upstream
-=======
-
+#navbar{
+    padding: 15px;
+    background-color: #CDF6FC;
+    display: flex;
+    justify-content: flex-end;
+}
+#navbar input{
+    background-color:#00E0FF;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 25px;
+    font-weight: 700;
+    
+}
 /* modifiers */
 
 .flex{display:flex;}
@@ -33,7 +45,6 @@ h1, h2, h3{
 
 
 
->>>>>>> Stashed changes
 
 #selected{
     color: grey;
@@ -81,18 +92,6 @@ h1, h2, h3{
 #left, #right{
     display: flex;
     flex-direction: column;
-<<<<<<< Updated upstream
-}
-
-#currency_exchange{
-    background-color: rgb(201, 201, 201);
-    margin-bottom: 5vh;
-    outline: solid black;
-}
-
-#stake{
-    outline: solid black;
-=======
     width: 45%;
     margin: 0 3% 0 2%;
 }
@@ -164,15 +163,11 @@ border-radius: 15px;
 #staked_stats div#statChart{
     height: 100;
 
->>>>>>> Stashed changes
 }
 
 #general_store{
     background-color: azure;
     outline: solid black;
-<<<<<<< Updated upstream
-}
-=======
 }
 
 
@@ -199,4 +194,3 @@ margin: 0;
     font-weight: 600;
     padding: 8px 12px 8px 12px;
 }
->>>>>>> Stashed changes
