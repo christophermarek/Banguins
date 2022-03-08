@@ -7,7 +7,7 @@ import { card } from "./types";
 
 let baseUrl: string
 // is production
-if (true) {
+if (false) {
     baseUrl = "https://banguins.herokuapp.com"
 } else {
     baseUrl = "http://localhost:8000"
@@ -36,11 +36,11 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
                 setBattleView(false);
                 setBattle(undefined)
                 alert(JSON.stringify(data))
-                window.location.reload();
+                // window.location.reload();
             } else if ('opponent_left' in data) {
                 get_lobbies();
-                alert('Opponent left your lobby, refreshing');
-                window.location.reload();
+                alert('Opponent left your lobby');
+                // window.location.reload();
             } else {
                 setBattle(data);
                 setBattleView(true);
@@ -200,6 +200,7 @@ export const Lobbies: React.FC<LobbiesProps> = ({ setLobbiesSelected, deck }) =>
                         <input type='button' value='Create Lobby' onClick={() => createLobby()} />
 
                         <h1>View Lobbies</h1>
+                        <input type='button' value='Refresh Lobbies' onClick={() => get_lobbies()} />
                         <div className='lobby_display'>
                             <>
                                 {lobbies !== undefined && lobbies.length > 0 &&

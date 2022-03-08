@@ -59,6 +59,7 @@ const join_lobby = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.log(exports.lobbies[param_lobby_id]);
         app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
         app_1.io.to(exports.lobbies[param_lobby_id].player2_conn).emit('battle', exports.lobbies[param_lobby_id]);
+        // send start battle to smart contract
     }
     catch (error) {
         res.status(400).json({ error: error });
