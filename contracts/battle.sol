@@ -16,10 +16,11 @@ contract Battle is AccessControl {
     constructor(BTokens _tokens, Players _players) {
         tokens = _tokens;
         players = _players;
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     modifier checkAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to start a battle");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to run this function");
         _;
     }
 
@@ -27,14 +28,14 @@ contract Battle is AccessControl {
     // In cases of disconnecting or rage quitting the energy will still be consumed
     function startBattle(address playerOne, address playerTwo, uint256 energyAmountOne, uint256 energyAmountTwo) external checkAdmin {
         // Burn tokens
-        tokens.burn(playerOne, tokens.getNRGYConstant(), energyAmountOne);
-        tokens.burn(playerTwo, tokens.getNRGYConstant(), energyAmountTwo);
+        tokens.burn(playerOne, tokens.NRGY(), energyAmountOne);
+        tokens.burn(playerTwo, tokens.NRGY(), energyAmountTwo);
     }
 
     // Reward CRNCY to victor and update player stats
     function endBattle(address victor, address loser) external checkAdmin {
         players.increaseWins(victor);
         players.increaseLosses(loser);
-        tokens.mint(victor, tokens.getCRNCYConstant(), CRNCY_WIN_AMOUNT, "");
+        tokens.mint(victor, tokens.CRNCY(), CRNCY_WIN_AMOUNT, "");
     }
 }
