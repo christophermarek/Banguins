@@ -5,6 +5,7 @@ import { Home } from './Home';
 import { Marketplace } from './Marketplace';
 import { ethers } from 'ethers';
 import { LiquidityPools } from './LiquidityPools';
+import { card } from './types';
 
 function App() {
 
@@ -14,6 +15,14 @@ function App() {
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | undefined>(undefined);
 
     const [pageSelected, setPageSelected] = useState<string>('Home');
+
+
+    // unimplemented
+    let placeholder_cards: card[] = []
+    for (let i = 0; i < 3; i++) {
+        placeholder_cards[i] = { health: i+1, attack: i+1, address: `#0xaqwqesad${i}` }
+    }
+    
 
     // needs to hook to metamask
     const connect_wallet = async () => {
@@ -37,7 +46,7 @@ function App() {
     return (
 
         <div className="App">
-            {provider !== undefined && signer !== undefined ?
+            {provider === undefined && signer === undefined ?
                 (
                     <>
                         <div id='navbar' >
@@ -48,7 +57,7 @@ function App() {
                         </div>
                         <>
                             {
-                                pageSelected === 'Home' && <Home />
+                                pageSelected === 'Home' && <Home deck={placeholder_cards}/>
                             }
                             {
                                 pageSelected === 'Marketplace' && <Marketplace />
