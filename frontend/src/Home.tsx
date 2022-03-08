@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { Key, ReactChild, ReactFragment, ReactPortal, useState } from "react";
 import { Lobbies } from "./Lobbies";
+import { card } from "./types";
 
 interface HomeProps {
-
+    deck: card[]
 }
 
 
 
-export const Home: React.FC<HomeProps> = ({ }) => {
+export const Home: React.FC<HomeProps> = ({ deck }) => {
 
     const [lobbiesSelected, setLobbiesSelected] = useState<boolean>(false);
 
@@ -16,9 +17,7 @@ export const Home: React.FC<HomeProps> = ({ }) => {
     const currency = 100;
 
 
-    // unimplemented
-    const Deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-
+    
     //unimplemented
     const buy_deck = () => {
         console.log('beggining deck purchase');
@@ -28,7 +27,7 @@ export const Home: React.FC<HomeProps> = ({ }) => {
         <>
             {lobbiesSelected ?
                 (
-                    <Lobbies setLobbiesSelected={setLobbiesSelected} />
+                    <Lobbies setLobbiesSelected={setLobbiesSelected} deck={deck} />
                 )
                 :
                 (
@@ -37,9 +36,9 @@ export const Home: React.FC<HomeProps> = ({ }) => {
 
                         <h1>Your Cards</h1>
                         <div id='allcards'>
-                            {Deck.map((card, index) =>
+                            {deck.map((card: card, index: any) =>
                                 <div className='card' key={index}>
-                                    <p>Card number{card}</p>
+                                    <p>Card number{card.address}</p>
                                 </div>
                             )}
                         </div>

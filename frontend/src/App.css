@@ -9,7 +9,9 @@ h1, h2{
 
 
 
-
+.selected_card{
+    outline: solid black;
+}
 
 #selected{
     color: #0000FF;
