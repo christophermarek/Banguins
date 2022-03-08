@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.7;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "VRFRandomNumbers.sol";
-import "nft.sol";
+import "./VRFRandomNumbers.sol";
+import "./nft.sol";
 
 contract Monsters is AccessControl {
     enum Rarity {

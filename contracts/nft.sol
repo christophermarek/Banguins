@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.7;
 
 import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
-import "players.sol";
-import "monsters.sol";
+import "./players.sol";
+import "./monsters.sol";
 
 contract BTokens is ERC1155PresetMinterPauser {
     uint256 public constant NRGY = 0;

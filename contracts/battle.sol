@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "nft.sol";
-import "players.sol";
+import "./nft.sol";
+import "./players.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract Battle is AccessControl {
