@@ -19,9 +19,14 @@ contract BTokens is ERC1155PresetMinterPauser {
     Players private players;
     Monsters private monsters;
 
+    address payable owner;
+
+    event PackBought(address indexed player);
+
     constructor(Players _players, Monsters _monsters) ERC1155PresetMinterPauser("ipfs-base-uri-goes-here") {
         players = _players;
         monsters = _monsters;
+        owner = payable(_msgSender());
         mintBatch(_msgSender(), coinIds, amountCoin, "");
     }
 
@@ -31,15 +36,25 @@ contract BTokens is ERC1155PresetMinterPauser {
     }
 
     // emit an event when a pack is minted
-    function buyPack(address account) external returns (uint256[] memory, uint8[] memory) {
-        burn(account, CRNCY, PACK_PRICE);
-        // switch to buy with MATIC require msg.value == 3
+    function buyPack(address account) external payable returns (uint256[] memory, uint8[] memory) {
+        // Handle payment
+        require(msg.value == 3, "incorrect amount paid for pack");
+        (bool success,) = owner.call{value: msg.value}("");
+        require(success, "Failed to submit payment");
+
+        // Generate monsters
         (uint256[] memory ids, uint8[] memory rarities) = monsters.getRandomMonster(PACK_SIZE);
         uint256[] memory amounts = new uint256[](PACK_SIZE);
         for (uint8 i; i < PACK_SIZE; i++) {
             amounts[i] = 1;
         }
+
+        // Mint tokens
         mintBatch(account, ids, amounts, "");
+
+        // Emit pack bought event
+        emit PackBought(account);
+
         return (ids, rarities);
     }
 

@@ -5,7 +5,9 @@ import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 
-contract VRFRandomNumbers is VRFConsumerBaseV2 {
+import "@openzeppelin/contracts/access/AccessControl.sol";
+
+contract VRFRandomNumbers is VRFConsumerBaseV2, AccessControl {
     VRFCoordinatorV2Interface COORDINATOR;
     LinkTokenInterface LINKTOKEN;
 
@@ -40,25 +42,29 @@ contract VRFRandomNumbers is VRFConsumerBaseV2 {
     uint256 public s_requestId;
     address s_owner;
 
+    bytes32 public constant DICEMASTER_ROLE = keccak256("DICEMASTER_ROLE");
+
     constructor(uint64 subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         LINKTOKEN = LinkTokenInterface(link);
         s_owner = msg.sender;
         s_subscriptionId = subscriptionId;
+
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     // Assumes the subscription is funded sufficiently.
-    function requestRandomNumbers(uint32 numWords) external onlyOwner {
+    function requestRandomNumbers(uint32 numWords) external onlyDiceMaster {
         // Will revert if subscription is not set and funded.
         s_requestId = COORDINATOR.requestRandomWords(
-        keyHash,
-        s_subscriptionId,
-        requestConfirmations,
-        callbackGasLimit,
-        numWords
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            numWords
         );
     }
-
+    
     function fulfillRandomWords(
         uint256, /* requestId */
         uint256[] memory randomWords
@@ -70,8 +76,17 @@ contract VRFRandomNumbers is VRFConsumerBaseV2 {
         return s_randomWords;
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == s_owner);
+    function grantDiceMaster(address account) public checkAdmin {
+        _grantRole(DICEMASTER_ROLE, account);
+    }
+
+    modifier onlyDiceMaster() {
+        require(hasRole(DICEMASTER_ROLE, msg.sender), "denied, make sure caller has been granted dicemaster role via grantDiceMaster()");
+        _;
+    }
+
+    modifier checkAdmin() {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to run this function");
         _;
     }
 }
