@@ -2,6 +2,7 @@ import { Button, Flex, Link, Spacer } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.svg";
+import WalletInfo from "../WalletInfo";
 import styles from "./styles.module.scss";
 
 const Header: React.FC = () => {
@@ -29,6 +30,7 @@ const Header: React.FC = () => {
             <Button variant="ghost" onClick={() => handleNavigate("/liquidity-pools")}>
                 Liquidity Pools
             </Button>
+            <WalletInfo />
         </Flex>
     );
 };
