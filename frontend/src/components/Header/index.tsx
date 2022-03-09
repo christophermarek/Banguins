@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.svg";
 import WalletInfo from "../WalletInfo";
-import styles from "./styles.module.scss";
+import styles from "./Header.module.scss";
 
 const Header: React.FC = () => {
     const navigate = useNavigate();

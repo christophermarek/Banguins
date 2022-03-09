@@ -25,7 +25,7 @@ const WalletInfo: React.FC = () => {
             </MenuButton>
             <MenuList>
                 <MenuItem icon={<BiExit />} onClick={handleDisconnect}>
-                    Logout
+                    Disconnect
                 </MenuItem>
             </MenuList>
         </Menu>
