@@ -11,7 +11,7 @@ import { IoIosRefresh } from "react-icons/io";
 
 let baseUrl: string;
 // is production
-if (false) {
+if (true) {
     baseUrl = "https://banguins.herokuapp.com";
 } else {
     baseUrl = "http://localhost:8000";
