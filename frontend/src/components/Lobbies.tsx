@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios"
 
 import { useEffect, useState } from "react";
 import { BattleView } from "./BattleView";
-import { socket, socket_id } from "./socket";
-import { card } from "./types";
+import { socket, socket_id } from "../socket";
+import { card } from "../types";
 
 let baseUrl: string
 // is production

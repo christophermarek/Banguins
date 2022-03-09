@@ -1,6 +1,6 @@
 import { Key, ReactChild, ReactFragment, ReactPortal, useState } from "react";
-import { Lobbies } from "./Lobbies";
-import { card } from "./types";
+import { Lobbies } from "../components/Lobbies";
+import { card } from "../types";
 
 interface HomeProps {
     deck: card[]
