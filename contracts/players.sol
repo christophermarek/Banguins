@@ -14,8 +14,12 @@ contract Players is AccessControl {
 
     mapping(address => PlayerSchema) public playerDb;
 
+    constructor() {
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+    }
+
     modifier checkAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to start a battle");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Must have admin role to run this function");
         _;
     }
 
