@@ -1,11 +1,9 @@
 import React from "react";
-import { LobbiesPage } from "../LobbiesPage";
 import { card } from "../../types";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Flex, Heading, HStack, Icon, Link, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { FaChevronRight } from "react-icons/fa";
+import { Box, Button, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 
-export const HomePage: React.FC = ({}) => {
+export const HomePage: React.FC = () => {
     const navigate = useNavigate();
     let placeholder_cards: card[] = [];
     for (let i = 0; i < 9; i++) {
@@ -15,12 +13,11 @@ export const HomePage: React.FC = ({}) => {
             address: `0x082B6aC9e47d7D83ea3FaBbD1eC7DAba9D687b3${i}`,
         };
     }
-    const deck = placeholder_cards;
     const visibleDeck = placeholder_cards.slice(0, 8);
 
     // implement these, props from app.ts?
-    const energy = 100;
-    const currency = 100;
+    // const energy = 100;
+    // const currency = 100;
 
     //unimplemented
     const buy_deck = () => {
@@ -51,7 +48,14 @@ export const HomePage: React.FC = ({}) => {
                     </HStack>
                     <SimpleGrid w="full" minChildWidth={160} spacing={20}>
                         {visibleDeck.map((card: card, index: any) => (
-                            <Box backgroundColor="tangaroa.100" key={index} height={48} borderRadius={10} p={4}>
+                            <Box
+                                boxShadow="xl"
+                                backgroundColor="tangaroa.100"
+                                key={index}
+                                height={48}
+                                borderRadius={10}
+                                p={4}
+                            >
                                 <Text fontSize="lg">Card</Text>
                                 <Text>{card.address}</Text>
                             </Box>

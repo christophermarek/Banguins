@@ -1,7 +1,7 @@
-import { Box, Button, Heading, HStack, LinkOverlay, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import axios, { AxiosResponse } from "axios";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { BattleView } from "../../components/BattleView";
@@ -21,18 +21,18 @@ export const LobbiesPage: React.FC = () => {
     const navigate = useNavigate();
 
     let placeholder_cards: card[] = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 8; i++) {
         placeholder_cards[i] = { health: i + 1, attack: i + 1, address: `#0xaqwqesad${i}` };
     }
     const deck = placeholder_cards;
 
-    async function loadDataFromServer() {
+    const loadDataFromServer = React.useCallback(async () => {
         // CHANGE THIS To 24 hours once real time stream is up
         // FIXME: API sometimes returns null entries, so we have to filter those
         let lobbies_fetched = (await get_lobbies())?.lobbies?.filter((item: any) => item);
 
         setLobbies(lobbies_fetched);
-    }
+    }, []);
 
     useEffect(() => {
         loadDataFromServer();
@@ -53,7 +53,7 @@ export const LobbiesPage: React.FC = () => {
                 setBattleView(true);
             }
         });
-    }, []);
+    }, [loadDataFromServer]);
 
     const [battleView, setBattleView] = useState<boolean>(false);
 
@@ -176,71 +176,73 @@ export const LobbiesPage: React.FC = () => {
                 battle !== undefined && <BattleView setBattleView={setBattleView} battle={battle} />
             ) : (
                 <>
-                    <VStack alignItems="flex-start" spacing={5} w="full">
-                        <Button variant="ghost" leftIcon={<FaChevronLeft />} onClick={() => navigate(-1)}>
-                            Go back
-                        </Button>
-                        <HStack w="full" alignItems="flex-start" spacing={10}>
-                            <VStack flex={1} spacing={4} alignItems="flex-start">
-                                <HStack w="full" alignItems="center" justifyContent="space-between">
-                                    <Heading>Lobbies</Heading>
+                    <Button variant="ghost" leftIcon={<FaChevronLeft />} onClick={() => navigate(-1)} mb={5}>
+                        Go back
+                    </Button>
+                    <VStack alignItems="flex-start" spacing={10} w="full">
+                        <VStack w="full" spacing={4} alignItems="flex-start">
+                            <Heading>Your Cards</Heading>
+                            <SimpleGrid w="full" minChildWidth={160} spacing={10}>
+                                {deck.map((card: card, index: any) => {
+                                    const selected = selectedCards.includes(card.address);
+
+                                    return (
+                                        <Box
+                                            cursor="pointer"
+                                            key={index}
+                                            height={48}
+                                            borderRadius={10}
+                                            _hover={{
+                                                backgroundColor: "tangaroa.200",
+                                            }}
+                                            _active={{
+                                                backgroundColor: "tangaroa.300",
+                                            }}
+                                            p={4}
+                                            onClick={() => cardSelected(card.address)}
+                                            boxShadow={selected && "xl"}
+                                            backgroundColor={selected ? "oldenAmber.200" : "tangaroa.100"}
+                                        >
+                                            <Text fontSize="lg">Card</Text>
+                                            <Text>{card.address}</Text>
+                                        </Box>
+                                    );
+                                })}
+                            </SimpleGrid>
+                        </VStack>
+                        <VStack w="full" spacing={4} alignItems="flex-start">
+                            <HStack w="full" alignItems="center" justifyContent="space-between">
+                                <Heading>Lobbies</Heading>
+                                <ButtonGroup>
                                     <Button variant="ghost" leftIcon={<IoIosRefresh />} onClick={get_lobbies}>
                                         Refresh
                                     </Button>
-                                </HStack>
-                                {lobbies.map((lobby: lobbies_display) => (
-                                    <VStack alignItems="flex-start" borderWidth={1} borderRadius={6} p={4} w="full">
+                                    <Button onClick={createLobby} disabled={selectedCards.length !== 3}>
+                                        Create lobby
+                                    </Button>
+                                </ButtonGroup>
+                            </HStack>
+                            {lobbies.map((lobby: lobbies_display) => (
+                                <HStack
+                                    alignItems="flex-start"
+                                    w="full"
+                                    key={lobby.lobby_id}
+                                    borderWidth={1}
+                                    borderRadius={6}
+                                    p={4}
+                                >
+                                    <VStack alignItems="flex-start" w="full">
                                         <Text>Oponent: {lobby.opponent_id}</Text>
-                                        <Button w="full" onClick={() => join_lobby(lobby.lobby_id)}>
-                                            Join
-                                        </Button>
                                         {lobby.lobby_id === createdLobbyId && (
                                             <Text fontSize="sm" color="blackAlpha.600">
                                                 This is your lobby
                                             </Text>
                                         )}
                                     </VStack>
-                                ))}
-                            </VStack>
-                            <VStack flex={2} spacing={4} alignItems="flex-start">
-                                <Heading as="h1">Create lobby</Heading>
-                                <Heading as="h2" size="sm">
-                                    Select 3 cards
-                                </Heading>
-                                <SimpleGrid w="full" minChildWidth={160} spacing={20} pt={6}>
-                                    {deck.map((card: card, index: any) => {
-                                        const selected = selectedCards.includes(card.address);
-
-                                        return (
-                                            <Box
-                                                cursor="pointer"
-                                                key={index}
-                                                height={48}
-                                                borderRadius={10}
-                                                _hover={{
-                                                    backgroundColor: "tangaroa.200",
-                                                }}
-                                                _active={{
-                                                    backgroundColor: "tangaroa.300",
-                                                }}
-                                                p={4}
-                                                onClick={() => cardSelected(card.address)}
-                                                boxShadow={selected && "xl"}
-                                                backgroundColor={selected ? "oldenAmber.200" : "tangaroa.100"}
-                                                mt={selected && -6}
-                                                mb={selected && 6}
-                                            >
-                                                <Text fontSize="lg">Card</Text>
-                                                <Text>{card.address}</Text>
-                                            </Box>
-                                        );
-                                    })}
-                                </SimpleGrid>
-                                <Button w="full" onClick={createLobby} disabled={selectedCards.length !== 3}>
-                                    Create lobby
-                                </Button>
-                            </VStack>
-                        </HStack>
+                                    <Button onClick={() => join_lobby(lobby.lobby_id)}>Join</Button>
+                                </HStack>
+                            ))}
+                        </VStack>
                     </VStack>
                 </>
             )}
