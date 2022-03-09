@@ -22,10 +22,6 @@ h2 {
     outline: solid black;
 }
 
-.created_lobby {
-    outline: solid black;
-}
-
 .battlecards_container {
     display: flex;
 }
@@ -34,16 +30,7 @@ h2 {
     color: #0000ff;
 }
 
-.lobby_display {
-    display: flex;
-    flex-direction: column;
-}
 
-.lobby {
-    display: flex;
-    justify-content: space-between;
-    margin: 1vw;
-}
 
 /* Liquidity Pool Page*/
 

@@ -59,19 +59,21 @@ export const HomePage: React.FC = ({}) => {
                     </SimpleGrid>
                 </VStack>
 
-                <VStack spacing={4} alignItems="flex-start">
-                    <Heading>Buy a deck</Heading>
-                    <Button variant="outline" onClick={buy_deck}>
-                        Buy deck
-                    </Button>
-                </VStack>
+                <HStack w="full" spacing={20}>
+                    <VStack flex={1} spacing={4} alignItems="flex-start">
+                        <Heading>Buy a deck</Heading>
+                        <Button variant="outline" onClick={buy_deck}>
+                            Buy deck
+                        </Button>
+                    </VStack>
 
-                <VStack spacing={4} alignItems="flex-start">
-                    <Heading>Find a match</Heading>
-                    <Button variant="outline" onClick={handleNavigateToLobbies}>
-                        Lobbies
-                    </Button>
-                </VStack>
+                    <VStack flex={1} spacing={4} alignItems="flex-start">
+                        <Heading>Find a match</Heading>
+                        <Button variant="outline" onClick={handleNavigateToLobbies}>
+                            Lobbies
+                        </Button>
+                    </VStack>
+                </HStack>
             </VStack>
         </>
     );
