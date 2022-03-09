@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { socket, socket_id } from "./socket";
+import { socket, socket_id } from "../../socket";
 
 interface BattleViewProps {
     setBattleView: any

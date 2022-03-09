@@ -1,174 +1,139 @@
 /* Global Styling */
-body{
-    margin: 0;
+body,
+html {
+    background-color: #fdf9f0;
 }
-h1, h2{
+h1,
+h2 {
     display: block;
     text-align: center;
 }
 
-.dead_card{
+.dead_card {
     outline: solid red !important;
     pointer-events: none;
 }
 
-.card{
+.card {
     margin: 1%;
 }
 
-.selected_card{
+.selected_card {
     outline: solid black;
 }
 
-.created_lobby{
+.created_lobby {
     outline: solid black;
 }
 
-.battlecards_container{
+.battlecards_container {
     display: flex;
 }
 
-#selected{
-    color: #0000FF;
+#selected {
+    color: #0000ff;
 }
 
-#allcards{
-    padding-top: 1vh;
-    padding-bottom: 1vh;
-    background-color: #cdf6fc;
-    row-gap: 2vh;
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(autofill, 1fr);
-    grid-auto-flow: column;
-    overflow-x: scroll;
-    width: 40vw;
-}
-
-.card{
-    background-color: #CDF6FC;
-    width: 10vw;
-    height: 20vh;
-    margin-left: 1vw;
-    margin-right: 1vw;
-
-}
-
-
-.lobby_display{
+.lobby_display {
     display: flex;
     flex-direction: column;
 }
 
-.lobby{
+.lobby {
     display: flex;
     justify-content: space-between;
     margin: 1vw;
-    background-color: rgb(194, 194, 194);
 }
 
-/* navbar / header */
-#navbar{
-    padding: 15px;
-    background-color: #CDF6FC;
-    display: flex;
-    justify-content: flex-end;
-}
-#navbar input{
-    background-color:#00E0FF;
-    border: none;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 25px;
-    font-weight: 700;
-    
-}
 /* Liquidity Pool Page*/
 
-
-#lp{
+#lp {
     display: flex;
     /*justify-content: space-between;*/
 }
-#left{
+#left {
     display: flex;
     flex-direction: column;
     width: 45%;
     margin: 0 3% 0 2%;
 }
 
-.cstake, .estake{
+.cstake,
+.estake {
     display: flex;
-    
+
     margin-bottom: 15px;
     margin-top: 15px;
 }
-#stakebutton{
+#stakebutton {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#cstake input{margin-left: 0;}
+#cstake input {
+    margin-left: 0;
+}
 
-
-#leftinner{
-    background-color: #CDF6FC;
+#leftinner {
+    background-color: #cdf6fc;
     margin: 0 auto;
     margin-bottom: 15px;
     display: block;
     width: 90%;
 }
 
-#innerright, #innerleft{
+#innerright,
+#innerleft {
     width: 50%;
 }
 
-#currency_exchange, #staked_stats, #stake{
-    background-color:#CDF6FC;
+#currency_exchange,
+#staked_stats,
+#stake {
+    background-color: #cdf6fc;
     margin: 0 auto;
     margin-bottom: 15px;
     display: block;
     width: 90%;
 }
 
-#currency_exchange{display: flex;}
-
-#staked_stats div#statTable{
-background-color: #0000FF;
-width: 90%;
-margin-left: 5%;
-margin-right: 5%;
-height: 45px;
-border-radius: 15px;
+#currency_exchange {
+    display: flex;
 }
 
-#staked_stats div#statChart{
+#staked_stats div#statTable {
+    background-color: #0000ff;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 45px;
+    border-radius: 15px;
+}
+
+#staked_stats div#statChart {
     height: 250;
-
 }
-
-
-
 
 /*#stake{outline: solid black;}*/
 
 /* Marketplace */
 
-#general_store{
-    background-color: #CDF6FC;
+#general_store {
+    background-color: #cdf6fc;
     outline: solid black;
 }
 
-
-#left input{
+#left input {
     display: block;
 }
 
-
-#left, #right{
-width: 50%;
-height: 500px;
-margin: 0;
+#left,
+#right {
+    width: 50%;
+    height: 500px;
+    margin: 0;
 }
-#left, #innerleft{
-border-right: 1px solid #000000;}
+#left,
+#innerleft {
+    border-right: 1px solid #000000;
+}

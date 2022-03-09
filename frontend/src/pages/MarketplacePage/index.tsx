@@ -6,7 +6,7 @@ interface MarketPlaceProps {
 
 
 
-export const Marketplace: React.FC<MarketPlaceProps> = ({ }) => {
+export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
 
     interface store_item {
         img_src: string,

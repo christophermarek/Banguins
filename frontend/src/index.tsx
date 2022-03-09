@@ -1,12 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";
+import theme from "./theme";
+import WagmiProvider from "./providers/wagmi";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ChakraProvider theme={theme}>
+            <WagmiProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </WagmiProvider>
+        </ChakraProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
-
