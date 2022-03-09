@@ -27,6 +27,15 @@ const create_lobby = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         // check for errors?
         const player = req.body.wallet;
+        // check if player already created a lobby
+        for (let i = 0; i < exports.lobbies.length; i++) {
+            if (exports.lobbies[i] !== undefined) {
+                if (exports.lobbies[i].player1_addr === player || exports.lobbies[i].player2_addr === player) {
+                    res.status(200).json({ message: 'Error Creating Lobby, you already have one' });
+                    return;
+                }
+            }
+        }
         const cards = req.body.cards;
         const socketId = req.body.socketId;
         exports.lobbies[lobby_id] = { lobby_id: lobby_id, player1_addr: player, player1_conn: socketId, player1_cards: cards, player2_addr: '', player2_conn: '', player2_cards: [], lobby_status: 'lobby', battle: { round: 0, player1move: null, player2move: null } };

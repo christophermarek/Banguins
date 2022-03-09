@@ -41,6 +41,17 @@ export const create_lobby = async (req: Request, res: Response): Promise<void> =
         // check for errors?
 
         const player = req.body.wallet;
+
+        // check if player already created a lobby
+        for(let i = 0; i < lobbies.length; i++){
+            if(lobbies[i] !== undefined){
+                if(lobbies[i].player1_addr === player || lobbies[i].player2_addr === player){
+                    res.status(200).json({ message: 'Error Creating Lobby, you already have one' });
+                    return;
+                }
+            }
+        }
+
         const cards = req.body.cards;
         const socketId = req.body.socketId;
         

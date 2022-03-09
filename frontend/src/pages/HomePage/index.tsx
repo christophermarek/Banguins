@@ -13,6 +13,7 @@ export const HomePage: React.FC = () => {
             address: `0x082B6aC9e47d7D83ea3FaBbD1eC7DAba9D687b3${i}`,
         };
     }
+    
     const visibleDeck = placeholder_cards.slice(0, 8);
 
     // implement these, props from app.ts?

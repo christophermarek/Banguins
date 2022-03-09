@@ -11,7 +11,7 @@ import { IoIosRefresh } from "react-icons/io";
 
 let baseUrl: string;
 // is production
-if (true) {
+if (false) {
     baseUrl = "https://banguins.herokuapp.com";
 } else {
     baseUrl = "http://localhost:8000";
@@ -24,11 +24,10 @@ export const LobbiesPage: React.FC = () => {
     for (let i = 0; i < 8; i++) {
         placeholder_cards[i] = { health: i + 1, attack: i + 1, address: `#0xaqwqesad${i}` };
     }
-    const deck = placeholder_cards;
 
     const loadDataFromServer = React.useCallback(async () => {
         // CHANGE THIS To 24 hours once real time stream is up
-        // FIXME: API sometimes returns null entries, so we have to filter those
+        // FIXME: API sometimes returns null entries, so we have to filter those,
         let lobbies_fetched = (await get_lobbies())?.lobbies?.filter((item: any) => item);
 
         setLobbies(lobbies_fetched);
@@ -39,15 +38,16 @@ export const LobbiesPage: React.FC = () => {
 
         socket.on("battle", (data) => {
             if ("winner" in data) {
-                get_lobbies();
+                alert(data);
+                console.log(data);
+                loadDataFromServer();
                 setBattleView(false);
                 setBattle(undefined);
-                alert(JSON.stringify(data));
             } else if ("opponent_left" in data) {
-                get_lobbies();
+                alert("Opponent left your lobby");
+                loadDataFromServer();
                 setBattleView(false);
                 setBattle(undefined);
-                alert("Opponent left your lobby");
             } else {
                 setBattle(data);
                 setBattleView(true);
@@ -67,17 +67,13 @@ export const LobbiesPage: React.FC = () => {
 
     const [selectedCards, setSelectedCards] = useState<any>([]);
 
-    // unimplemented
+    const [deck, setDeck] = useState<card[]>(placeholder_cards);
+
     interface lobbies_display {
         date_created: string;
         opponent_id: string;
         lobby_id: number;
     }
-
-    // const lobbies: lobbies_display[] = [];
-    // for (let i = 0; i < 6; i++) {
-    //     lobbies.push({ date_created: new Date().toISOString(), opponent_id: 'null', lobby_id: 1 })
-    // }
 
     const join_lobby = async (lobby_id: number) => {
         if (window.confirm(`Are you sure you want to join this lobby?`)) {
@@ -116,7 +112,6 @@ export const LobbiesPage: React.FC = () => {
     const get_lobbies = async () => {
         try {
             const response: AxiosResponse<any> = await axios.get(baseUrl + "/get_lobbies");
-
             return response.data;
         } catch (error: any) {
             alert("Error creating lobby");
@@ -149,11 +144,17 @@ export const LobbiesPage: React.FC = () => {
                 socketId: socket_id,
             });
 
-            alert(
-                `Successfully created lobby with id=${response.data.lobby_id}, now wait in lobbies until opponent joined`
-            );
-            setCreatedLobbyId(response.data.lobby_id);
-            loadDataFromServer();
+            // check for error, lobby already made
+            if ("message" in response.data) {
+                alert(response.data.message);
+            } else {
+                alert(
+                    `Successfully created lobby with id=${response.data.lobby_id}, now wait in lobbies until opponent joined`
+                );
+                setCreatedLobbyId(response.data.lobby_id);
+                loadDataFromServer();
+            }
+
         } catch (error: any) {
             alert("Error creating lobby");
         }
@@ -169,6 +170,18 @@ export const LobbiesPage: React.FC = () => {
             setSelectedCards((selectedCards: any) => [...selectedCards, address]);
         }
     };
+
+    const update_placeholder_health = (event: any, index: any) => {
+        let copy = [...deck];
+        copy[index].health = event.target.value;
+        setDeck(copy)
+    }
+
+    const update_placeholder_attack = (event: any, index: any) => {
+        let copy = [...deck];
+        copy[index].attack = event.target.value;
+        setDeck(copy)
+    }
 
     return (
         <>
@@ -205,6 +218,9 @@ export const LobbiesPage: React.FC = () => {
                                         >
                                             <Text fontSize="lg">Card</Text>
                                             <Text>{card.address}</Text>
+                                            <Text>Health <input type='number' value={deck[index].health} onChange={(event) => update_placeholder_health(event, index)} /></Text>
+                                            <Text>Attack <input type='number' value={deck[index].attack} onChange={(event) => update_placeholder_attack(event, index)} /></Text>
+
                                         </Box>
                                     );
                                 })}
@@ -214,7 +230,7 @@ export const LobbiesPage: React.FC = () => {
                             <HStack w="full" alignItems="center" justifyContent="space-between">
                                 <Heading>Lobbies</Heading>
                                 <ButtonGroup>
-                                    <Button variant="ghost" leftIcon={<IoIosRefresh />} onClick={get_lobbies}>
+                                    <Button variant="ghost" leftIcon={<IoIosRefresh />} onClick={() => loadDataFromServer()}>
                                         Refresh
                                     </Button>
                                     <Button onClick={createLobby} disabled={selectedCards.length !== 3}>
@@ -249,3 +265,5 @@ export const LobbiesPage: React.FC = () => {
         </>
     );
 };
+
+
