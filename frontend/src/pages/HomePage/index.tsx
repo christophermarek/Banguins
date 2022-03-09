@@ -1,6 +1,6 @@
 import { Key, ReactChild, ReactFragment, ReactPortal, useState } from "react";
-import { Lobbies } from "../components/Lobbies";
-import { card } from "../types";
+import { Lobbies } from "../../components/Lobbies";
+import { card } from "../../types";
 
 interface HomeProps {
     deck: card[]
@@ -8,7 +8,7 @@ interface HomeProps {
 
 
 
-export const Home: React.FC<HomeProps> = ({ deck }) => {
+export const HomePage: React.FC<HomeProps> = ({ deck }) => {
 
     const [lobbiesSelected, setLobbiesSelected] = useState<boolean>(false);
 

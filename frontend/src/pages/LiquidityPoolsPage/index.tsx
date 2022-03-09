@@ -4,7 +4,7 @@ interface LiquidityPoolsProps {
 }
 
 
-export const LiquidityPools: React.FC<LiquidityPoolsProps> = ({ }) => {
+export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
    
 

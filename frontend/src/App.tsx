@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Home } from "./pages/Home";
-import { Marketplace } from "./pages/Marketplace";
+import { HomePage } from "./pages/HomePage";
+import { MarketplacePage } from "./pages/MarketplacePage";
 import { ethers } from "ethers";
-import { LiquidityPools } from "./pages/LiquidityPools";
+import { LiquidityPoolsPage } from "./pages/LiquidityPoolsPage";
 import { card } from "./types";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
@@ -45,9 +45,9 @@ function App() {
             <Header />
             <Container maxWidth="container.xl" padding={0}>
                 <Routes>
-                    <Route index element={<Home deck={placeholder_cards} />} />
-                    <Route path="marketplace" element={<Marketplace />} />
-                    <Route path="liquidity-pools" element={<LiquidityPools />} />
+                    <Route index element={<HomePage deck={placeholder_cards} />} />
+                    <Route path="marketplace" element={<MarketplacePage />} />
+                    <Route path="liquidity-pools" element={<LiquidityPoolsPage />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Container>
