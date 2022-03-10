@@ -12,7 +12,7 @@ contract Players is AccessControl {
         uint lastCheckIn;
     }
 
-    mapping(address => PlayerSchema) public playerDb;
+    mapping(address => PlayerSchema) private playerDb;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -40,8 +40,12 @@ contract Players is AccessControl {
         playerDb[player].numPlayerMonsters -= amount;
     }
 
-    function setCheckIn(address player) external {
+    function doCheckIn(address player) external {
         playerDb[player].lastCheckIn = block.timestamp;
+    }
+
+    function setCheckIn(address player, uint timestamp) external checkAdmin {
+        playerDb[player].lastCheckIn = timestamp;
     }
 
     function getCheckIn(address player) external view returns (uint) {

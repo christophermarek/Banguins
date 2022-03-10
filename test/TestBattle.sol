@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 import "truffle/Assert.sol";
-import "../contracts/players.sol";
-import "../contracts/nft.sol";
-import "../contracts/battle.sol";
-import "../contracts/monsters.sol";
+import "../contracts/Players.sol";
+import "../contracts/BTokens.sol";
+import "../contracts/Battle.sol";
+import "../contracts/Monsters.sol";
 import "../contracts/VRFRandomNumbers.sol";
 import "../contracts/GameConstants.sol";
 

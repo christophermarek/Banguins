@@ -3,7 +3,6 @@ pragma solidity >=0.8.7;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./VRFRandomNumbers.sol";
-import "./nft.sol";
 
 contract Monsters is AccessControl {
     enum Rarity {
@@ -46,7 +45,7 @@ contract Monsters is AccessControl {
     }
 
     function addMonster(uint256 id, Rarity rarity) external checkAdmin {
-        require(id == numMonsters, "can only add new monsters ids");
+        require(id == numMonsters + 2, "can only add new monsters ids");
         require(rarity <= Rarity.Legendary, "not a valid rarity enum");
         numMonsters++;
         rarityToMonsters[rarity].push(id); 
@@ -76,9 +75,9 @@ contract Monsters is AccessControl {
                 monsterRarities[i] = uint8(monsterRarity);
             }
             else { // otherwise, create a new monster. Minting should be handled by BTokens contract.
-                monsterIds[i] = numMonsters;
+                monsterIds[i] = numMonsters + 2;
                 monsterRarities[i] = uint8(monsterRarity);
-                rarityToMonsters[monsterRarity].push(numMonsters);
+                rarityToMonsters[monsterRarity].push(numMonsters + 2);
                 numMonsters++;
             }
         }
