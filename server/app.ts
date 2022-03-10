@@ -9,9 +9,7 @@ const app = express();
 const port = 8000;
 
 
-// type defs i have no idea
 const http = require('http');
-// SOCKET IO DEFAULTS TO PORT 8000, how do i change or make both use the same port
 const server = http.createServer(app);
 export const io: Server = new Server(server,
     {
@@ -43,13 +41,15 @@ io.on('connection', (socket) => {
             let index: number;
             let isPlayer1: boolean = false;
             for (let i = 0; i < lobbies.length; i++) {
-                if (lobbies[i].player1_conn && lobbies[i].player1_conn === connId) {
-                    index = i;
-                    isPlayer1 = true;
-                }
-                if (lobbies[i].player2_conn && lobbies[i].player2_conn === connId) {
-                    index = i;
-                    isPlayer1 = false;
+                if (lobbies[i] != undefined) {
+                    if (lobbies[i].player1_conn && lobbies[i].player1_conn === connId) {
+                        index = i;
+                        isPlayer1 = true;
+                    }
+                    if (lobbies[i].player2_conn && lobbies[i].player2_conn === connId) {
+                        index = i;
+                        isPlayer1 = false;
+                    }
                 }
             }
             if (index !== undefined) {
@@ -65,11 +65,11 @@ io.on('connection', (socket) => {
 
                 lobbies.splice(index, 1);
             }
-        }catch (error){
+        } catch (error) {
             console.log('error deleting opponent');
             console.log(error);
         }
-        
+
     });
 });
 

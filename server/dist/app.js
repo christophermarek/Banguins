@@ -12,9 +12,7 @@ const battle_1 = require("./battle");
 const lobby_1 = require("./lobby");
 const app = (0, express_1.default)();
 const port = 8000;
-// type defs i have no idea
 const http = require('http');
-// SOCKET IO DEFAULTS TO PORT 8000, how do i change or make both use the same port
 const server = http.createServer(app);
 exports.io = new socket_io_1.Server(server, {
     cors: {
@@ -33,30 +31,38 @@ exports.io.on('connection', (socket) => {
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        let index;
-        let isPlayer1 = false;
-        for (let i = 0; i < lobby_1.lobbies.length; i++) {
-            if (lobby_1.lobbies[i].player1_conn && lobby_1.lobbies[i].player1_conn === connId) {
-                index = i;
-                isPlayer1 = true;
-            }
-            if (lobby_1.lobbies[i].player2_conn && lobby_1.lobbies[i].player2_conn === connId) {
-                index = i;
-                isPlayer1 = false;
-            }
-        }
-        if (index !== undefined) {
-            // notify other player of disconnect
-            if (isPlayer1) {
-                if (lobby_1.lobbies[index].player2_conn !== '') {
-                    exports.io.to(lobby_1.lobbies[index].player2_conn).emit('battle', { opponent_left: 'Opponent Disconnected' });
+        try {
+            let index;
+            let isPlayer1 = false;
+            for (let i = 0; i < lobby_1.lobbies.length; i++) {
+                if (lobby_1.lobbies[i] != undefined) {
+                    if (lobby_1.lobbies[i].player1_conn && lobby_1.lobbies[i].player1_conn === connId) {
+                        index = i;
+                        isPlayer1 = true;
+                    }
+                    if (lobby_1.lobbies[i].player2_conn && lobby_1.lobbies[i].player2_conn === connId) {
+                        index = i;
+                        isPlayer1 = false;
+                    }
                 }
             }
-            else {
-                // if theres a player 2 theres always a player 1
-                exports.io.to(lobby_1.lobbies[index].player1_conn).emit('battle', { opponent_left: 'Opponent Disconnected' });
+            if (index !== undefined) {
+                // notify other player of disconnect
+                if (isPlayer1) {
+                    if (lobby_1.lobbies[index].player2_conn !== '') {
+                        exports.io.to(lobby_1.lobbies[index].player2_conn).emit('battle', { opponent_left: 'Opponent Disconnected' });
+                    }
+                }
+                else {
+                    // if theres a player 2 theres always a player 1
+                    exports.io.to(lobby_1.lobbies[index].player1_conn).emit('battle', { opponent_left: 'Opponent Disconnected' });
+                }
+                lobby_1.lobbies.splice(index, 1);
             }
-            lobby_1.lobbies.splice(index, 1);
+        }
+        catch (error) {
+            console.log('error deleting opponent');
+            console.log(error);
         }
     });
 });
