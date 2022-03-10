@@ -12,7 +12,7 @@ contract Players is AccessControl {
         uint lastCheckIn;
     }
 
-    mapping(address => PlayerSchema) public playerDb;
+    mapping(address => PlayerSchema) private playerDb;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -37,19 +37,25 @@ contract Players is AccessControl {
 
     function decreaseMonsters(address player, uint8 amount) external checkAdmin {
         require(playerDb[player].numPlayerMonsters >= amount, "cannot decrease number of monsters below zero");
-        playerDb[player].numPlayerMonsters += amount;
+        playerDb[player].numPlayerMonsters -= amount;
     }
 
-    function setCheckIn(address player) external {
+    function doCheckIn(address player) external {
         playerDb[player].lastCheckIn = block.timestamp;
+    }
+
+    function setCheckIn(address player, uint timestamp) external checkAdmin {
+        playerDb[player].lastCheckIn = timestamp;
     }
 
     function getCheckIn(address player) external view returns (uint) {
         return playerDb[player].lastCheckIn;
     }
 
-    function getNumMonsters(address player) external view returns (uint256) {
-        return playerDb[player].numPlayerMonsters;
+    function getStats(address player) external view returns (uint256, uint256, uint256) {
+        return (playerDb[player].wins,
+                playerDb[player].losses,
+                playerDb[player].numPlayerMonsters);
     }
 
 }

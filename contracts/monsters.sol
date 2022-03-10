@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.7;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "VRFRandomNumbers.sol";
-import "nft.sol";
+import "./VRFRandomNumbers.sol";
 
 contract Monsters is AccessControl {
     enum Rarity {
@@ -13,7 +12,7 @@ contract Monsters is AccessControl {
         Legendary
     }
 
-    mapping(Rarity => uint256[]) rarityToMonsters;
+    mapping(Rarity => uint256[]) public rarityToMonsters;
     mapping(Rarity => uint256) private _rarityToProbability;
     uint256 private maxProbability;
     uint256 public numMonsters;
@@ -46,10 +45,9 @@ contract Monsters is AccessControl {
     }
 
     function addMonster(uint256 id, Rarity rarity) external checkAdmin {
-        require(id <= numMonsters, "monster id higher than max id. only increment by 1 for new monsters");
-        if (id == numMonsters) {
-            numMonsters++;
-        }
+        require(id == numMonsters + 2, "can only add new monsters ids");
+        require(rarity <= Rarity.Legendary, "not a valid rarity enum");
+        numMonsters++;
         rarityToMonsters[rarity].push(id); 
     }
 
@@ -77,9 +75,9 @@ contract Monsters is AccessControl {
                 monsterRarities[i] = uint8(monsterRarity);
             }
             else { // otherwise, create a new monster. Minting should be handled by BTokens contract.
-                monsterIds[i] = numMonsters;
+                monsterIds[i] = numMonsters + 2;
                 monsterRarities[i] = uint8(monsterRarity);
-                rarityToMonsters[monsterRarity].push(numMonsters);
+                rarityToMonsters[monsterRarity].push(numMonsters + 2);
                 numMonsters++;
             }
         }
