@@ -5,18 +5,18 @@ import { card, lobbies } from "./lobby";
 
 
 
-export const process_socket_message = (socket_id, msg: { move: card, target: string }) => {
+export const process_socket_message = (socket.id, msg: { move: card, target: string }) => {
 
     console.log('message recieved')
     for (let i = 0; i < lobbies.length; i++) {
         if (lobbies[i] !== undefined) {
             // valid message, player is in a lobby
-            if (socket_id === lobbies[i].player1_conn || socket_id === lobbies[i].player2_conn) {
+            if (socket.id === lobbies[i].player1_conn || socket.id === lobbies[i].player2_conn) {
 
                 // we only want to process messages from players in a match
                 if (lobbies[i].lobby_status === 'match') {
                     // The only moves we expect to recieve from the clients are the move
-                    let isPlayer1 = socket_id === lobbies[i].player1_conn ? true : false;
+                    let isPlayer1 = socket.id === lobbies[i].player1_conn ? true : false;
 
                     // let move: card = msg.move;
                     // let target: string = msg.target;
