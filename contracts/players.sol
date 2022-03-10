@@ -37,7 +37,7 @@ contract Players is AccessControl {
 
     function decreaseMonsters(address player, uint8 amount) external checkAdmin {
         require(playerDb[player].numPlayerMonsters >= amount, "cannot decrease number of monsters below zero");
-        playerDb[player].numPlayerMonsters += amount;
+        playerDb[player].numPlayerMonsters -= amount;
     }
 
     function setCheckIn(address player) external {
@@ -48,8 +48,10 @@ contract Players is AccessControl {
         return playerDb[player].lastCheckIn;
     }
 
-    function getNumMonsters(address player) external view returns (uint256) {
-        return playerDb[player].numPlayerMonsters;
+    function getStats(address player) external view returns (uint256, uint256, uint256) {
+        return (playerDb[player].wins,
+                playerDb[player].losses,
+                playerDb[player].numPlayerMonsters);
     }
 
 }

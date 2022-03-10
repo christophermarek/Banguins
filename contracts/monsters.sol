@@ -13,7 +13,7 @@ contract Monsters is AccessControl {
         Legendary
     }
 
-    mapping(Rarity => uint256[]) rarityToMonsters;
+    mapping(Rarity => uint256[]) public rarityToMonsters;
     mapping(Rarity => uint256) private _rarityToProbability;
     uint256 private maxProbability;
     uint256 public numMonsters;
@@ -46,10 +46,9 @@ contract Monsters is AccessControl {
     }
 
     function addMonster(uint256 id, Rarity rarity) external checkAdmin {
-        require(id <= numMonsters, "monster id higher than max id. only increment by 1 for new monsters");
-        if (id == numMonsters) {
-            numMonsters++;
-        }
+        require(id == numMonsters, "can only add new monsters ids");
+        require(rarity <= Rarity.Legendary, "not a valid rarity enum");
+        numMonsters++;
         rarityToMonsters[rarity].push(id); 
     }
 

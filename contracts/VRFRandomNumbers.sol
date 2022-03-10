@@ -8,7 +8,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract VRFRandomNumbers is VRFConsumerBaseV2, AccessControl {
-    VRFCoordinatorV2Interface COORDINATOR;
+    VRFCoordinatorV2Interface public COORDINATOR;
     LinkTokenInterface LINKTOKEN;
 
     // Your subscription ID.
@@ -16,16 +16,16 @@ contract VRFRandomNumbers is VRFConsumerBaseV2, AccessControl {
 
     // Rinkeby coordinator. For other networks,
     // see https://docs.chain.link/docs/vrf-contracts/#configurations
-    address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;
+    address public vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;
 
     // Rinkeby LINK token contract. For other networks,
     // see https://docs.chain.link/docs/vrf-contracts/#configurations
-    address link = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;
+    address public link = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;
 
     // The gas lane to use, which specifies the maximum gas price to bump to.
     // For a list of available gas lanes on each network,
     // see https://docs.chain.link/docs/vrf-contracts/#configurations
-    bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;
+    bytes32 public keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;
 
     // Depends on the number of requested values that you want sent to the
     // fulfillRandomWords() function. Storing each word costs about 20,000 gas,
@@ -40,7 +40,7 @@ contract VRFRandomNumbers is VRFConsumerBaseV2, AccessControl {
 
     uint256[] public s_randomWords;
     uint256 public s_requestId;
-    address s_owner;
+    address public s_owner;
 
     bytes32 public constant DICEMASTER_ROLE = keccak256("DICEMASTER_ROLE");
 
@@ -51,6 +51,7 @@ contract VRFRandomNumbers is VRFConsumerBaseV2, AccessControl {
         s_subscriptionId = subscriptionId;
 
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        grantDiceMaster(_msgSender());
     }
 
     // Assumes the subscription is funded sufficiently.
