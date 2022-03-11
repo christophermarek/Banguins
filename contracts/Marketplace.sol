@@ -14,6 +14,8 @@ contract Marketplace is AccessControl {
     constructor(BTokens _token, Players _player) {
         token = _token;
         players = _player;
+        // Setup roles for creator
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     function buyMonster(address from, address to, uint256 id, uint256 price) external onlyRole(DEFAULT_ADMIN_ROLE) {
