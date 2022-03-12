@@ -100,16 +100,9 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                             </li>
                         )}
                     </ul>
-                    <div id='stake'>
-                        <div>
-                            <p className="stakingLabel">Currency</p>
-                            <input  type='text' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
-                        </div>
-                        <div>
-                            <p className="stakingLabel">Energy</p>
-                            <input type='text' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
-                        </div>
-                        <input className="buttonStyle" type='button' value='Stake' onClick={() => stakeCurrency()} />
+                    <div id='buyItems'>
+                        <p className="stakingLabel">Cost {calculateNumberPacksCost()} MATIC</p>
+                        <input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => stakeCurrency()} />
                     </div>
                 </div>
                 </div>

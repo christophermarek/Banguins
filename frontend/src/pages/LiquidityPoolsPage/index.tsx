@@ -65,7 +65,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
 
                     <div id='stake'>
-                        <h2 className='title center subheading'>STAKING</h2>
+                        <h2 className='title subheading'>STAKING</h2>
                         <div className="cstake">
                             <div className="stakingLabel">Currency</div>
                             <input type='text' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
@@ -74,7 +74,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                             <div className="stakingLabel">Energy</div>
                             <input type='text' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
                         </div>
-                        <input id="stakebutton" className="center buttonStyle" type='button' value='Stake' onClick={() => stakeCurrency()} />
+                        <input id="stakebutton" className="buttonStyle" type='button' value='Stake' onClick={() => stakeCurrency()} />
                     </div>
                 </div>
             <div id="right">

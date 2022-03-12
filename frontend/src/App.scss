@@ -117,18 +117,27 @@ h2 {
     font-size: 2vw !important;
 
 }
-.navbtn:hover{
+.navbtn:hover, .buttonStyle:hover{
     background-color: #00E0FF !important;
 
 }
+.buttonStyle{
+    border-radius: 8px;
+    margin: 0 auto!important;
+}
 
-
+#storebutton{
+    align-items: center!important;
+}
 /* Liquidity Pool Page*/
 
-#lp, #mp {
+#lp, #mp, #buyItems {
     display: flex;
     /*justify-content: space-between;*/
 }
+
+.buttonStyle{border:solid black 1px;
+                background-color:#bbe0ff;}
 
 #left {
     display: flex;
