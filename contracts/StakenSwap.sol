@@ -16,9 +16,7 @@ interface IERC20 {
 contract Staking {
 
     address owner;
-    
-    uint currencyLiquidity;
-    uint energyLiquidity;
+
 
     address ceAddress; 
     BTokens ce = BTokens(ceAddress);
@@ -30,12 +28,12 @@ contract Staking {
         uint stakedCurrency;
         uint lastWithdrawalTime;
     }
-
+    
+    uint currencyLiquidity;
+    uint energyLiquidity;
     // Liquidity Calc
     uint swap; //
     uint rcvd; //
-    uint currencyId = 0;
-    uint energyId = 1;    
     uint swapPool18 = swap*10**18;
     uint rcvdPool9 = rcvd*10**9;
     uint rcvd18 = rcvd*10**18;
@@ -74,7 +72,6 @@ constructor() {
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.stakedEnergy -= _energy;
         u.stakedCurrency -= _currency;
-        //need to implement safemath to make sure this doesn't underflow somehow
         ce.safeTransferFrom(address(this), msg.sender, 0, _currency, "currency withdrawn");
         ce.safeTransferFrom(address(this), msg.sender, 1, _energy, "energy withdrawn");
     }
@@ -112,9 +109,13 @@ constructor() {
         require(_amount<=100, "too much swap, this is game, not economy");
         if(_id==0){
             require(ce.balanceOf(msg.sender, 0)>=_amount+1, "not enough currency");
+            swap = currencyLiquidity;
+            rcvd = energyLiquidity;
             other = 1;
         } else if(_id==1) {
             require(ce.balanceOf(msg.sender, 1)>=_amount+1, "not enough energy");
+            rcvd = currencyLiquidity;
+            swap = energyLiquidity;
             other = 0;
         } else {
             revert("Invalid Token ID, go to uniswap or something");
@@ -140,7 +141,7 @@ constructor() {
         uint newSwapPool = newSwapPool18/10**18;
         uint discountRatio18 = swapPool18 / newSwapPool;
         uint discountRatio9 = discountRatio18/10**9;
-        return (discountRatio9); // This value is the discount needing to be applied inflated 9 decimals
+        return (discountRatio9); 
     }
 
     function ratioEquivalence(uint discountedSwapAmount18) private view returns (uint) {
@@ -159,7 +160,7 @@ constructor() {
     function Combine(uint swapAmt) private view returns (uint) {
         uint value9 = discountValue(swapAmt);
         uint swapAmt9 = swapAmt * 10**9;
-        uint value18 = value9 * swapAmt9; // 47.5*10**18
+        uint value18 = value9 * swapAmt9; 
         uint nothervalue9 = ratioEquivalence(value18);
         uint thirdvalue9 = discountValue2(nothervalue9);
         uint fourthvalue18 = nothervalue9 * thirdvalue9;
@@ -169,6 +170,7 @@ constructor() {
 
     function getSwapValue(uint _amount) private view returns (uint returnAmount) {
          returnAmount = Combine(_amount);
+
     }
 
 }
