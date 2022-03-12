@@ -22,6 +22,7 @@ export const HomePage: React.FC = () => {
                 const response = await getBalance({
                     wallet: accountData?.address,
                 });
+                console.log(response.data.balance)
                 setBalance(response.data.balance);
             } catch (error: any) {
                 console.error(error);
@@ -45,6 +46,7 @@ export const HomePage: React.FC = () => {
                     const response = await getImagesFromIds({
                         id: balance.monsters[i].id,
                     });
+                    console.log('image fetched');
                     setImages((images: any) => ({ ...images, [`${balance.monsters[i].id}`]: response.data }));
                 }
 
