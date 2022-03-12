@@ -99,7 +99,7 @@ h2 {
     position: relative;
 }
 
-.leavebtn{
+.leavebtn, .buttonStyle{
     background-color: transparent;
     font-family: 'Sigmar One', cursive;
     color: white !important;
@@ -108,7 +108,7 @@ h2 {
     font-size: 2vw !important;
 }
 
-.navbtn {
+.navbtn, .heading, .subheading, .stakingLabel {
     // background-color: #00E0FF !important;
     font-family: 'Sigmar One', cursive;
     color: white !important;
@@ -117,18 +117,27 @@ h2 {
     font-size: 2vw !important;
 
 }
-.navbtn:hover{
+.navbtn:hover, .buttonStyle:hover{
     background-color: #00E0FF !important;
 
 }
+.buttonStyle{
+    border-radius: 8px;
+    margin: 0 auto!important;
+}
 
-
+#storebutton{
+    align-items: center!important;
+}
 /* Liquidity Pool Page*/
 
-#lp {
+#lp, #mp, #buyItems {
     display: flex;
     /*justify-content: space-between;*/
 }
+
+.buttonStyle{border:solid black 1px;
+                background-color:#bbe0ff;}
 
 #left {
     display: flex;
