@@ -99,7 +99,7 @@ h2 {
     position: relative;
 }
 
-.leavebtn{
+.leavebtn, .buttonStyle{
     background-color: transparent;
     font-family: 'Sigmar One', cursive;
     color: white !important;
@@ -108,7 +108,7 @@ h2 {
     font-size: 2vw !important;
 }
 
-.navbtn {
+.navbtn, .heading, .subheading, .stakingLabel {
     // background-color: #00E0FF !important;
     font-family: 'Sigmar One', cursive;
     color: white !important;
@@ -125,7 +125,7 @@ h2 {
 
 /* Liquidity Pool Page*/
 
-#lp {
+#lp, #mp {
     display: flex;
     /*justify-content: space-between;*/
 }
