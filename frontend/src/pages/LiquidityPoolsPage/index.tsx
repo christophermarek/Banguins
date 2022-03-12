@@ -47,14 +47,14 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                     <div id='currency_exchange'>
                         <div id="innerleft">
                         <label className="stakingLabel" htmlFor="dexChoice"><b>SWAP:</b></label>
-                        <select id='dexChoice'>
+                        <input className="inputStyling" type='text' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
+                        <select className="selectStyling" id='dexChoice'>
                             <option value="energy">ENRG</option>
                             <option value="currency">CRNC</option>
                             </select>
-                        <input type='text' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
                         </div>
                         <div id="innerright">
-                        <p id="calcSwap">For {calculateEnergyExchange()} Energy</p>
+                        <p id="calcSwap" className="stakingLabel">For {calculateEnergyExchange()} Energy</p>
                         <input type='button' className="center buttonStyle" id="exchangebutton"  value='Exchange' onClick={() => exchangeCurrency()} />
                         </div></div></div>
 
@@ -67,12 +67,12 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                     <div id='stake'>
                         <h2 className='title subheading'>STAKING</h2>
                         <div className="cstake">
-                            <div className="stakingLabel">Currency</div>
-                            <input type='text' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
+                            <div className="stakingLabel">Currency:</div>
+                            <input className="inputStyling" type='number' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
                         </div>
                         <div className="estake">
-                            <div className="stakingLabel">Energy</div>
-                            <input type='text' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
+                            <div className="stakingLabel">Energy:</div>
+                            <input  className="inputStyling"  type='number' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
                         </div>
                         <input id="stakebutton" className="buttonStyle" type='button' value='Stake' onClick={() => stakeCurrency()} />
                     </div>

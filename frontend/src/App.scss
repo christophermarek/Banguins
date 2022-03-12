@@ -136,8 +136,7 @@ h2 {
     /*justify-content: space-between;*/
 }
 
-.buttonStyle{border:solid black 1px;
-                background-color:#bbe0ff;}
+
 
 #left {
     display: flex;
@@ -146,10 +145,17 @@ h2 {
     margin: 0 3% 0 2%;
 }
 
+.itemList{
+    list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
 .cstake,
 .estake {
     display: flex;
-
+    justify-content: center;
+    align-items: center;
     margin-bottom: 15px;
     margin-top: 15px;
 }
@@ -163,19 +169,14 @@ h2 {
     margin-left: 0;
 }
 
-#leftinner {
-    background-color: #cdf6fc;
-    margin: 0 auto;
-    margin-bottom: 15px;
-    display: block;
-    width: 90%;
-}
+
 
 #innerright,
 #innerleft {
     width: 50%;
 }
 
+#leftinner,
 #currency_exchange,
 #staked_stats,
 #stake {
@@ -226,4 +227,34 @@ h2 {
 #left,
 #innerleft {
     border-right: 1px solid #000000;
+}
+
+
+.buttonStyle{border:solid black 1px;
+    background-color:#bbe0ff;
+    font-size: xx-large!important;
+    padding: 15px;
+    margin-bottom: 10px!important;   
+}
+
+.inputStyling{
+    height: 55px;
+    font-family: 'Sigmar One', cursive;
+    color: white !important;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 2vw;
+    max-width: 100px;
+    //padding: 100;
+    width: 45%;
+}
+
+.selectStyling{
+    height: 55px;
+    font-family: 'Sigmar One', cursive;
+    color: #000000;
+    //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    //padding: 1% !important;
+    width: 45%;
+    background-color: transparent;
+  font-size: 25px;
 }

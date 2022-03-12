@@ -93,10 +93,10 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                 <div id='right'>
                 <div id='general_store'>
                     <h1 className="subheading">General Store</h1>
-                    <ul>
+                    <ul className="itemList">
                         {placeholder_items.map((item, index) =>
                             <li key={index}>
-                                {item.item_name}: {item.item_desc} Quantity: {item.quantity}
+                                <span className="stakingLabel">{item.item_name} Quantity: {item.quantity}</span><p>{item.item_desc}</p>
                             </li>
                         )}
                     </ul>
