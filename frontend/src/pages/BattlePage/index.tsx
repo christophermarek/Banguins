@@ -65,6 +65,8 @@ const BattlePage: React.FC = () => {
             return;
         }
 
+        console.log(battle)
+        
         let you_n;
         let opponent_n;
         if (socket.id === battle.player1_conn) {
@@ -97,10 +99,10 @@ const BattlePage: React.FC = () => {
 
     return (
         <>
-            <input type="button" value="Leave Battle" onClick={() => leaveBattle()} />
-            <h1>
+            <input type="button" className="leavebtn" value="Leave Battle" onClick={() => leaveBattle()} />
+            <p id='battle_text'>
                 Battle {you?.addr} VS {opponent?.addr}
-            </h1>
+            </p>
             <div id="opponent" className={"battlecards_container"}>
                 {opponent !== undefined &&
                     opponent.cards.map((card: any) => (

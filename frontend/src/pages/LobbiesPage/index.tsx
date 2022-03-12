@@ -5,8 +5,9 @@ import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { card } from "../../types";
 import { IoIosRefresh } from "react-icons/io";
-import { socket } from "../../socket";
+import { registerCallback, removeCallback, socket } from "../../socket";
 import { getLobbies, createLobby } from "../../api/api";
+import { getRandomString } from "../../utils/random";
 
 export const LobbiesPage: React.FC = () => {
     const navigate = useNavigate();
@@ -23,10 +24,13 @@ export const LobbiesPage: React.FC = () => {
 
         setLobbies(lobbies_fetched);
     }, []);
+    
 
     React.useEffect(() => {
         loadDataFromServer();
     }, [loadDataFromServer]);
+
+    
 
     // lobby id returned from server after successful lobby creation
     const [createdLobbyId, setCreatedLobbyId] = useState<any>(undefined);
@@ -36,6 +40,21 @@ export const LobbiesPage: React.FC = () => {
     const [selectedCards, setSelectedCards] = useState<any>([]);
 
     const [deck, setDeck] = useState<card[]>(placeholder_cards);
+
+    const onBattle = React.useCallback((data: any) => {
+        if (data) {
+            navigate(`/battle/${createdLobbyId}`);
+        }
+    }, [createdLobbyId, navigate]);
+
+    React.useEffect(() => {
+        const callbackId = getRandomString();
+        registerCallback(callbackId, "battle", onBattle);
+
+        return () => {
+            removeCallback(callbackId, "battle");
+        };
+    }, [onBattle]);
 
     interface lobbies_display {
         date_created: string;
@@ -97,6 +116,7 @@ export const LobbiesPage: React.FC = () => {
                 );
                 setCreatedLobbyId(response.data.lobby_id);
                 loadDataFromServer();
+                console.log(response.data.lobby_id)
             }
         } catch (error: any) {
             alert("Error creating lobby");

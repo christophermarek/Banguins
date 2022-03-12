@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { io } from "./app";
 
-interface lobby_i{
+interface lobby_i {
     lobby_id: number
     player1_addr: string,
     player1_conn: string,
@@ -10,7 +10,7 @@ interface lobby_i{
     player2_conn: string,
     player2_cards: card[],
     lobby_status: string
-    battle: {round: number, player1move: any, player2move: any}
+    battle: { round: number, player1move: any, player2move: any }
 }
 
 export interface card {
@@ -43,9 +43,9 @@ export const create_lobby = async (req: Request, res: Response): Promise<void> =
         const player = req.body.wallet;
 
         // check if player already created a lobby
-        for(let i = 0; i < lobbies.length; i++){
-            if(lobbies[i] !== undefined){
-                if(lobbies[i].player1_addr === player || lobbies[i].player2_addr === player){
+        for (let i = 0; i < lobbies.length; i++) {
+            if (lobbies[i] !== undefined) {
+                if (lobbies[i].player1_addr === player || lobbies[i].player2_addr === player) {
                     res.status(200).json({ message: 'Error Creating Lobby, you already have one' });
                     return;
                 }
@@ -54,8 +54,8 @@ export const create_lobby = async (req: Request, res: Response): Promise<void> =
 
         const cards = req.body.cards;
         const socketId = req.body.socketId;
-        
-        lobbies[lobby_id] = {lobby_id: lobby_id, player1_addr: player, player1_conn: socketId, player1_cards: cards, player2_addr: '', player2_conn: '', player2_cards: [], lobby_status: 'lobby', battle:{round:0, player1move: null, player2move: null}};
+
+        lobbies[lobby_id] = { lobby_id: lobby_id, player1_addr: player, player1_conn: socketId, player1_cards: cards, player2_addr: '', player2_conn: '', player2_cards: [], lobby_status: 'lobby', battle: { round: 0, player1move: null, player2move: null } };
         res.status(200).json({ lobby_id: lobby_id });
         lobby_id += 1;
 
@@ -75,17 +75,23 @@ export const join_lobby = async (req: Request, res: Response): Promise<void> => 
         const param_lobby_id = req.body.lobby_id;
         const socketId = req.body.socketId;
 
-        
+
         // check if lobby_id exists in lobbies
-        if(lobbies[param_lobby_id] === undefined){
-            res.status(400).json({ error: 'invalid lobby id'});
-        }else{
-            lobbies[param_lobby_id].player2_addr = player;
-            lobbies[param_lobby_id].player2_cards = cards;
-            lobbies[param_lobby_id].player2_conn = socketId;
-            lobbies[param_lobby_id].lobby_status = 'match';
-            
-            res.status(200).json({ status: 'Match started' });
+        if (lobbies[param_lobby_id] === undefined) {
+            res.status(400).json({ error: 'invalid lobby id' });
+        } else {
+
+            if (lobbies[param_lobby_id].player1_conn === socketId) {
+                res.status(200).json({ status: 'Match started' });
+            } else {
+                lobbies[param_lobby_id].player2_addr = player;
+                lobbies[param_lobby_id].player2_cards = cards;
+                lobbies[param_lobby_id].player2_conn = socketId;
+                lobbies[param_lobby_id].lobby_status = 'match';
+
+                res.status(200).json({ status: 'Match started' });
+            }
+
         }
 
         console.log(lobbies[param_lobby_id])

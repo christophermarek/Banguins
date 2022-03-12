@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseURL =
-    process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "https://banguins.herokuapp.com";
+export const baseURL = "https://banguins.herokuapp.com";
+    // process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "https://banguins.herokuapp.com";
 
 const instance = axios.create({
     baseURL,
