@@ -80,5 +80,13 @@ contract BTokens is ERC1155PresetMinterPauser {
     function setApprovalForPlayerTokens(address player, address operator) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _setApprovalForAll(player, operator, true);
     }
+
+    function grantAdmin(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(DEFAULT_ADMIN_ROLE, account);
+    }
+
+    function grantMinter(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(MINTER_ROLE, account);
+    }
     
 }
