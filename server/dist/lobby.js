@@ -59,11 +59,16 @@ const join_lobby = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(400).json({ error: 'invalid lobby id' });
         }
         else {
-            exports.lobbies[param_lobby_id].player2_addr = player;
-            exports.lobbies[param_lobby_id].player2_cards = cards;
-            exports.lobbies[param_lobby_id].player2_conn = socketId;
-            exports.lobbies[param_lobby_id].lobby_status = 'match';
-            res.status(200).json({ status: 'Match started' });
+            if (exports.lobbies[param_lobby_id].player1_conn === socketId) {
+                res.status(200).json({ status: 'Match started' });
+            }
+            else {
+                exports.lobbies[param_lobby_id].player2_addr = player;
+                exports.lobbies[param_lobby_id].player2_cards = cards;
+                exports.lobbies[param_lobby_id].player2_conn = socketId;
+                exports.lobbies[param_lobby_id].lobby_status = 'match';
+                res.status(200).json({ status: 'Match started' });
+            }
         }
         console.log(exports.lobbies[param_lobby_id]);
         app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);

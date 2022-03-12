@@ -6,6 +6,7 @@
     "scripts": {
         "build": "npm run tsc",
         "startDev": "concurrently \"tsc -w\" \"nodemon dist/app.js\"",
+        "testImg": "concurrently \"tsc -w\" \"nodemon dist/create_image.js\"",
         "start": "node dist/app.js",
         "tsc": "tsc",
         "postinstall": "npm run tsc"
@@ -20,10 +21,13 @@
         "typescript": "^4.6.2"
     },
     "dependencies": {
+        "canvas": "^2.9.0",
         "concurrently": "^7.0.0",
         "cors": "^2.8.5",
+        "directory-tree": "^3.2.2",
         "express": "^4.17.3",
         "ipfs-http-client": "^56.0.1",
+        "merge-images": "^2.0.0",
         "nodemon": "^2.0.15",
         "socket.io": "^4.4.1",
         "ts-node": "^10.6.0",
