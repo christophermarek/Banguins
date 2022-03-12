@@ -33,67 +33,68 @@ export const process_socket_message = (socket_id, msg: { move: card, target: str
                         console.log('both players attacked, processing');
                         // GROSS CODE 🤢🤢🤢🤢🤢
                         // calculate move on cards (random chance who goes first)
-                        if (Math.random() >= 0.5) {
-                            // find target card
-                            // player 2 goes first
-                            for (let n = 0; n < lobbies[i].player1_cards.length; n++) {
-                                // player 2 attacks if card is alive
-                                if (lobbies[i].battle.player2move.move.health > 0) {
-                                    if (lobbies[i].battle.player2move.target === lobbies[i].player1_cards[n].address) {
-                                        // matching target, apply attack
-                                        let healthRemaining = lobbies[i].player1_cards[n].health - lobbies[i].battle.player2move;
-                                        if (healthRemaining > 0) {
-                                            lobbies[i].player1_cards[n].health = healthRemaining;
-                                        } else {
-                                            lobbies[i].player1_cards[n].health = 0;
-                                        }
-                                    }
-                                }
-                            }
-                            for (let m = 0; m < lobbies[i].player2_cards.length; m++) {
-                                // player 1 attacks if card is alive
-                                if (lobbies[i].battle.player1move.move.health > 0) {
-                                    if (lobbies[i].battle.player1move.target === lobbies[i].player2_cards[m].address) {
-                                        // matching target, apply attack
-                                        let healthRemaining = lobbies[i].player2_cards[m].health - lobbies[i].battle.player1move;
-                                        if (healthRemaining > 0) {
-                                            lobbies[i].player2_cards[m].health = healthRemaining;
-                                        } else {
-                                            lobbies[i].player2_cards[m].health = 0;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            for (let m = 0; m < lobbies[i].player2_cards.length; m++) {
-                                // player 1 attacks if card is alive
-                                if (lobbies[i].battle.player1move.move.health > 0) {
-                                    if (lobbies[i].battle.player1move.target === lobbies[i].player2_cards[m].address) {
-                                        // matching target, apply attack
-                                        let healthRemaining = lobbies[i].player2_cards[m].health - lobbies[i].battle.player1move;
-                                        if (healthRemaining > 0) {
-                                            lobbies[i].player2_cards[m].health = healthRemaining;
-                                        } else {
-                                            lobbies[i].player2_cards[m].health = 0;
-                                        }
-                                    }
-                                }
-                            }
-                            for (let n = 0; n < lobbies[i].player1_cards.length; n++) {
-                                // player 2 attacks if card is alive
-                                if (lobbies[i].battle.player2move.move.health > 0) {
-                                    if (lobbies[i].battle.player2move.target === lobbies[i].player1_cards[n].address) {
-                                        // matching target, apply attack
-                                        let healthRemaining = lobbies[i].player1_cards[n].health - lobbies[i].battle.player2move;
-                                        if (healthRemaining > 0) {
-                                            lobbies[i].player1_cards[n].health = healthRemaining;
-                                        } else {
-                                            lobbies[i].player1_cards[n].health = 0;
-                                        }
+                        // if (Math.random() >= 0.5) {
+                        // find target card
+                        // player 2 goes first
+                        for (let n = 0; n < lobbies[i].player1_cards.length; n++) {
+                            // player 2 attacks if card is alive
+                            if (lobbies[i].battle.player2move.move.health > 0) {
+                                if (lobbies[i].battle.player2move.target === lobbies[i].player1_cards[n].address) {
+                                    // matching target, apply attack
+                                    let healthRemaining = lobbies[i].player1_cards[n].health - lobbies[i].battle.player2move;
+                                    if (healthRemaining > 0) {
+                                        lobbies[i].player1_cards[n].health = healthRemaining;
+                                    } else {
+                                        lobbies[i].player1_cards[n].health = 0;
                                     }
                                 }
                             }
                         }
+                        for (let m = 0; m < lobbies[i].player2_cards.length; m++) {
+                            // player 1 attacks if card is alive
+                            if (lobbies[i].battle.player1move.move.health > 0) {
+                                if (lobbies[i].battle.player1move.target === lobbies[i].player2_cards[m].address) {
+                                    // matching target, apply attack
+                                    let healthRemaining = lobbies[i].player2_cards[m].health - lobbies[i].battle.player1move;
+                                    if (healthRemaining > 0) {
+                                        lobbies[i].player2_cards[m].health = healthRemaining;
+                                    } else {
+                                        lobbies[i].player2_cards[m].health = 0;
+                                    }
+                                }
+                            }
+                        }
+                        // }
+                        //  else {
+                        //     for (let m = 0; m < lobbies[i].player2_cards.length; m++) {
+                        //         // player 1 attacks if card is alive
+                        //         if (lobbies[i].battle.player1move.move.health > 0) {
+                        //             if (lobbies[i].battle.player1move.target === lobbies[i].player2_cards[m].address) {
+                        //                 // matching target, apply attack
+                        //                 let healthRemaining = lobbies[i].player2_cards[m].health - lobbies[i].battle.player1move;
+                        //                 if (healthRemaining > 0) {
+                        //                     lobbies[i].player2_cards[m].health = healthRemaining;
+                        //                 } else {
+                        //                     lobbies[i].player2_cards[m].health = 0;
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        //     for (let n = 0; n < lobbies[i].player1_cards.length; n++) {
+                        //         // player 2 attacks if card is alive
+                        //         if (lobbies[i].battle.player2move.move.health > 0) {
+                        //             if (lobbies[i].battle.player2move.target === lobbies[i].player1_cards[n].address) {
+                        //                 // matching target, apply attack
+                        //                 let healthRemaining = lobbies[i].player1_cards[n].health - lobbies[i].battle.player2move;
+                        //                 if (healthRemaining > 0) {
+                        //                     lobbies[i].player1_cards[n].health = healthRemaining;
+                        //                 } else {
+                        //                     lobbies[i].player1_cards[n].health = 0;
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // }
 
 
                         // check win condition

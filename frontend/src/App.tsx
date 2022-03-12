@@ -12,6 +12,9 @@ import SnowfallEffect from "./components/SnowFallEffect";
 import { useAccount } from "wagmi";
 
 function App() {
+
+    document.title = 'Banguins'
+
     const [{ data: accountData }, disconnect] = useAccount({
         fetchEns: true,
     })
