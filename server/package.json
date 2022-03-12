@@ -26,6 +26,7 @@
         "cors": "^2.8.5",
         "directory-tree": "^3.2.2",
         "express": "^4.17.3",
+        "foobar-app": "file:..",
         "ipfs-http-client": "^56.0.1",
         "merge-images": "^2.0.0",
         "nodemon": "^2.0.15",
