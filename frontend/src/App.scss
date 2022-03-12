@@ -1,12 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200&family=Roboto:ital,wght@1,100&family=Sigmar+One&family=Space+Mono&display=swap');
 /* Global Styling */
 body,
 html {
-    background-color: #fdf9f0;
+    background-color: #bbe0ff !important;
 }
+
 h1,
 h2 {
     display: block;
     text-align: center;
+}
+
+.deck_viewer{
+    position: relative;
+    z-index: 999;
+}
+
+.ontop{
+    z-index: 999;
+    position: relative;
+}
+
+#title{
+    font-size: 4vw;
+    // font-family: 'Bebas Neue', cursive;
+    font-family: 'Sigmar One', cursive;
+    font-weight: 100;
 }
 
 .dead_card {
@@ -26,10 +45,44 @@ h2 {
     display: flex;
 }
 
+.deck_viewer{
+    font-family: 'Sigmar One', cursive;
+
+    background-color: #CDF6FC !important;
+}
+
+#outlinetext{
+    // text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    // color: rgb(255, 255, 255) !important;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-family: 'Sigmar One', cursive;
+
+}
+
 #selected {
     color: #0000ff;
 }
 
+#navbar {
+    background-color: #CDF6FC;
+    z-index: 999 !important;
+    position: relative;
+}
+
+.navbtn {
+    // background-color: #00E0FF !important;
+    font-family: 'Sigmar One', cursive;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    padding: 2%;
+    font-size: 2vw;
+
+}
+.navbtn:hover{
+    background-color: #00E0FF !important;
+
+}
 
 
 /* Liquidity Pool Page*/
@@ -38,6 +91,7 @@ h2 {
     display: flex;
     /*justify-content: space-between;*/
 }
+
 #left {
     display: flex;
     flex-direction: column;
@@ -52,6 +106,7 @@ h2 {
     margin-bottom: 15px;
     margin-top: 15px;
 }
+
 #stakebutton {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -120,6 +175,7 @@ h2 {
     height: 500px;
     margin: 0;
 }
+
 #left,
 #innerleft {
     border-right: 1px solid #000000;

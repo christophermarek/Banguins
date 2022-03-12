@@ -16,18 +16,19 @@ const Header: React.FC = () => {
     );
 
     return (
-        <Flex flexDirection="row" alignItems="center" gap={4} padding={4}>
+        <Flex id='navbar' flexDirection="row" alignItems="center" gap={4} padding={4}>
             <Link onClick={() => handleNavigate("/")}>
-                <img src={logo} className={styles.logo} />
+                {/* <img src={logo} className={styles.logo} /> */}
+                <p id='title'>Banguins</p>
             </Link>
             <Spacer />
-            <Button variant="ghost" onClick={() => handleNavigate("/")}>
+            <Button className="navbtn" variant="ghost" onClick={() => handleNavigate("/")}>
                 Home
             </Button>
-            <Button variant="ghost" onClick={() => handleNavigate("/marketplace")}>
+            <Button className="navbtn" variant="ghost" onClick={() => handleNavigate("/marketplace")}>
                 Marketplace
             </Button>
-            <Button variant="ghost" onClick={() => handleNavigate("/liquidity-pools")}>
+            <Button className="navbtn" variant="ghost" onClick={() => handleNavigate("/liquidity-pools")}>
                 Liquidity Pools
             </Button>
             <WalletInfo />

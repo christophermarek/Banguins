@@ -13,7 +13,7 @@ export const HomePage: React.FC = () => {
             address: `0x082B6aC9e47d7D83ea3FaBbD1eC7DAba9D687b3${i}`,
         };
     }
-    
+
     const visibleDeck = placeholder_cards.slice(0, 8);
 
     // implement these, props from app.ts?
@@ -32,18 +32,18 @@ export const HomePage: React.FC = () => {
     return (
         <>
             <VStack w="full" spacing={10} alignItems="flex-start">
-                <VStack
+                <VStack className='deck_viewer'
                     spacing={6}
+
                     alignItems="flex-start"
-                    backgroundColor="tangaroa.700"
                     w="full"
                     borderRadius={20}
                     p={10}
                     boxShadow="2xl"
                 >
                     <HStack justifyContent="space-between" w="full">
-                        <Heading color="white">Your Cards</Heading>
-                        <Button variant="ghost" colorScheme="whiteAlpha">
+                        <Heading id='outlinetext' color="white">Your Cards</Heading>
+                        <Button id='outlinetext' variant="ghost" colorScheme="whiteAlpha">
                             View more
                         </Button>
                     </HStack>
@@ -64,16 +64,16 @@ export const HomePage: React.FC = () => {
                     </SimpleGrid>
                 </VStack>
 
-                <HStack w="full" spacing={20}>
+
+                <HStack id='here' w="full" spacing={20}>
                     <VStack flex={1} spacing={4} alignItems="flex-start">
-                        <Heading>Buy a deck</Heading>
+                        <Heading id='outlinetext'>Buy a deck</Heading>
                         <Button variant="outline" onClick={buy_deck}>
                             Buy deck
                         </Button>
                     </VStack>
-
-                    <VStack flex={1} spacing={4} alignItems="flex-start">
-                        <Heading>Find a match</Heading>
+                    <VStack className="ontop" flex={1} spacing={4} alignItems="flex-start">
+                        <Heading id='outlinetext'>Find a match</Heading>
                         <Button variant="outline" onClick={handleNavigateToLobbies}>
                             Lobbies
                         </Button>

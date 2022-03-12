@@ -54,6 +54,7 @@ const BattlePage: React.FC = () => {
                 console.log("Join lobby response", response.data);
             } catch (error: any) {
                 console.error(error);
+                alert('error joining lobby')
                 navigate(-1);
             }
         })();
