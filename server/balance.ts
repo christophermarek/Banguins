@@ -28,7 +28,7 @@ export const get_balance = async (req: Request, res: Response): Promise<void> =>
         const address = req.params.wallet_address;
 
         // get view from contract
-        let result = await provider.getBlockNumber();
+        // let result = await provider.getBlockNumber();
 
         // result will return currency, energy, and monster id's
 
@@ -46,7 +46,6 @@ export const get_balance = async (req: Request, res: Response): Promise<void> =>
             monsters_to_return.push({ id: keys[i], metadata: monsters[keys[i]] })
         }
         // close file
-        await end();
 
 
         // build object to return

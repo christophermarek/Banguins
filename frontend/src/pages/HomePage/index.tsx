@@ -1,9 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { card } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { useAccount } from "wagmi";
+import { getBalance, getImagesFromIds } from "../../api/api";
+import { isConstructorDeclaration } from "typescript";
 
 export const HomePage: React.FC = () => {
+    const [{ data: accountData }] = useAccount();
+
+    const [balance, setBalance] = useState<any>();
+    // map of monster id to image base64 data
+    const [images, setImages] = useState<any>();
+
+    useEffect(() => {
+        if (!accountData?.address) {
+            return;
+        }
+        (async () => {
+            try {
+                const response = await getBalance({
+                    wallet: accountData?.address,
+                });
+                setBalance(response.data.balance);
+            } catch (error: any) {
+                console.error(error);
+            }
+        })();
+
+
+    }, [accountData?.address]);
+
+    useEffect(() => {
+        if (balance === undefined) {
+            return;
+        }
+
+        if (!balance || balance.monsters.length < 1) {
+            return;
+        }
+        (async () => {
+            try {
+                for (let i = 0; i < balance.monsters.length; i++) {
+                    const response = await getImagesFromIds({
+                        id: balance.monsters[i].id,
+                    });
+                    setImages((images: any) => ({ ...images, [`${balance.monsters[i].id}`]: response.data }));
+                }
+
+            } catch (error: any) {
+                console.log('error')
+                console.error(error);
+            }
+        })();
+
+
+    }, [balance]);
+
+
+
     const navigate = useNavigate();
     let placeholder_cards: card[] = [];
     for (let i = 0; i < 9; i++) {
@@ -48,19 +103,33 @@ export const HomePage: React.FC = () => {
                         </Button>
                     </HStack>
                     <SimpleGrid w="full" minChildWidth={160} spacing={20}>
-                        {visibleDeck.map((card: card, index: any) => (
-                            <Box
-                                boxShadow="xl"
-                                backgroundColor="tangaroa.100"
-                                key={index}
-                                height={48}
-                                borderRadius={10}
-                                p={4}
-                            >
-                                <Text fontSize="lg">Card</Text>
-                                <Text>{card.address}</Text>
-                            </Box>
-                        ))}
+                        {!accountData?.address ?
+                            (
+                                <p>You have no cards</p>
+                            )
+                            : (
+                                balance && images &&
+                                <>
+                                    {balance.monsters.map((monster: any) => 
+                                        (
+                                            <Box
+                                            boxShadow="xl"
+                                            backgroundColor="tangaroa.100"
+                                            key={monster.id}
+                                            height={48}
+                                            borderRadius={10}
+                                            p={4}
+                                        >
+                                            <p>ID:{monster.id}</p>
+                                            <img src={images[monster.id]}/>
+                                        </Box>
+                                        )
+                                    )}
+                                </>
+
+                            )
+                        }
+
                     </SimpleGrid>
                 </VStack>
 
