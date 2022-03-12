@@ -66,20 +66,27 @@ const BattlePage: React.FC = () => {
         }
 
         console.log(battle)
-        
-        let you_n;
-        let opponent_n;
-        if (socket.id === battle.player1_conn) {
-            you_n = { addr: battle.player1_addr, cards: battle.player1_cards };
-            opponent_n = { addr: battle.player2_addr, cards: battle.player2_cards };
-            setYou(you_n);
-            setOpponent(opponent_n);
-        } else {
-            you_n = { addr: battle.player2_addr, cards: battle.player2_cards };
-            opponent_n = { addr: battle.player1_addr, cards: battle.player1_cards };
-            setYou(you_n);
-            setOpponent(opponent_n);
+
+        if('winner' in battle){
+            alert(battle.winner + " has won the battle")
+            navigate(`/`);
+        }else{
+            let you_n;
+            let opponent_n;
+            if (socket.id === battle.player1_conn) {
+                you_n = { addr: battle.player1_addr, cards: battle.player1_cards };
+                opponent_n = { addr: battle.player2_addr, cards: battle.player2_cards };
+                setYou(you_n);
+                setOpponent(opponent_n);
+            } else {
+                you_n = { addr: battle.player2_addr, cards: battle.player2_cards };
+                opponent_n = { addr: battle.player1_addr, cards: battle.player1_cards };
+                setYou(you_n);
+                setOpponent(opponent_n);
+            }
         }
+
+        
     }, [battle]);
 
     const leaveBattle = React.useCallback(() => {
