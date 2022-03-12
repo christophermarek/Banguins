@@ -4,6 +4,11 @@ import routes from './routes';
 import { Server } from 'socket.io';
 import { process_socket_message } from './battle';
 import { lobbies } from './lobby';
+import monsters from './monsters';
+
+const csv = require('csv-parser')
+const fs = require('fs')
+const results = [];
 
 const app = express();
 const port = 8000;
@@ -73,9 +78,13 @@ io.on('connection', (socket) => {
     });
 });
 
-
-
-
+// load database
+fs.createReadStream('monsters.csv')
+    .pipe(csv())
+    .on('data', (data) => (monsters[data.id] = JSON.parse(data.metadata)))
+    .on('end', () => {
+        console.log("monsters.csv parsed")
+    });
 
 
 app.use(express.json());

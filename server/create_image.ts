@@ -14,7 +14,7 @@ function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-export const create_image = async (id: number) => {
+export const create_image = async (id: string) => {
 
     const files = fs.readdirSync('./images');
 
@@ -64,7 +64,7 @@ export const create_image = async (id: number) => {
 
 }
 
-interface image_layers_src{
+export interface image_layers_src{
     background: string,
     body: string,
     face: string,
@@ -75,7 +75,7 @@ interface image_layers_src{
     weapon: string
 }
 
-interface nft_metadata{
+export interface nft_metadata{
     health: string,
     attack: string,
     ipfs_url: string,
@@ -83,7 +83,7 @@ interface nft_metadata{
 }
 
 
-export const generate_metadata = async(id: number) => {
+export const generate_metadata = async(id: string) => {
 
     let health = randomInteger(5, 20);
     let attack = randomInteger(3, 15);
@@ -96,12 +96,10 @@ export const generate_metadata = async(id: number) => {
         layers_src: image_data.layers
     }
 
-    console.log(nft_metadata)
-
     return nft_metadata;
 }
 
 
-generate_metadata(1)
-generate_metadata(2)
-generate_metadata(3)
+// generate_metadata(1)
+// generate_metadata(2)
+// generate_metadata(3)

@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { get_balance } from "./balance"
 import { create_lobby, get_lobbies, join_lobby } from "./lobby"
 import { generate_nfts_and_upload } from "./nft"
 
@@ -8,7 +9,11 @@ router.get('/', (req, res) => {
     res.send('Server is running!')
 })
 
+
+router.get('/balance', get_balance)
+
 //nft routes 
+// unused 
 router.get('/nft/:wallet_address', generate_nfts_and_upload)
 
 // game routes

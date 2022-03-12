@@ -10,6 +10,10 @@ const routes_1 = __importDefault(require("./routes"));
 const socket_io_1 = require("socket.io");
 const battle_1 = require("./battle");
 const lobby_1 = require("./lobby");
+const monsters_1 = __importDefault(require("./monsters"));
+const csv = require('csv-parser');
+const fs = require('fs');
+const results = [];
 const app = (0, express_1.default)();
 const port = 8000;
 const http = require('http');
@@ -65,6 +69,13 @@ exports.io.on('connection', (socket) => {
             console.log(error);
         }
     });
+});
+// load database
+fs.createReadStream('monsters.csv')
+    .pipe(csv())
+    .on('data', (data) => (monsters_1.default[data.id] = JSON.parse(data.metadata)))
+    .on('end', () => {
+    console.log("monsters.csv parsed");
 });
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
