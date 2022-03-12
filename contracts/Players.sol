@@ -58,4 +58,8 @@ contract Players is AccessControl {
                 playerDb[player].numPlayerMonsters);
     }
 
+    function grantAdmin(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(DEFAULT_ADMIN_ROLE, account);
+    }
+
 }
