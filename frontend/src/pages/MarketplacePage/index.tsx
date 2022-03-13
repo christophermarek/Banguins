@@ -83,8 +83,8 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                         )}
                     </ul>
                     <div id='buyItems'>
-                        <p className="stakingLabel">Cost {calculateNumberPacksCost()} MATIC</p>
-                        <input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => buyItems()} />
+                        <div id="storeTotal" className="stakingLabel" >Cost {calculateNumberPacksCost()} MATIC</div>
+                        <div className="sbCont"><input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => buyItems()} /></div>
                     </div>
                 </div>
                 </div>

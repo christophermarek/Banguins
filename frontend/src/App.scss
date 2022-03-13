@@ -127,16 +127,25 @@ h2 {
 }
 
 #storebutton{
-    align-items: center!important;
+   // align-items: center!important;
+    
 }
+#storeTotal{
+    flex-grow:1;
+    text-align:center;
+}
+.sbCont{width:30%}
+
 /* Liquidity Pool Page*/
 
 #lp, #mp, #buyItems {
     display: flex;
-    /*justify-content: space-between;*/
+    //justify-content: space-between;
 }
+#mp {flex-wrap: wrap;}
 
-#buyItems{margin-top: 25px;}
+#buyItems{margin-top: 25px;
+    }
 
 
 #left {
@@ -236,9 +245,10 @@ background-color: #00E0FF;
 
 #left,
 #right {
-    width: 50%;
-    height: 500px;
+     min-width: 45%;
+//    height: 500px;
     margin: 0;
+    min-width: 500px;
 }
 
 #left,
