@@ -111,6 +111,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                     <div id="statTable" className="flex">
                     <p id="calcRewards" className="stakingLabel">Staking Rewards:<div> {calculateRewards()} energy</div> </p>
                     <input id="rewardsbutton" className="buttonStyle" type='button' value='Claim' onClick={() => claimRewards()} />
+                    <div id="rewardInfo"></div>
                     </div>
                     <div id="statChart"></div>
                     <ul>
