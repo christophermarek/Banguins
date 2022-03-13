@@ -16,8 +16,10 @@ interface IERC20 {
 contract Staking {
 
     address owner;
+    bool internal locked;
 
-    uint[2] constant ids = [0,1];
+    uint256[] ids = [0,1];
+    
 
     address ceAddress; 
     BTokens ce = BTokens(ceAddress);
@@ -28,6 +30,7 @@ contract Staking {
         uint stakedEnergy;
         uint stakedCurrency;
         uint lastWithdrawalTime;
+        uint[] inputAmounts;
     }
     
     uint currencyLiquidity;
@@ -43,20 +46,27 @@ constructor() {
     owner = msg.sender;
 }
 
+modifier noReentrant() {
+        require(!locked, "No re-entrancy");
+        locked = true;
+        _;
+        locked = false;
+        }
+
     function setAddress(address _addr) external {
         require(owner==msg.sender, "This isn't for you");
         ceAddress = _addr;
         ce.setApprovalForAll(address(this), true);
     }         
 
-    function StakeTokens(uint _currency, uint _energy) public returns (string memory) {
-        //reentrancy modifier
+    function StakeTokens(uint _currency, uint _energy) public noReentrant returns (string memory)  {
         require(ce.balanceOf(msg.sender, 0)>=_currency, "not enough currency");
         require(ce.balanceOf(msg.sender, 1)>=_energy, "not enough energy");
         User memory u = users[msg.sender];
         u.rewardRate = CalculateRewardRate(_currency, _energy);
-        uint[2] inputAmounts = [_currency, _energy]
-        ce.safeBatchTransferFrom(msg.sender, address(this), ids, inputAmounts, "Tokens have been staked");   
+        u.inputAmounts[0] = _currency;
+        u.inputAmounts[1] = _energy;
+        ce.safeBatchTransferFrom(msg.sender, address(this), ids, u.inputAmounts, "Tokens have been staked");
         u.stakedEnergy += _energy;
         u.stakedCurrency += _currency;
         if(u.rewardRate>0){
@@ -65,16 +75,16 @@ constructor() {
         } else {return "Thank you for staking";}
     }
 
-    function UnstakeTokens(uint _currency, uint _energy) public  {
-        //reentrancy modifier 
+    function UnstakeTokens(uint _currency, uint _energy) noReentrant public  {
         User memory u = users[msg.sender];
         require(u.stakedCurrency >= _currency, "not enough currency staked");
         require(u.stakedEnergy >= _energy, "not enough energy staked");
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.stakedEnergy -= _energy;
         u.stakedCurrency -= _currency;
-        uint[2] inputAmounts = [_currency, _energy]
-        ce.safeBatchTransferFrom(address(this), msg.sender, ids, inputAmounts, "Tokens Withdrawn");
+        u.inputAmounts[0] = _currency;
+        u.inputAmounts[1] = _energy;
+        ce.safeBatchTransferFrom(address(this), msg.sender, ids, u.inputAmounts, "Tokens Withdrawn");
     }
 
     function CalculateRewardAmount(uint rewardRate, uint _lastClaim) public view returns (uint rewardAmount) {
@@ -96,7 +106,7 @@ constructor() {
         }
     }
 
-    function ClaimReward() public returns (uint _reward) {
+    function ClaimReward() public noReentrant returns (uint _reward) {
         // add reentrancy 
         User memory u = users[msg.sender];
         _reward = CalculateRewardAmount(u.rewardRate, u.lastWithdrawalTime);
@@ -171,7 +181,6 @@ constructor() {
 
     function getSwapValue(uint _amount) private view returns (uint returnAmount) {
          returnAmount = Combine(_amount);
-
     }
 
 }
