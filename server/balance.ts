@@ -4,8 +4,6 @@ import monsters from "./monsters";
 import { generate_metadata } from "./create_image";
 "use strict";
 
-// const json = require('./contracts/BTokens.json');
-
 // GENERATES RANDOM FILE URL
 const allCapsAlpha = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 const allLowerAlpha = [..."abcdefghijklmnopqrstuvwxyz"];
@@ -24,26 +22,39 @@ const RELATIVE_PATH_TO_CSV = `monsters.csv`;
 const { append, end } = csvAppend(RELATIVE_PATH_TO_CSV, true);
 
 const provider = ethers.getDefaultProvider("rinkeby");
+const fs = require('fs');
 
 export const get_balance = async (req: Request, res: Response): Promise<void> => {
+    console.log('get balance route');
     try {
-
-        const address = req.params.wallet_address;
-
+        const address = req.params.wallet_id;
+        console.log(address)
+        if(!address){
+            res.status(400).json({ error: 'invalid address' });
+            return;
+        }
         // get view from contract
         const contract_address = '0x066b7E91e85d37Ba79253dd8613Bf6fB16C1F7B7';
-        console.log(contract_address)
 
-        // let result = await provider.getBlockNumber();
-        console.log(json)
-        let contract = new ethers.Contract(contract_address, json.abi, provider);
-        // console.log(await contract.balanceOfPlayer(address))
+        let rawdata = fs.readFileSync('./contracts/BTokens.json');
+        let parsed_json = JSON.parse(rawdata);
 
+        let contract = new ethers.Contract(contract_address, parsed_json.abi, provider);
+        let player_bal = await contract.balanceOfPlayer(address)
+
+        const energy = ethers.utils.formatEther(player_bal[1][0])
+        const currency = ethers.utils.formatEther(player_bal[1][1])
+
+        let keys = [];
+        if(player_bal.length > 2){
+            for(let i = 2; i < player_bal.length; i++){
+                keys.push(ethers.utils.formatEther(player_bal[0][i]))
+            }
+        }
         // result will return currency, energy, and monster id's
-
         let monsters_to_return = [];
 
-        const keys = [1, 2, 3, 4, 5]
+        // const keys = [1, 2, 3, 4, 5];
 
         for (let i = 0; i < keys.length; i++) {
             // check if image is generated for nft
@@ -61,8 +72,8 @@ export const get_balance = async (req: Request, res: Response): Promise<void> =>
         // let currency = result.currency;
         // let energy = result.energy;
         const balance = {
-            currency: 0,
-            energy: 0,
+            currency: currency,
+            energy: energy,
             monsters: monsters_to_return
         }
 

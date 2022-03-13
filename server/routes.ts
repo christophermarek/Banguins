@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 })
 
 
-router.get('/balance', get_balance)
+router.get('/balance/:wallet_id', get_balance)
 
 //nft routes 
 // unused 

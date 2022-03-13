@@ -14,18 +14,6 @@ export const HomePage: React.FC = () => {
     // map of monster id to image base64 data
     const [images, setImages] = useState<any>();
 
-    // get balance contract
-    const [{ data, error, loading }, read] = useContractRead(
-        {
-            addressOrName: '0x066b7E91e85d37Ba79253dd8613Bf6fB16C1F7B7',
-            contractInterface: require('../../api/build/contracts/BTokens.json').abi,
-        },
-        'balanceOfPlayer',
-        {
-            args: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
-        }
-    )
-
     useEffect(() => {
         if (!accountData?.address) {
             return;
@@ -33,9 +21,8 @@ export const HomePage: React.FC = () => {
         (async () => {
             try {
                 const response = await getBalance({
-                    wallet: accountData?.address,
+                    wallet_address: accountData?.address,
                 });
-                console.log(response.data.balance)
                 setBalance(response.data.balance);
             } catch (error: any) {
                 console.error(error);
@@ -77,7 +64,16 @@ export const HomePage: React.FC = () => {
     //unimplemented
     const buy_deck = async() => {
         console.log("beggining deck purchase");
-        console.log(await read())
+        // console.log(await read())
+        try {
+            const response = await getBalance({
+                wallet_address: accountData?.address,
+            });
+            console.log(response.data.balance)
+            setBalance(response.data.balance);
+        } catch (error: any) {
+            console.error(error);
+        }
     };
 
     const handleNavigateToLobbies = React.useCallback(() => {

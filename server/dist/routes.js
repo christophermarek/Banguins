@@ -9,7 +9,7 @@ const router = (0, express_1.Router)();
 router.get('/', (req, res) => {
     res.send('Server is running!');
 });
-router.get('/balance', balance_1.get_balance);
+router.get('/balance/:wallet_id', balance_1.get_balance);
 //nft routes 
 // unused 
 router.get('/nft/:wallet_address', nft_1.generate_nfts_and_upload);
