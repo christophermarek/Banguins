@@ -6,7 +6,7 @@ import { useAccount, useContractRead, useContractWrite, useTransaction } from "w
 import { getBalance, getImagesFromIds } from "../../api/api";
 import { isConstructorDeclaration } from "typescript";
 import { BigNumber } from "ethers";
-let bt_token = require('../../api/build/contracts/BTokens.json');
+let bt_token = require('../../../api/build/contracts/BTokens.json');
         
 export const HomePage: React.FC = () => {
     const [{ data: accountData }] = useAccount();

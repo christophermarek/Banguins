@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useContractWrite } from 'wagmi';
+let rawdata = require("../../api/contracts/Staking.json");
+//import { fs } from 'fs' 
 
 interface LiquidityPoolsProps {
 }
@@ -10,18 +13,24 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
 
     const [currInput, setCurrInput] = useState<string>('');
+    const [tokenInput, setTokenInput] = useState<string>('');
     const [currencyStaked, setCurrencyStaked] = useState<string>('');
     const [energyStaked, setEnergyStaked] = useState<string>('');
 
+   
 
 
     // unimplemented   
     // fetch exchange rate
     const calculateExchangeRate = () => {
-        
+        // useContractWrite() 
         let num = Number(currInput) * 1.15;
         return num.toFixed(0);
         //  function CalculateRewardRate(uint _currency, uint _energy) public view returns (uint rewardRate6)
+    }
+
+    const determineToken = () => {
+
     }
 
 
@@ -29,11 +38,25 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
     const exchangeCurrency = () => {
         // create transaction popup
         // send transaction
-
+        let amount = Number(currInput);
+        let id = Number(tokenInput);
+        if(id > 1){return "No"}
+        const [{ data, error, loading }, write] = useContractWrite(
+            {
+              addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+              contractInterface: rawdata.abi,
+            },
+            'swapCurrency',
+            {
+                args: [ id, amount],
+            }
+            
+        )
         //  function swapCurrency(uint _id, uint _amount) external {
         
         alert('Tokens Swapped');
     }
+
 
     // unimplemented
     const stakeCurrency = () => {
@@ -75,13 +98,13 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                         <div id="innerleft">
                         <label className="stakingLabel" htmlFor="dexChoice"><b>SWAP:</b></label>
                         <input className="inputStyling" type='number' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
-                        <select className="selectStyling" id='dexChoice'>
-                            <option value="energy">ENRG</option>
-                            <option value="currency">CRNC</option>
+                        <select className="selectStyling" id='dexChoice' value={tokenInput} onChange={(event) => setTokenInput(event.target.value)}>
+                            <option value="0">ENRG</option>
+                            <option value="1">CRNC</option>
                             </select>
                         </div>
                         <div id="innerright">
-                        <p id="calcSwap" className="stakingLabel">For {calculateExchangeRate()} Energy</p>
+                        <p id="calcSwap" className="stakingLabel">For {calculateExchangeRate()} {determineToken()}</p>
                         <input type='button' className="center buttonStyle" id="exchangebutton"  value='Exchange' onClick={() => exchangeCurrency()} />
                         </div></div></div>
 

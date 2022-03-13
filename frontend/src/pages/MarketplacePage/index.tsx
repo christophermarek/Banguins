@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useContract } from "wagmi";
+
+
 
 interface MarketPlaceProps {
 
@@ -78,7 +81,7 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                     <ul className="itemList">
                         {placeholder_items.map((item, index) =>
                             <li key={index}>
-                                <span className="stakingLabel">{item.item_name} Quantity: {item.quantity}</span><p>{item.item_desc}</p>
+                                <img src={item.img_src} /><span className="stakingLabel">{item.item_name} Quantity: {item.quantity}</span><p>{item.item_desc}</p>
                             </li>
                         )}
                     </ul>
