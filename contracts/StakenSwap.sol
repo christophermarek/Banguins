@@ -18,7 +18,7 @@ contract Staking {
     address owner;
     bool internal locked;
 
-    uint256[] ids = [0,1];
+    uint256[] ids = [0,1];// energy,currency
     
 
     address ceAddress; 
@@ -60,12 +60,12 @@ modifier noReentrant() {
     }         
 
     function StakeTokens(uint _currency, uint _energy) public noReentrant returns (string memory)  {
-        require(ce.balanceOf(msg.sender, 0)>=_currency, "not enough currency");
-        require(ce.balanceOf(msg.sender, 1)>=_energy, "not enough energy");
+        require(ce.balanceOf(msg.sender, 1)>=_currency, "not enough currency");
+        require(ce.balanceOf(msg.sender, 0)>=_energy, "not enough energy");
         User memory u = users[msg.sender];
         u.rewardRate = CalculateRewardRate(_currency, _energy);
-        u.inputAmounts[0] = _currency;
-        u.inputAmounts[1] = _energy;
+        u.inputAmounts[0] = _energy;
+        u.inputAmounts[1] = _currency;
         ce.safeBatchTransferFrom(msg.sender, address(this), ids, u.inputAmounts, "Tokens have been staked");
         u.stakedEnergy += _energy;
         u.stakedCurrency += _currency;
@@ -82,8 +82,8 @@ modifier noReentrant() {
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.stakedEnergy -= _energy;
         u.stakedCurrency -= _currency;
-        u.inputAmounts[0] = _currency;
-        u.inputAmounts[1] = _energy;
+        u.inputAmounts[0] = _energy;
+        u.inputAmounts[1] = _currency;
         ce.safeBatchTransferFrom(address(this), msg.sender, ids, u.inputAmounts, "Tokens Withdrawn");
     }
 
@@ -110,7 +110,7 @@ modifier noReentrant() {
         // add reentrancy 
         User memory u = users[msg.sender];
         _reward = CalculateRewardAmount(u.rewardRate, u.lastWithdrawalTime);
-        ce.safeTransferFrom(address(this), msg.sender, 0, _reward, "Thank you for staking");
+        ce.safeTransferFrom(address(this), msg.sender, 1, _reward, "Thank you for staking");
         u.lastWithdrawalTime = block.timestamp;
     }
 
@@ -118,30 +118,30 @@ modifier noReentrant() {
         // noReentrancy
         uint other;
         require(_amount<=100, "too much swap, this is game, not economy");
-        if(_id==0){
-            require(ce.balanceOf(msg.sender, 0)>=_amount+1, "not enough currency");
+        if(_id==1){
+            require(ce.balanceOf(msg.sender, 1)>=_amount+1, "not enough currency");
             swap = currencyLiquidity;
             rcvd = energyLiquidity;
-            other = 1;
-        } else if(_id==1) {
-            require(ce.balanceOf(msg.sender, 1)>=_amount+1, "not enough energy");
+            other = 0;
+        } else if(_id==0) {
+            require(ce.balanceOf(msg.sender, 0)>=_amount+1, "not enough energy");
             rcvd = currencyLiquidity;
             swap = energyLiquidity;
-            other = 0;
+            other = 1;
         } else {
             revert("Invalid Token ID, go to uniswap or something");
         }
         //probably able to do a batch transfer for this one
         UpdatePools();
         uint returnValue = getSwapValue(_amount);
-        ce.safeTransferFrom(msg.sender, address(this), _id, _amount+1, "Swap Token");
-        ce.safeTransferFrom(address(this), msg.sender, _id, returnValue, "Receive Token");
+        ce.safeTransferFrom(msg.sender, address(this), _id, _amount+1, "");
+        ce.safeTransferFrom(address(this), msg.sender, other, returnValue, "Receive Token");
         UpdatePools();
     }
 
     function UpdatePools() private {
         energyLiquidity = ce.balanceOf(address(this), 0);
-        currencyLiquidity = ce.balanceOf(address(this), 1); 
+        currencyLiquidity = ce.balanceOf(address(this), 1);
     }
 
     // Liquidity Calculation
