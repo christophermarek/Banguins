@@ -19,10 +19,10 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
     }
 
     const placeholder_items: store_item[] = [
-        { img_src: '/img/store-fish.png', quantity: 20, item_name: 'Fish', item_desc: 'Distract the opponent for a turn with a succulent fish' },
-        { img_src: '/img/store-flippers.png', quantity: 20, item_name: 'Frozen Flippers', item_desc: 'Active Penguin Deals 10% more damage for the remainder of the battle ' },
-        { img_src: '/img/store-coin.png', quantity: 20, item_name: 'Double Coin', item_desc: 'Use on your first turn to earn double reward if you win, but losing gets you nothing.' },
-        { img_src: '/img/store-potion.png', quantity: 20, item_name: 'Potion', item_desc: 'Restores the health of a penguin on your team' }
+        { img_src: '/img/store-fish.png', quantity: 8, item_name: 'Fish', item_desc: 'Distract the opponent for a turn with a succulent fish' },
+        { img_src: '/img/store-flippers.png', quantity: 2, item_name: 'Frozen Flippers', item_desc: 'Active Penguin Deals 10% more damage for the remainder of the battle ' },
+        { img_src: '/img/store-coin.png', quantity: 4, item_name: 'Double Coin', item_desc: 'Use on your first turn to earn double reward if you win, but losing gets you nothing.' },
+        { img_src: '/img/store-potion.png', quantity: 7, item_name: 'Potion', item_desc: 'Restores the health of a penguin on your team' }
     ]
 
     
@@ -48,17 +48,20 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
  
     useEffect(() => {
         if (!accountData?.address) {
+            console.log("not even past the first one")
             return;
         }
         (async () => {
             try {
                 console.log(accountData?.address)
+                console.log("this is a bad one too 57")
                 const response = await getBalance({
                     wallet_address: accountData?.address,
                 });
                 setBalance(response.data.balance);
             } catch (error: any) {
                 console.error(error);
+                console.log("third one with the error")
             }
         })();
 
@@ -67,10 +70,12 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
 
     useEffect(() => {
         if (balance === undefined) {
+            console.log("balance undefined");
             return;
         }
 
         if (!balance || balance.monsters.length < 1) {
+            console.log("the second one");
             return;
         }
         (async () => {
@@ -100,13 +105,16 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
         await write()
 
         try {
+            console.log("oh he's trying")
             const response = await getBalance({
                 wallet_address: accountData?.address,
             });
             console.log(response.data.balance)
+            console.log("response.data.balance")
             setBalance(response.data.balance);
         } catch (error: any) {
             console.error(error);
+            console.log("line 116")
         }
     };
 

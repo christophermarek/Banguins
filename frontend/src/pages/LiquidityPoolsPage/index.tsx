@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useContractWrite, useContractRead } from 'wagmi';
 import { getBalance, getImagesFromIds } from "../../api/api";
 import { BigNumber } from "ethers";
@@ -7,13 +7,13 @@ let bt_token = require('../../api/build/contracts/BTokens.json');
 //import { fs } from 'fs' 
 
 interface LiquidityPoolsProps {
-}
 
+}
 
 export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
-   // const [{ data: accountData }] = useAccount();
-  //  const [balance, setBalance] = useState<any>();
+    const [{ data: accountData }] = useAccount();
+    const [balance, setBalance] = useState<any>();
 
     // token amount
     const [currInput, setCurrInput] = useState<string>('');
@@ -24,6 +24,57 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
     // energy staked
     const [energyStaked, setEnergyStaked] = useState<string>('');
 
+    let amount = Number(currInput);
+    let id = Number(tokenInput);
+
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+          addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+          contractInterface: rawdata.abi,
+        },
+        'swapCurrency',
+        {
+            args: [id, amount],
+            overrides: {gasLimit: BigNumber.from('7000000')}
+
+        }
+    )
+/*
+    useState(() => {
+        if (!accountData?.address) {
+            return;
+        }
+        (async () => {
+            try {
+                console.log(accountData?.address)
+                const response = await getBalance({
+                    wallet_address: accountData?.address,
+                });
+                setBalance(response.data.balance);
+            } catch (error: any) {
+                console.error(error);
+            }
+        })();
+*/
+        const exchangeToken = async() => {
+            console.log("beggining swap");
+    
+            await write();
+            
+            try {
+                console.log("oh he's trying")
+                const response = await getBalance({
+                    wallet_address: accountData?.address,
+                });
+                console.log(response.data.balance)
+                console.log("response.data.balance")
+                setBalance(response.data.balance);
+                console.log("balance set");
+            } catch (error: any) {
+                console.error(error);
+                console.log("line 116")
+            }
+        };
 
 /*
 
@@ -258,7 +309,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
     const calculateExchangeRate = () => {}
     
-    const exchangeToken = async() => {}
+  //  const exchangeToken = async() => {}
   
 
     // unimplemented
@@ -288,6 +339,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
         return num.toFixed(0);
     }
 
+
     return (
         <>
             <h1 className="heading">LIQUIDITY POOL</h1>
@@ -308,11 +360,6 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                         <p id="calcSwap" className="stakingLabel">For {calculateExchangeRate()} {determineToken()}</p>
                         <input type='button' className="center buttonStyle" id="exchangebutton"  value='Exchange' onClick={exchangeToken} />
                         </div></div></div>
-
-
-
-
-
 
 
                     <div id='stake'>
