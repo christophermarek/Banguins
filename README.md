@@ -2,7 +2,7 @@
 
 ## Project for BuildQuest
 
-Av overview of the projevt can be found at: https://showcase.ethglobal.com/buildquest/banguins-tcg-7k6mh
+Av overview of the project can be found at: https://showcase.ethglobal.com/buildquest/banguins-tcg-7k6mh
 
 The app can be found on https://banguins.netlify.app 
 
