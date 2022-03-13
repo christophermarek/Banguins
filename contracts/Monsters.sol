@@ -107,7 +107,7 @@ contract Monsters is AccessControl {
     //     return (monsterIds, monsterRarities);
     // }
 
-    function getRandomMonster(uint8 num) external checkAdmin returns (uint256[] memory, uint8[] memory) {
+    function getRandomMonster(uint8 num) external  returns (uint256[] memory, uint8[] memory) {
         // VRFCoordinatorV2 on Chainlink limits the number of random numbers we can generate at once to 500
         require(num <= 250, "cannot mint more than 250 monsters at a time");
 

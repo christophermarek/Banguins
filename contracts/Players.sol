@@ -12,7 +12,7 @@ contract Players is AccessControl {
         uint lastCheckIn;
     }
 
-    mapping(address => PlayerSchema) private playerDb;
+    mapping(address => PlayerSchema) public playerDb;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());

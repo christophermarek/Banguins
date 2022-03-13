@@ -45,9 +45,9 @@ modifier noReentrant() {
 
 
     function StakeTokens(uint _currency, uint _energy) public noReentrant returns (string memory)  {
-        require(ce.balanceOf(msg.sender, 1)>=_currency, "not enough currency");
-        require(ce.balanceOf(msg.sender, 0)>=_energy, "not enough energy");
-        User memory u = users[msg.sender];
+       // require(ce.balanceOfPlayer(msg.sender)>=_currency, "not enough currency");
+       // require(ce.balanceOfPlayer(msg.sender)>=_energy, "not enough energy");
+        User storage u = users[msg.sender];
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.inputAmounts[0] = _energy;
         u.inputAmounts[1] = _currency;
@@ -61,7 +61,7 @@ modifier noReentrant() {
     }
 
     function UnstakeTokens(uint _currency, uint _energy) noReentrant public  {
-        User memory u = users[msg.sender];
+        User storage u = users[msg.sender];
         require(u.stakedCurrency >= _currency, "not enough currency staked");
         require(u.stakedEnergy >= _energy, "not enough energy staked");
         u.rewardRate = CalculateRewardRate(_currency, _energy);
@@ -73,7 +73,7 @@ modifier noReentrant() {
     }
 
     function CalculateRewardAmount() public view returns (uint rewardAmount) {
-        User memory u = users[msg.sender];
+        User storage u = users[msg.sender];
         uint _rewardRate = u.rewardRate;
         uint _timeFrame = block.timestamp - u.lastWithdrawalTime;
         return rewardAmount = _rewardRate * _timeFrame;
@@ -92,12 +92,13 @@ modifier noReentrant() {
         }
     }
 
-    function ClaimReward() public noReentrant returns (uint _reward) {
+    function ClaimReward() public noReentrant returns (uint) {
         // add reentrancy 
         User memory u = users[msg.sender];
         _reward = CalculateRewardAmount();
         ce.safeTransferFrom(address(this), msg.sender, 1, _reward, "");
         u.lastWithdrawalTime = block.timestamp;
+        return _reward;
     }
 
     function swapCurrency(uint _id, uint _amount) external {
@@ -105,12 +106,12 @@ modifier noReentrant() {
         uint other;
         require(_amount<=100, "too much swap, this is game, not economy");
         if(_id==1){
-            require(ce.balanceOf(msg.sender, 1)>=_amount+1, "not enough currency");
+            require(ce.balanceOfPlayer(msg.sender)>=_amount+1, "not enough currency");
             swap = currencyLiquidity;
             rcvd = energyLiquidity;
             other = 0;
         } else if(_id==0) {
-            require(ce.balanceOf(msg.sender, 0)>=_amount+1, "not enough energy");
+            require(ce.balanceOfPlayer(msg.sender)>=_amount+1, "not enough energy");
             rcvd = currencyLiquidity;
             swap = energyLiquidity;
             other = 1;
@@ -120,19 +121,18 @@ modifier noReentrant() {
         //probably able to do a batch transfer for this one
         UpdatePools();
         uint returnValue = getSwapValue(_amount);
-        ce.safeTransferFrom(msg.sender, address(this), _id, _amount+1, "");
+        ce.safeTransferFrom(msg.sender, address(this), _id, _amount, "");
         ce.safeTransferFrom(address(this), msg.sender, other, returnValue, "");
         UpdatePools();
     }
 
-    function UpdatePools() private {
-        energyLiquidity = ce.balanceOf(address(this), 0);
-        currencyLiquidity = ce.balanceOf(address(this), 1);
+    function UpdatePools() public {
+        [energyLiquidity, currencyLiquidity,] = ce.balanceOfPlayer(address(this));
     }
 
     // Liquidity Calculation
 
-    function discountValue(uint swapAmount) private view returns (uint) {
+    function discountValue(uint swapAmount) public view returns (uint) {
         uint swapAmt18 = swapAmount*10**18; 
         uint newSwapPool18 = swapPool18 + swapAmt18;
         uint newSwapPool = newSwapPool18/10**18;
@@ -141,20 +141,20 @@ modifier noReentrant() {
         return (discountRatio9); 
     }
 
-    function ratioEquivalence(uint discountedSwapAmount18) private view returns (uint) {
+    function ratioEquivalence(uint discountedSwapAmount18) public view returns (uint) {
         uint ratio9 = swapPool18 / rcvdPool9;
         uint DRAmount9 = discountedSwapAmount18 / ratio9;
         return DRAmount9;
     }
 
-    function discountValue2(uint DRAmount9) private view returns (uint) {
+    function discountValue2(uint DRAmount9) public view returns (uint) {
         uint DRAmount18 = DRAmount9 * 10**9;
         uint newrcvd18 = rcvd18 - DRAmount18;
         uint ratio9 = newrcvd18 / rcvdPool9;  // I think we may need to switch these numbers
         return ratio9; 
     }
 
-    function Combine(uint swapAmt) private view returns (uint) {
+    function Combine(uint swapAmt) public view returns (uint) {
         uint value9 = discountValue(swapAmt);
         uint swapAmt9 = swapAmt * 10**9;
         uint value18 = value9 * swapAmt9; 

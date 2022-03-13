@@ -8,8 +8,8 @@ import "./GameConstants.sol";
 
 contract Battle is AccessControl {
     // Instance of BTokens to access balances of tokens for each player
-    BTokens private tokens;
-    Players private players;
+    BTokens public tokens;
+    Players public players;
 
     constructor(BTokens _tokens, Players _players) {
         tokens = _tokens;

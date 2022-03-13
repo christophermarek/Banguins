@@ -9,12 +9,12 @@ import "./GameConstants.sol";
 
 contract BTokens is ERC1155PresetMinterPauser {
 
-    Players private players;
-    Monsters private monsters;
+    Players public players;
+    Monsters public monsters;
 
     address payable owner;
 
-    constructor(Players _players, Monsters _monsters) ERC1155PresetMinterPauser("ipfs-base-uri-goes-here") {
+    constructor(Players _players, Monsters _monsters) ERC1155PresetMinterPauser() {
         players = _players;
         monsters = _monsters;
         owner = payable(_msgSender());
