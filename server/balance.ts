@@ -42,15 +42,20 @@ export const get_balance = async (req: Request, res: Response): Promise<void> =>
         let contract = new ethers.Contract(contract_address, parsed_json.abi, provider);
         let player_bal = await contract.balanceOfPlayer(address)
 
-        const energy = ethers.utils.formatEther(player_bal[1][0])
-        const currency = ethers.utils.formatEther(player_bal[1][1])
+        const energy = Number(ethers.utils.formatEther(player_bal[1][0])) * 10 ** 18;
+        const currency = Number(ethers.utils.formatEther(player_bal[1][1])) * 10 ** 18;
 
         let keys = [];
-        if(player_bal.length > 2){
-            for(let i = 2; i < player_bal.length; i++){
-                keys.push(ethers.utils.formatEther(player_bal[0][i]))
+        if(player_bal[0].length > 2){
+            for(let i = 2; i < player_bal[0].length; i++){
+                // console.log(ethers.utils.formatEther(player_bal[0][i]))
+                keys.push(Number(ethers.utils.formatEther(player_bal[0][i])) * 10 ** 18)
+                if((Number(ethers.utils.formatEther(player_bal[1][i])) * 10 ** 18) > 1){
+                    keys.push(Number(ethers.utils.formatEther(player_bal[0][i])) * 10 ** 18)
+                }
             }
         }
+        console.log(keys)
         // result will return currency, energy, and monster id's
         let monsters_to_return = [];
 
