@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAccount, useContractWrite } from 'wagmi';
+import { useAccount, useContractWrite, useContractRead } from 'wagmi';
 import { getBalance, getImagesFromIds } from "../../api/api";
+import { BigNumber } from "ethers";
 let rawdata = require("../../api/contracts/Staking.json");
+let bt_token = require('../../api/build/contracts/BTokens.json');
 //import { fs } from 'fs' 
 
 interface LiquidityPoolsProps {
@@ -10,29 +12,158 @@ interface LiquidityPoolsProps {
 
 export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
-    const [{ data: accountData }] = useAccount();
+   // const [{ data: accountData }] = useAccount();
+  //  const [balance, setBalance] = useState<any>();
 
-    const [balance, setBalance] = useState<any>();
-    // map of monster id to image base64 data
-    const [images, setImages] = useState<any>();
-
-
+    // token amount
     const [currInput, setCurrInput] = useState<string>('');
+    // token type
     const [tokenInput, setTokenInput] = useState<string>('');
+    // currency staked
     const [currencyStaked, setCurrencyStaked] = useState<string>('');
+    // energy staked
     const [energyStaked, setEnergyStaked] = useState<string>('');
 
+
+/*
+
+// SWAP  
+
+// calculation useContractRead
+    //inputs amount and id
+
+    const [{ data, error, loading }, read] = useContractRead(
+        {
+          addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+          contractInterface: rawdata.abi,
+        },
+        'CalculateRewardRate',
+        {
+            args: {currInput, tokenInput},
+            overrides: {gasLimit: BigNumber.from('7000000')}
+
+        }
+        
+      )
+
+//exchange useContractWrite
+    // inputs amount and id 
+
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+          addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+          contractInterface: rawdata.abi,
+        },
+        'swapCurrency',
+        {
+            args: { tokenInput, currInput },
+            overrides: { from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit:BigNumber.from('7000000')}
+        }
+    )
+
+
+// Staking Rewards 
+
+    //calculate rewardrate  useContractRead - not shown but needs to be called for the latter
+        //inputs currency amount and energy amount and the msg.sender
+
+        const [{ data, error, loading }, read] = useContractRead(
+            {
+              addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+              contractInterface: rawdata.abi,
+            },
+            'CalculateRewardRate',
+            {
+                args: {currencyStaked, energyStaked},
+                overrides: {from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit: BigNumber.from('7000000')}
+                    //needs to return rewardRate and LastClaim
+            } 
+          )
+    //calculate reward amount useContractRead
+        // inputs reward rate + last claim
+    const [{ data, error, loading }, read] = useContractRead(
+        {
+            addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+            contractInterface: rawdata.abi,
+        },
+        'CalculateRewardAmount',
+        {
+            args: {rewardRate, LastClaim},
+            overrides: {from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit: BigNumber.from('7000000')}
+        }
+        )
+
+    //claim rewards useContractWrite
+        //inputs = msg.sender that's it
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+            addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+            contractInterface: rawdata.abi,
+        },
+        'ClaimReward',
+        {
+            overrides: { from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit:BigNumber.from('7000000')}
+        }
+    )
+
+
+//STAKING  useContractWrite
+    //inputs energy amount and currency amount
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+          addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+          contractInterface: rawdata.abi,
+        },
+        'StakeTokens',
+        {
+            args: { currencyStaked, energyStaked },
+            overrides: { from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit:BigNumber.from('7000000')}
+        }
+    )
+
+
+// UNSTAKING useContractWrite
+    //inputs energy amount and currency amount
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+          addressOrName: '0x45c003b90748890F05Ff402C4ff01F6AFf8E779E',
+          contractInterface: rawdata.abi,
+        },
+        'UnstakeTokens',
+        {
+            args: { currencyStaked, energyStaked },
+            overrides: { from: '0x6f9C8B1f7257D91819e60BCbbCA10F622398c156', gasLimit:BigNumber.from('7000000')}
+        }
+    )
+
+      
+ /*     useEffect(() => Promise<{ data?: Result; error?: Error }>
+        if (!accountData?.address) {
+            return;
+        }
+        (async () => {
+            try {
+                
+                    
+            
+                    config: {
+                      args: any | any[]
+                      overrides?: Overrides
+                    } = {},
+                  ) 
+                  
+                console.log(accountData?.address)
+                const response = await getBalance({
+                    wallet_address: accountData?.address,
+                });
+                setBalance(response.data.balance);
+            } catch (error: any) {
+                console.error(error);
+            }
+        })();
+      
+    },  [accountData?.address, data]);
    
-
-
-    // unimplemented   
-    // fetch exchange rate
-    const calculateExchangeRate = () => {
-        // useContractWrite() 
-        let num = Number(currInput) * 1.15;
-        return num.toFixed(0);
-        //  function CalculateRewardRate(uint _currency, uint _energy) public view returns (uint rewardRate6)
-    }
 
     let amount = Number(currInput);
     let id = Number(tokenInput);
@@ -112,21 +243,30 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
     }, [balance]);
 
-    
-    
-    const determineToken = () => {}
-    
+     // unimplemented   
+    // fetch exchange rate
+    const calculateExchangeRate = () => {
+        // useContractWrite() 
+        let num = Number(currInput) * 1.15;
+        return num.toFixed(0);
+        //  function CalculateRewardRate(uint _currency, uint _energy) public view returns (uint rewardRate6)
+    }
+   */ 
+    const determineToken = () => {
 
+    }
+
+    const calculateExchangeRate = () => {}
+    
+    const exchangeToken = async() => {}
   
 
     // unimplemented
     const stakeCurrency = () => {
         // create transaction popup
         // send transaction
-
 //     function StakeTokens(uint _currency, uint _energy) public returns (string memory) {
-
-        alert('Stake Deposited')
+         alert('Stake Deposited')
     }
 
     const unstakeCurrency = () => {
@@ -194,7 +334,7 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                 <div id='staked_stats'>
                     <h2 className="subheading">Staking Stats</h2>
                     <div id="statTable" className="flex">
-                    <p id="calcRewards" className="stakingLabel">Staking Rewards:<div> {calculateRewards()} energy</div> </p>
+                    <div id="calcRewards" className="stakingLabel">Staking Rewards:<div> {calculateRewards()} energy</div> </div>
                     <input id="rewardsbutton" className="buttonStyle" type='button' value='Claim' onClick={() => claimRewards()} />
                     </div>
                     <div className="stakingLabel" id="rewardInfo">info example</div>
