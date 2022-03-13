@@ -59,23 +59,7 @@ export const HomePage: React.FC = () => {
 
     }, [balance]);
 
-
-
     const navigate = useNavigate();
-    let placeholder_cards: card[] = [];
-    for (let i = 0; i < 9; i++) {
-        placeholder_cards[i] = {
-            health: i + 1,
-            attack: i + 1,
-            address: `0x082B6aC9e47d7D83ea3FaBbD1eC7DAba9D687b3${i}`,
-        };
-    }
-
-    const visibleDeck = placeholder_cards.slice(0, 8);
-
-    // implement these, props from app.ts?
-    // const energy = 100;
-    // const currency = 100;
 
     //unimplemented
     const buy_deck = () => {

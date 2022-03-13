@@ -23,6 +23,34 @@ h2 {
     z-index: 999;
 }
 
+.grid_item{
+    width: 15vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: #CDF6FC;
+    cursor: pointer;
+    padding: 5%;
+    font-family: 'Sigmar One', cursive;
+    font-weight: 100;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: large;
+}
+.grid_item:hover{
+    outline: solid black;
+}
+#lowercard{
+    font-family: 'Sigmar One', cursive;
+    margin-top: 3%;
+    display: flex;
+    justify-content: space-around;
+    font-weight: 100;
+    color: black;
+    text-shadow: white 0px 0px;
+}
+
+
 .ontop{
     z-index: 999;
     position: relative;
@@ -55,6 +83,12 @@ h2 {
     display: flex;
     margin-top: 10%;
     justify-content: center;
+}
+
+.selected{
+    box-shadow: xl;
+    background-color: rgb(184, 245, 242);
+    outline: solid black;
 }
 
 .selected_card {

@@ -5,6 +5,7 @@ import { promises as fs } from "fs";
 export const get_image = async (req: Request, res: Response): Promise<void> => {
     try {
 
+        console.log('sending image')
         const id = req.params.id;
 
         // get path from ids

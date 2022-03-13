@@ -32,7 +32,7 @@ function App() {
                         <Route path="marketplace" element={<MarketplacePage />} />
                         <Route path="liquidity-pools" element={<LiquidityPoolsPage />} />
                         <Route path="lobbies" element={<LobbiesPage />} />
-                        <Route path="battle/:lobbyId" element={<BattlePage />} />
+                        <Route path="battle/:lobbyId/:selected_cards" element={<BattlePage />} />
                         <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
 

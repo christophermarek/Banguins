@@ -1,21 +1,65 @@
 import { Box, Button, ButtonGroup, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { card } from "../../types";
 import { IoIosRefresh } from "react-icons/io";
 import { registerCallback, removeCallback, socket } from "../../socket";
-import { getLobbies, createLobby } from "../../api/api";
+import { getLobbies, createLobby, getImagesFromIds, getBalance } from "../../api/api";
 import { getRandomString } from "../../utils/random";
+import { useAccount } from "wagmi";
 
 export const LobbiesPage: React.FC = () => {
     const navigate = useNavigate();
+    const [{ data: accountData }] = useAccount();
 
-    let placeholder_cards: card[] = [];
-    for (let i = 0; i < 8; i++) {
-        placeholder_cards[i] = { health: i + 1, attack: i + 1, address: `#0xaqwqesad${i}` };
-    }
+    const [balance, setBalance] = useState<any>();
+    // map of monster id to image base64 data
+    const [images, setImages] = useState<any>();
+
+    useEffect(() => {
+        if (!accountData?.address) {
+            return;
+        }
+        (async () => {
+            try {
+                const response = await getBalance({
+                    wallet: accountData?.address,
+                });
+                console.log(response.data.balance)
+                setBalance(response.data.balance);
+            } catch (error: any) {
+                console.error(error);
+            }
+        })();
+    }, [accountData?.address]);
+    useEffect(() => {
+        if (balance === undefined) {
+            return;
+        }
+
+        if (!balance || balance.monsters.length < 1) {
+            return;
+        }
+        (async () => {
+            try {
+                for (let i = 0; i < balance.monsters.length; i++) {
+                    const response = await getImagesFromIds({
+                        id: balance.monsters[i].id,
+                    });
+                    console.log('image fetched');
+                    setImages((images: any) => ({ ...images, [`${balance.monsters[i].id}`]: response.data }));
+                }
+
+            } catch (error: any) {
+                console.log('error')
+                console.error(error);
+            }
+        })();
+
+
+    }, [balance])
 
     const loadDataFromServer = React.useCallback(async () => {
         // CHANGE THIS To 24 hours once real time stream is up
@@ -24,13 +68,13 @@ export const LobbiesPage: React.FC = () => {
 
         setLobbies(lobbies_fetched);
     }, []);
-    
+
 
     React.useEffect(() => {
         loadDataFromServer();
     }, [loadDataFromServer]);
 
-    
+
 
     // lobby id returned from server after successful lobby creation
     const [createdLobbyId, setCreatedLobbyId] = useState<any>(undefined);
@@ -39,13 +83,11 @@ export const LobbiesPage: React.FC = () => {
 
     const [selectedCards, setSelectedCards] = useState<any>([]);
 
-    const [deck, setDeck] = useState<card[]>(placeholder_cards);
-
     const onBattle = React.useCallback((data: any) => {
         if (data) {
-            navigate(`/battle/${createdLobbyId}`);
+            navigate(`/battle/${createdLobbyId}/${selectedCards}`);
         }
-    }, [createdLobbyId, navigate]);
+    }, [createdLobbyId, navigate, selectedCards]);
 
     React.useEffect(() => {
         const callbackId = getRandomString();
@@ -68,16 +110,8 @@ export const LobbiesPage: React.FC = () => {
                 alert("Must select 3 cards");
                 return;
             }
-
-            // use addresses from cards_selected to fetch cards we pass to server
-            let cards = [];
-            for (let i = 0; i < selectedCards.length; i++) {
-                let card_found: card = deck.filter(function (sel_card: card) {
-                    return sel_card.address === selectedCards[i];
-                })[0];
-                cards.push(card_found);
-            }
-            navigate(`/battle/${lobby_id}`);
+            console.log('going to battle')
+            navigate(`/battle/${lobby_id}/${selectedCards}`);
         }
     };
 
@@ -88,22 +122,13 @@ export const LobbiesPage: React.FC = () => {
             return;
         }
 
-        // use addresses from cards_selected to fetch cards we pass to server
-        let cards = [];
-        for (let i = 0; i < selectedCards.length; i++) {
-            let card_found: card = deck.filter(function (sel_card: card) {
-                return sel_card.address === selectedCards[i];
-            })[0];
-            cards.push(card_found);
-        }
-
         // fetch cards from addresses to pass as cards_selected
 
         // post server
         try {
             const response = await createLobby({
-                wallet: "0xwallet",
-                cards: cards,
+                wallet: accountData?.address,
+                cards: selectedCards,
                 socketId: socket.id,
             });
 
@@ -134,17 +159,6 @@ export const LobbiesPage: React.FC = () => {
         }
     };
 
-    const update_placeholder_health = (event: any, index: any) => {
-        let copy = [...deck];
-        copy[index].health = event.target.value;
-        setDeck(copy);
-    };
-
-    const update_placeholder_attack = (event: any, index: any) => {
-        let copy = [...deck];
-        copy[index].attack = event.target.value;
-        setDeck(copy);
-    };
 
     return (
         <>
@@ -155,49 +169,30 @@ export const LobbiesPage: React.FC = () => {
                 <VStack w="full" spacing={4} alignItems="flex-start">
                     <Heading>Your Cards</Heading>
                     <SimpleGrid w="full" minChildWidth={160} spacing={10}>
-                        {deck.map((card: card, index: any) => {
-                            const selected = selectedCards.includes(card.address);
-
-                            return (
-                                <Box
-                                    cursor="pointer"
-                                    key={index}
-                                    height={48}
-                                    borderRadius={10}
-                                    _hover={{
-                                        backgroundColor: "tangaroa.100",
-                                    }}
-                                    _active={{
-                                        backgroundColor: "tangaroa.200",
-                                    }}
-                                    p={4}
-                                    onClick={() => cardSelected(card.address)}
-                                    boxShadow={selected && "xl"}
-                                    backgroundColor={selected ? "tangaroa.100" : "tangaroa.50"}
-                                    borderWidth={1}
-                                    borderColor={selected ? "tangaroa.300" : "tangaroa.50"}
-                                >
-                                    <Text fontSize="lg">Card</Text>
-                                    <Text>{card.address}</Text>
-                                    <Text>
-                                        Health{" "}
-                                        <input
-                                            type="number"
-                                            value={deck[index].health}
-                                            onChange={(event) => update_placeholder_health(event, index)}
-                                        />
-                                    </Text>
-                                    <Text>
-                                        Attack{" "}
-                                        <input
-                                            type="number"
-                                            value={deck[index].attack}
-                                            onChange={(event) => update_placeholder_attack(event, index)}
-                                        />
-                                    </Text>
-                                </Box>
-                            );
-                        })}
+                        {balance && images &&
+                            <>
+                                {
+                                    balance.monsters.map((monster: any) =>
+                                    // console.log(monster)
+                                        <div 
+                                            key={monster.id}
+                                            onClick={() => cardSelected(monster.id)}
+                                            className={(selectedCards.includes(monster.id) ? 'selected ' : '') + "grid_item"}
+                                        >
+                                            <div>
+                                                <Text fontSize="lg">Card {monster.id}</Text>
+                                            </div>
+                                            <img src={images[monster.id]} />
+                                            <div id='lowercard'>
+                                                <Text id='lowerRigtht'>Health {monster.metadata.health}</Text>
+                                                <Text>Attack{monster.metadata.attack}</Text>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </>
+                             
+                        }
                     </SimpleGrid>
                 </VStack>
                 <VStack w="full" spacing={4} alignItems="flex-start">

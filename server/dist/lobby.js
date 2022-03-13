@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.join_lobby = exports.create_lobby = exports.get_lobbies = exports.lobbies = void 0;
 const app_1 = require("./app");
+const monsters_1 = __importDefault(require("./monsters"));
 exports.lobbies = [];
 // increments every request until server restart
 let lobby_id = 0;
@@ -59,21 +63,34 @@ const join_lobby = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(400).json({ error: 'invalid lobby id' });
         }
         else {
-            if (exports.lobbies[param_lobby_id].player1_conn === socketId) {
-                res.status(200).json({ status: 'Match started' });
-            }
-            else {
+            if (exports.lobbies[param_lobby_id].player2_addr === '') {
                 exports.lobbies[param_lobby_id].player2_addr = player;
                 exports.lobbies[param_lobby_id].player2_cards = cards;
                 exports.lobbies[param_lobby_id].player2_conn = socketId;
                 exports.lobbies[param_lobby_id].lobby_status = 'match';
                 res.status(200).json({ status: 'Match started' });
+                app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
+                app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
+                app_1.io.to(exports.lobbies[param_lobby_id].player2_conn).emit('battle', exports.lobbies[param_lobby_id]);
+            }
+            else {
+                // player 1 initiating game after navigating to battle page
+                console.log(exports.lobbies[param_lobby_id]);
+                // convert id's to values
+                for (let i = 0; i < exports.lobbies[param_lobby_id].player1_cards.length; i++) {
+                    let card = monsters_1.default[exports.lobbies[param_lobby_id].player1_cards[i]];
+                    exports.lobbies[param_lobby_id].player1_cards[i] = { health: card.health, attack: card.attack, id: exports.lobbies[param_lobby_id].player1_cards[i] };
+                }
+                for (let i = 0; i < exports.lobbies[param_lobby_id].player2_cards.length; i++) {
+                    let card = monsters_1.default[exports.lobbies[param_lobby_id].player2_cards[i]];
+                    exports.lobbies[param_lobby_id].player2_cards[i] = { health: card.health, attack: card.attack, id: exports.lobbies[param_lobby_id].player2_cards[i] };
+                }
+                app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
+                app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
+                app_1.io.to(exports.lobbies[param_lobby_id].player2_conn).emit('battle', exports.lobbies[param_lobby_id]);
+                // send start battle to smart contract
             }
         }
-        console.log(exports.lobbies[param_lobby_id]);
-        app_1.io.to(exports.lobbies[param_lobby_id].player1_conn).emit('battle', exports.lobbies[param_lobby_id]);
-        app_1.io.to(exports.lobbies[param_lobby_id].player2_conn).emit('battle', exports.lobbies[param_lobby_id]);
-        // send start battle to smart contract
     }
     catch (error) {
         res.status(400).json({ error: error });

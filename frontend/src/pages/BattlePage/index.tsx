@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAccount } from "wagmi";
-import { joinLobby } from "../../api/api";
+import { getImagesFromIds, joinLobby } from "../../api/api";
 import { registerCallback, removeCallback, socket } from "../../socket";
 import { card } from "../../types";
 import { getRandomString } from "../../utils/random";
 
-let placeholder_cards: card[] = [];
-for (let i = 0; i < 3; i++) {
-    placeholder_cards[i] = { health: i + 1, attack: i + 1, address: `#0xaqwqesad${i}` };
-}
 
 const BattlePage: React.FC = () => {
-    const { lobbyId } = useParams();
+    const { lobbyId, selected_cards } = useParams();
     const navigate = useNavigate();
     const [{ data: accountData }] = useAccount();
 
@@ -20,10 +16,12 @@ const BattlePage: React.FC = () => {
     const [target, setTarget] = useState<string>("");
     const [you, setYou] = useState<any>(undefined);
     const [opponent, setOpponent] = useState<any>(undefined);
+    const [images, setImages] = useState<any>();
 
     const onBattle = React.useCallback((data: any) => {
         if (data) {
             setBattle(data);
+            console.log(data)
         }
     }, []);
 
@@ -41,36 +39,38 @@ const BattlePage: React.FC = () => {
             return;
         }
 
-        console.log("Joining lobby", lobbyId);
-
         (async () => {
             try {
-                const response = await joinLobby({
-                    wallet: accountData?.address,
-                    cards: placeholder_cards,
-                    lobby_id: lobbyId,
-                    socketId: socket.id,
-                });
-                console.log("Join lobby response", response.data);
+                console.log("Joining lobby", lobbyId);
+
+                if (selected_cards) {
+                    const response = await joinLobby({
+                        wallet: accountData?.address,
+                        cards: selected_cards.split(",").map(Number),
+                        lobby_id: lobbyId,
+                        socketId: socket.id,
+                    });
+                    console.log("Join lobby response", response.data);
+
+                }
+
             } catch (error: any) {
-                console.error(error);
-                alert('error joining lobby')
-                navigate(-1);
+                console.log(error.status)
+                // navigate(-1);
             }
         })();
-    }, [lobbyId, accountData?.address, onBattle, navigate]);
+    }, [lobbyId, accountData?.address, onBattle, navigate, selected_cards]);
 
     useEffect(() => {
         if (!battle) {
             return;
         }
 
-        console.log(battle)
-
-        if('winner' in battle){
+        if ('winner' in battle) {
             alert(battle.winner + " has won the battle")
             navigate(`/`);
-        }else{
+        } else {
+            console.log('loading data')
             let you_n;
             let opponent_n;
             if (socket.id === battle.player1_conn) {
@@ -84,10 +84,33 @@ const BattlePage: React.FC = () => {
                 setYou(you_n);
                 setOpponent(opponent_n);
             }
+
+            (async () => {
+                try {
+                    for (let i = 0; i < battle.player1_cards.length; i++) {
+                        const response = await getImagesFromIds({
+                            id: battle.player1_cards[i].id,
+                        });
+                        setImages((images: any) => ({ ...images, [`${battle.player1_cards[i].id}`]: response.data }));
+                    }
+                    for (let i = 0; i < battle.player2_cards.length; i++) {
+                        const response = await getImagesFromIds({
+                            id: battle.player2_cards[i].id,
+                        });
+
+                        setImages((images: any) => ({ ...images, [`${battle.player2_cards[i].id}`]: response.data }));
+                    }
+
+                } catch (error: any) {
+                    console.log('error')
+                    console.error(error);
+                }
+            })();
         }
 
-        
-    }, [battle]);
+
+    }, [battle, navigate]);
+
 
     const leaveBattle = React.useCallback(() => {
         if (window.confirm("Are you sure you want to leave the battle, you will lose your stake")) {
@@ -121,7 +144,7 @@ const BattlePage: React.FC = () => {
                                 " card"
                             }
                         >
-                            <p>{card.address}</p>
+                            <img src={images[card.id]}/>
                             <p>Health: {card.health}</p>
                             <p>Attack :{card.attack}</p>
                             <input
@@ -137,7 +160,8 @@ const BattlePage: React.FC = () => {
                 {you !== undefined &&
                     you.cards.map((card: any) => (
                         <div className={"card " + (card.health === 0 ? "dead_card" : "")}>
-                            <p>{card.address}</p>
+                            <img src={images[card.id]}/>
+
                             <p>Health: {card.health}</p>
                             <p>Attack :{card.attack}</p>
                             <input
