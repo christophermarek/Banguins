@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { card } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { useAccount } from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
 import { getBalance, getImagesFromIds } from "../../api/api";
 import { isConstructorDeclaration } from "typescript";
+import { useGetBalance } from "../../api/contract_api";
 
 export const HomePage: React.FC = () => {
     const [{ data: accountData }] = useAccount();
@@ -12,6 +13,18 @@ export const HomePage: React.FC = () => {
     const [balance, setBalance] = useState<any>();
     // map of monster id to image base64 data
     const [images, setImages] = useState<any>();
+
+    // get balance contract
+    const [{ data, error, loading }, read] = useContractRead(
+        {
+            addressOrName: '0x066b7E91e85d37Ba79253dd8613Bf6fB16C1F7B7',
+            contractInterface: require('../../api/build/contracts/BTokens.json').abi,
+        },
+        'balanceOfPlayer',
+        {
+            args: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
+        }
+    )
 
     useEffect(() => {
         if (!accountData?.address) {
@@ -62,8 +75,9 @@ export const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
     //unimplemented
-    const buy_deck = () => {
+    const buy_deck = async() => {
         console.log("beggining deck purchase");
+        console.log(await read())
     };
 
     const handleNavigateToLobbies = React.useCallback(() => {

@@ -21,3 +21,4 @@ export const createLobby = (data: any) => instance.post("/create_lobby", data);
 export const getBalance = (data: any) => instance.get("/balance", data);
 
 export const getImagesFromIds = (data: any) => instance.get(`/images/${data.id}`, data);
+

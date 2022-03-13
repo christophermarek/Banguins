@@ -2,6 +2,9 @@ import { Response, Request } from "express"
 import { ethers } from "ethers"
 import monsters from "./monsters";
 import { generate_metadata } from "./create_image";
+"use strict";
+
+// const json = require('./contracts/BTokens.json');
 
 // GENERATES RANDOM FILE URL
 const allCapsAlpha = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
@@ -20,7 +23,7 @@ import csvAppend from "csv-append";
 const RELATIVE_PATH_TO_CSV = `monsters.csv`;
 const { append, end } = csvAppend(RELATIVE_PATH_TO_CSV, true);
 
-const provider = ethers.getDefaultProvider("ropsten");
+const provider = ethers.getDefaultProvider("rinkeby");
 
 export const get_balance = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -28,7 +31,13 @@ export const get_balance = async (req: Request, res: Response): Promise<void> =>
         const address = req.params.wallet_address;
 
         // get view from contract
+        const contract_address = '0x066b7E91e85d37Ba79253dd8613Bf6fB16C1F7B7';
+        console.log(contract_address)
+
         // let result = await provider.getBlockNumber();
+        console.log(json)
+        let contract = new ethers.Contract(contract_address, json.abi, provider);
+        // console.log(await contract.balanceOfPlayer(address))
 
         // result will return currency, energy, and monster id's
 
