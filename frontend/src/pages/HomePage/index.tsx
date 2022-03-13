@@ -5,7 +5,6 @@ import { Box, Button, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-
 import { useAccount, useContractRead, useContractWrite, useTransaction } from "wagmi";
 import { getBalance, getImagesFromIds } from "../../api/api";
 import { isConstructorDeclaration } from "typescript";
-import { useGetBalance } from "../../api/contract_api";
 import { BigNumber } from "ethers";
 let bt_token = require('../../api/build/contracts/BTokens.json');
         

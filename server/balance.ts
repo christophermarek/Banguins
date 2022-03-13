@@ -27,8 +27,7 @@ const fs = require('fs');
 export const get_balance = async (req: Request, res: Response): Promise<void> => {
     console.log('get balance route');
     try {
-        console.log(req)
-        const address = req.params.id;
+        const address = req.params.id || req.params.wallet_id;
         console.log(address)
         if(!address){
             res.status(400).json({ error: 'invalid address' });
