@@ -1,6 +1,6 @@
 // Deploys all contracts in the correct order based on dependencies
 // The order is as follow:
-//   VRFRandomNumbers
+//   VRFRandomNumbers / PseudoRandomNumbers
 //   GameConstants
 //   Monsters
 //   Players
@@ -8,24 +8,28 @@
 //   Marketplace
 //   Battle
 
-const VRFRandomNumbers = artifacts.require("VRFRandomNumbers");
+// const VRFRandomNumbers = artifacts.require("VRFRandomNumbers");
+const PseudoRandomNumbers = artifacts.require("PseudoRandomNumbers");
 const GameConstants = artifacts.require("GameConstants");
 const Monsters = artifacts.require("Monsters");
 const Players = artifacts.require("Players");
 const BTokens = artifacts.require("BTokens");
 const Marketplace = artifacts.require("Marketplace");
 const Battle = artifacts.require("Battle");
-const subId = 878;
+// const subId = 878;
 
 module.exports = async function (deployer) {
-    // VRFRandomNumbers
-    await deployer.deploy(VRFRandomNumbers, subId);
-    let vrf = await VRFRandomNumbers.deployed();
+    // // VRFRandomNumbers
+    // await deployer.deploy(VRFRandomNumbers, subId);
+    // let rng = await VRFRandomNumbers.deployed();
+    // PseudoRandomNumbers
+    await deployer.deploy(PseudoRandomNumbers);
+    let rng = await PseudoRandomNumbers.deployed();
     // GameConstants
     await deployer.deploy(GameConstants);
     await deployer.link(GameConstants, [BTokens, Battle]);
     // Monsters
-    await deployer.deploy(Monsters, vrf.address);
+    await deployer.deploy(Monsters, rng.address);
     let monsters = await Monsters.deployed();
     // Players
     await deployer.deploy(Players);
@@ -45,5 +49,6 @@ module.exports = async function (deployer) {
     await players.grantAdmin(market.address);
     await tokens.grantMinter(battle.address);
     await players.grantAdmin(battle.address);
-
+    await players.grantAdmin(tokens.address);
+    await monsters.grantAdmin(tokens.address);
 };
