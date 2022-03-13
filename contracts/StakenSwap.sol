@@ -4,25 +4,13 @@ pragma solidity ^0.8.0;
 
 import "./BTokens.sol";
 
-interface IERC20 {
-    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) external;
-    function safeBatchTransferFrom(address _from, address _to, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external;
-    function balanceOf(address _owner, uint256 _id) external view returns (uint256);
-    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external view returns (uint256[] memory);
-    function setApprovalForAll(address _operator, bool _approved) external;
-    function isApprovedForAll(address _owner, address _operator) external view returns (bool);
-}
-
 contract Staking {
 
-    address owner;
     bool internal locked;
 
     uint256[] ids = [0,1];// energy,currency
-    
+    BTokens ce;
 
-    address ceAddress; 
-    BTokens ce = BTokens(ceAddress);
     
     mapping(address => User) users;
     struct User{
@@ -43,7 +31,9 @@ contract Staking {
     uint rcvd18 = rcvd*10**18;
     
 constructor() {
-    owner = msg.sender;
+    //owner = msg.sender;
+    address ceAddress = 0x066b7E91e85d37Ba79253dd8613Bf6fB16C1F7B7; 
+    ce = BTokens(ceAddress);
 }
 
 modifier noReentrant() {
@@ -53,11 +43,6 @@ modifier noReentrant() {
         locked = false;
         }
 
-    function setAddress(address _addr) external {
-        require(owner==msg.sender, "This isn't for you");
-        ceAddress = _addr;
-        ce.setApprovalForAll(address(this), true);
-    }         
 
     function StakeTokens(uint _currency, uint _energy) public noReentrant returns (string memory)  {
         require(ce.balanceOf(msg.sender, 1)>=_currency, "not enough currency");
@@ -66,7 +51,7 @@ modifier noReentrant() {
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.inputAmounts[0] = _energy;
         u.inputAmounts[1] = _currency;
-        ce.safeBatchTransferFrom(msg.sender, address(this), ids, u.inputAmounts, "Tokens have been staked");
+        ce.safeBatchTransferFrom(msg.sender, address(this), ids, u.inputAmounts, "");
         u.stakedEnergy += _energy;
         u.stakedCurrency += _currency;
         if(u.rewardRate>0){
@@ -84,12 +69,13 @@ modifier noReentrant() {
         u.stakedCurrency -= _currency;
         u.inputAmounts[0] = _energy;
         u.inputAmounts[1] = _currency;
-        ce.safeBatchTransferFrom(address(this), msg.sender, ids, u.inputAmounts, "Tokens Withdrawn");
+        ce.safeBatchTransferFrom(address(this), msg.sender, ids, u.inputAmounts, "");
     }
 
-    function CalculateRewardAmount(uint rewardRate, uint _lastClaim) public view returns (uint rewardAmount) {
-        uint _rewardRate = rewardRate;
-        uint _timeFrame = block.timestamp - _lastClaim;
+    function CalculateRewardAmount() public view returns (uint rewardAmount) {
+        User memory u = users[msg.sender];
+        uint _rewardRate = u.rewardRate;
+        uint _timeFrame = block.timestamp - u.lastWithdrawalTime;
         return rewardAmount = _rewardRate * _timeFrame;
     }
 
@@ -109,8 +95,8 @@ modifier noReentrant() {
     function ClaimReward() public noReentrant returns (uint _reward) {
         // add reentrancy 
         User memory u = users[msg.sender];
-        _reward = CalculateRewardAmount(u.rewardRate, u.lastWithdrawalTime);
-        ce.safeTransferFrom(address(this), msg.sender, 1, _reward, "Thank you for staking");
+        _reward = CalculateRewardAmount();
+        ce.safeTransferFrom(address(this), msg.sender, 1, _reward, "");
         u.lastWithdrawalTime = block.timestamp;
     }
 
@@ -135,7 +121,7 @@ modifier noReentrant() {
         UpdatePools();
         uint returnValue = getSwapValue(_amount);
         ce.safeTransferFrom(msg.sender, address(this), _id, _amount+1, "");
-        ce.safeTransferFrom(address(this), msg.sender, other, returnValue, "Receive Token");
+        ce.safeTransferFrom(address(this), msg.sender, other, returnValue, "");
         UpdatePools();
     }
 
@@ -179,7 +165,7 @@ modifier noReentrant() {
         return  fifthvalue;
     }
 
-    function getSwapValue(uint _amount) private view returns (uint returnAmount) {
+    function getSwapValue(uint _amount) public view returns (uint returnAmount) {
          returnAmount = Combine(_amount);
     }
 
