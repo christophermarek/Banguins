@@ -136,6 +136,7 @@ h2 {
     /*justify-content: space-between;*/
 }
 
+#buyItems{margin-top: 25px;}
 
 
 #left {
@@ -151,8 +152,22 @@ h2 {
   padding: 0;
 }
 
+.subsubheading{text-align: center;
+background-color: #00E0FF;
+  font-family: 'Sigmar One', cursive;
+  width: 40%;
+  margin-left: 30%;
+  padding: 10px;
+  border-radius: 15px;
+
+  //color: white !important;
+  //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  //padding: 2% !important;
+  font-size: 1vw !important;}
+
 .cstake,
-.estake {
+.estake,
+.flex {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -174,17 +189,23 @@ h2 {
 #innerright,
 #innerleft {
     width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 #leftinner,
 #currency_exchange,
 #staked_stats,
-#stake {
+#stake,
+#mint_pack,
+#general_store{
     background-color: #cdf6fc;
     margin: 0 auto;
     margin-bottom: 15px;
     display: block;
     width: 90%;
+    border-radius: 10px;
 }
 
 #currency_exchange {
@@ -201,17 +222,13 @@ h2 {
 }
 
 #staked_stats div#statChart {
-    height: 250;
+    height: 250px;
 }
 
 /*#stake{outline: solid black;}*/
 
 /* Marketplace */
 
-#general_store {
-    background-color: #cdf6fc;
-    outline: solid black;
-}
 
 #left input {
     display: block;
@@ -246,6 +263,7 @@ h2 {
     max-width: 100px;
     //padding: 100;
     width: 45%;
+    text-align: center;
 }
 
 .selectStyling{
@@ -258,3 +276,9 @@ h2 {
     background-color: transparent;
   font-size: 25px;
 }
+
+#calcSwap{text-align: center;}
+
+#innerleft{display: flex;
+    align-items: center;
+flex-direction: column;}
