@@ -17,7 +17,7 @@ interface lobby_i {
 export interface card {
     health: number,
     attack: number,
-    address: string
+    id: number
 }
 
 export let lobbies: lobby_i[] = [];

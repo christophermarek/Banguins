@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-export const baseURL = "http://localhost:8000";
+export const baseURL = "https://banguins.herokuapp.com";
+//  "http://localhost:8000";
 // "http://localhost:8000";
 // "https://banguins.herokuapp.com";
 // process.env.NODE_ENV === "development" ? "localhost:8000" : "https://banguins.herokuapp.com";

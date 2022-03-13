@@ -87,19 +87,40 @@ const BattlePage: React.FC = () => {
 
             (async () => {
                 try {
-                    for (let i = 0; i < battle.player1_cards.length; i++) {
-                        const response = await getImagesFromIds({
-                            id: battle.player1_cards[i].id,
-                        });
-                        setImages((images: any) => ({ ...images, [`${battle.player1_cards[i].id}`]: response.data }));
-                    }
-                    for (let i = 0; i < battle.player2_cards.length; i++) {
-                        const response = await getImagesFromIds({
-                            id: battle.player2_cards[i].id,
-                        });
+                    if (images === undefined) {
+                        for (let i = 0; i < battle.player1_cards.length; i++) {
+                            const response = await getImagesFromIds({
+                                id: battle.player1_cards[i],
+                            });
+                            setImages((images: any) => ({ ...images, [`${battle.player1_cards[i]}`]: response.data }));
+                        }
+                        for (let i = 0; i < battle.player2_cards.length; i++) {
 
-                        setImages((images: any) => ({ ...images, [`${battle.player2_cards[i].id}`]: response.data }));
+                            const response = await getImagesFromIds({
+                                id: battle.player2_cards[i],
+                            });
+
+                            setImages((images: any) => ({ ...images, [`${battle.player2_cards[i]}`]: response.data }));
+                        }
+
+                    } else {
+                        for (let i = 0; i < battle.player1_cards.length; i++) {
+                            const response = await getImagesFromIds({
+                                id: battle.player1_cards[i].id,
+                            });
+                            setImages((images: any) => ({ ...images, [`${battle.player1_cards[i].id}`]: response.data }));
+                        }
+                        for (let i = 0; i < battle.player2_cards.length; i++) {
+
+                            const response = await getImagesFromIds({
+                                id: battle.player2_cards[i].id,
+                            });
+
+                            setImages((images: any) => ({ ...images, [`${battle.player2_cards[i].id}`]: response.data }));
+                        }
                     }
+
+
 
                 } catch (error: any) {
                     console.log('error')
@@ -134,33 +155,33 @@ const BattlePage: React.FC = () => {
                 Battle {you?.addr} VS {opponent?.addr}
             </p>
             <div id="opponent" className={"battlecards_container"}>
-                {opponent !== undefined &&
+                {opponent !== undefined && images &&
                     opponent.cards.map((card: any) => (
                         <div
                             className={
-                                (card.address === target ? "selected_card" : "") +
+                                (card.id === target ? "selected_card" : "") +
                                 " " +
                                 (card.health === 0 ? "dead_card" : "") +
                                 " card"
                             }
                         >
-                            <img src={images[card.id]}/>
+                            <img src={images[card.id]} />
                             <p>Health: {card.health}</p>
                             <p>Attack :{card.attack}</p>
                             <input
                                 type="button"
                                 value="Select Target"
                                 disabled={card.health > 0 ? false : true}
-                                onClick={() => setTarget(card.address)}
+                                onClick={() => setTarget(card.id)}
                             />
                         </div>
                     ))}
             </div>
             <div id="you" className="battlecards_container">
-                {you !== undefined &&
+                {you !== undefined && images &&
                     you.cards.map((card: any) => (
                         <div className={"card " + (card.health === 0 ? "dead_card" : "")}>
-                            <img src={images[card.id]}/>
+                            <img src={images[card.id]} />
 
                             <p>Health: {card.health}</p>
                             <p>Attack :{card.attack}</p>
@@ -168,7 +189,7 @@ const BattlePage: React.FC = () => {
                                 type="button"
                                 value="Attack with card"
                                 disabled={card.health > 0 ? false : true}
-                                onClick={() => sendMove(card)}
+                                onClick={() => sendMove(card.id)}
                             />
                         </div>
                     ))}
