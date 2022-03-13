@@ -161,17 +161,26 @@ h2 {
 }
 
 #storebutton{
-    align-items: center!important;
+   // align-items: center!important;
+    
 }
+#storeTotal{
+    flex-grow:1;
+    text-align:center;
+}
+.sbCont{width:30%}
+
 /* Liquidity Pool Page*/
 
 #lp, #mp, #buyItems {
     display: flex;
-    /*justify-content: space-between;*/
+    //justify-content: space-between;
 }
+#mp {flex-wrap: wrap;}
 
-.buttonStyle{border:solid black 1px;
-                background-color:#bbe0ff;}
+#buyItems{margin-top: 25px;
+    }
+
 
 #left {
     display: flex;
@@ -180,15 +189,36 @@ h2 {
     margin: 0 3% 0 2%;
 }
 
-.cstake,
-.estake {
-    display: flex;
+.itemList{
+    list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
+.subsubheading{text-align: center;
+background-color: #00E0FF;
+  font-family: 'Sigmar One', cursive;
+  width: 40%;
+  margin-left: 30%;
+  padding: 10px;
+  border-radius: 15px;
+
+  //color: white !important;
+  //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  //padding: 2% !important;
+  font-size: 1vw !important;}
+
+.cstake,
+.estake,
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 15px;
     margin-top: 15px;
 }
 
-#stakebutton {
+#stakebutton, #unstakebutton, #claimrewards{
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -197,27 +227,28 @@ h2 {
     margin-left: 0;
 }
 
-#leftinner {
-    background-color: #cdf6fc;
-    margin: 0 auto;
-    margin-bottom: 15px;
-    display: block;
-    width: 90%;
-}
+
 
 #innerright,
 #innerleft {
     width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
+#leftinner,
 #currency_exchange,
 #staked_stats,
-#stake {
+#stake,
+#mint_pack,
+#general_store{
     background-color: #cdf6fc;
     margin: 0 auto;
     margin-bottom: 15px;
     display: block;
     width: 90%;
+    border-radius: 10px;
 }
 
 #currency_exchange {
@@ -229,22 +260,18 @@ h2 {
     width: 90%;
     margin-left: 5%;
     margin-right: 5%;
-    height: 45px;
+    max-height: 205px;
     border-radius: 15px;
 }
 
 #staked_stats div#statChart {
-    height: 250;
+    height: 250px;
 }
 
 /*#stake{outline: solid black;}*/
 
 /* Marketplace */
 
-#general_store {
-    background-color: #cdf6fc;
-    outline: solid black;
-}
 
 #left input {
     display: block;
@@ -252,12 +279,48 @@ h2 {
 
 #left,
 #right {
-    width: 50%;
-    height: 500px;
+     min-width: 45%;
+//    height: 500px;
     margin: 0;
+    min-width: 500px;
 }
 
 #left,
 #innerleft {
     border-right: 1px solid #000000;
 }
+
+
+.buttonStyle{border:solid black 1px;
+    background-color:#bbe0ff;
+    font-size: xx-large!important;
+    padding: 15px;
+    margin-bottom: 10px!important;   
+}
+
+.inputStyling{
+    height: 55px;
+    font-family: 'Sigmar One', cursive;
+    font-size: 2vw;
+    max-width: 100px;
+    //padding: 100;
+    width: 45%;
+    text-align: center;
+}
+
+.selectStyling{
+    height: 55px;
+    font-family: 'Sigmar One', cursive;
+    color: #000000;
+    //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    //padding: 1% !important;
+    width: 45%;
+    background-color: transparent;
+  font-size: 25px;
+}
+
+#calcSwap,#calcRewards{text-align: center;}
+
+#innerleft{display: flex;
+    align-items: center;
+flex-direction: column;}

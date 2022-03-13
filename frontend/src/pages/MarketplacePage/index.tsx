@@ -25,10 +25,6 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
 
     const [currInput, setCurrInput] = useState<string>('');
 
-    const [currencyStaked, setCurrencyStaked] = useState<string>('');
-    const [energyStaked, setEnergyStaked] = useState<string>('');
-
-
 
     // unimplemented   
     // fetch exchange rate
@@ -36,19 +32,16 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
         return Number(currInput) * 3;
     }
 
-
-    // unimplemented
-    const exchangeCurrency = () => {
+    const mintPack = () => {
         // create transaction popup
         // send transaction
-        alert('currency transfer complete, please wait for wallet balance to update');
+        alert('Pack minted');
     }
 
-    // unimplemented
-    const stakeCurrency = () => {
+    const buyItems = () => {
         // create transaction popup
         // send transaction
-        alert('currency staked')
+        alert('Items Bought');
     }
 
 
@@ -71,38 +64,27 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
 
                     <div id='mint_pack'>
                         <h2 className="subheading">Mint a Pack for 3 MATIC</h2>
-                        <p>Limit 3 packs per week.</p>
-                        {/* <input type='text' value={currInput} onChange={(event) => setMintPackNum(event.target.value)} /> */}
-                        <p>For {calculateNumberPacksCost()} MATIC</p>//
-
-                        {/* <input type='button' className="buttonStyle" value='Mint Pack' onClick={() => mintPack()} /> */}
-                    </div>
-
-                    <div id='stake'>
-                        <div>
-                            <p className="stakingLabel">Currency</p>
-                            <input type='text' value={currencyStaked} onChange={(event) => setCurrencyStaked(event.target.value)} />
+                        <p className="subsubheading" >Limit 3 packs per week.</p>
+                        <div className="flex center">
+                        <input className="inputStyling" type='number' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
+                        <div className="stakingLabel">For {calculateNumberPacksCost()} MATIC</div>
                         </div>
-                        <div>
-                            <p className="stakingLabel">Energy</p>
-                            <input type='text' value={energyStaked} onChange={(event) => setEnergyStaked(event.target.value)} />
-                        </div>
-                        <input type='button' className="buttonStyle" value='Stake' onClick={() => stakeCurrency()} />
-                    </div>
+                        <input type='button' className="buttonStyle" value='Mint Pack' onClick={() => mintPack()} />
+                        </div>       
                 </div>
                 <div id='right'>
                 <div id='general_store'>
                     <h1 className="subheading">General Store</h1>
-                    <ul>
+                    <ul className="itemList">
                         {placeholder_items.map((item, index) =>
                             <li key={index}>
-                                {item.item_name}: {item.item_desc} Quantity: {item.quantity}
+                                <span className="stakingLabel">{item.item_name} Quantity: {item.quantity}</span><p>{item.item_desc}</p>
                             </li>
                         )}
                     </ul>
                     <div id='buyItems'>
-                        <p className="stakingLabel">Cost {calculateNumberPacksCost()} MATIC</p>
-                        <input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => stakeCurrency()} />
+                        <div id="storeTotal" className="stakingLabel" >Cost {calculateNumberPacksCost()} MATIC</div>
+                        <div className="sbCont"><input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => buyItems()} /></div>
                     </div>
                 </div>
                 </div>
