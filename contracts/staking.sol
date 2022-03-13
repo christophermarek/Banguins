@@ -8,8 +8,12 @@ contract Staking {
 
     address ceAddress; 
     address owner;
-    
+
+    uint[2] constant ids = [0,1];
     BTokens ce = BTokens(ceAddress);
+
+safeBatchTransferFrom(msg.sender, address(this), ids, inputAmounts, "Tokens have been staked");    
+
     
     mapping(address => User) users;
     struct User{
@@ -29,12 +33,14 @@ constructor() {
     }         
     function StakeTokens(uint _currency, uint _energy) public returns (string memory) {
         //reentrancy modifier
-        User memory u = users[msg.sender];
         require(ce.balanceOf(msg.sender, 0)>=_currency, "not enough currency");
         require(ce.balanceOf(msg.sender, 1)>=_energy, "not enough energy");
+        User memory u = users[msg.sender];
         u.rewardRate = CalculateRewardRate(_currency, _energy);
-        ce.safeTransferFrom(msg.sender, address(this), 0, _currency, "currency has been Staked");
-        ce.safeTransferFrom(msg.sender, address(this), 1, _energy, "Energy has been Staked");
+        uint[2] inputAmounts = [_currency, _energy]
+        ce.safeBatchTransferFrom(msg.sender, address(this), ids, inputAmounts, "Tokens have been staked");   
+        //ce.safeTransferFrom(msg.sender, address(this), 0, _currency, "currency has been Staked");
+        //ce.safeTransferFrom(msg.sender, address(this), 1, _energy, "Energy has been Staked");
         u.stakedEnergy += _energy;
         u.stakedCurrency += _currency;
         if(u.rewardRate>0){
@@ -48,12 +54,13 @@ constructor() {
         require(u.stakedCurrency >= _currency, "not enough currency staked");
         require(u.stakedEnergy >= _energy, "not enough energy staked");
         u.rewardRate = CalculateRewardRate(_currency, _energy);
+        uint[2] inputAmounts = [_currency, _energy]
+        ce.safeBatchTransferFrom(address(this), msg.sender, ids, inputAmounts, "Tokens Withdrawn");
         u.stakedEnergy -= _energy;
         u.stakedCurrency -= _currency;
-        //need to implement safemath to make sure this doesn't underflow somehow
-        ce.safeTransferFrom(address(this), msg.sender, 0, _currency, "currency withdrawn");
-        ce.safeTransferFrom(address(this), msg.sender, 1, _energy, "energy withdrawn");
+
     }
+
     function CalculateRewardAmount(uint rewardRate, uint _lastClaim) public view returns (uint rewardAmount) {
         uint _rewardRate = rewardRate;
         uint _timeFrame = block.timestamp - _lastClaim;

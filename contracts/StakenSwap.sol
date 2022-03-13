@@ -17,6 +17,7 @@ contract Staking {
 
     address owner;
 
+    uint[2] constant ids = [0,1];
 
     address ceAddress; 
     BTokens ce = BTokens(ceAddress);
@@ -50,12 +51,12 @@ constructor() {
 
     function StakeTokens(uint _currency, uint _energy) public returns (string memory) {
         //reentrancy modifier
-        User memory u = users[msg.sender];
         require(ce.balanceOf(msg.sender, 0)>=_currency, "not enough currency");
         require(ce.balanceOf(msg.sender, 1)>=_energy, "not enough energy");
+        User memory u = users[msg.sender];
         u.rewardRate = CalculateRewardRate(_currency, _energy);
-        ce.safeTransferFrom(msg.sender, address(this), 0, _currency, "currency has been Staked");
-        ce.safeTransferFrom(msg.sender, address(this), 1, _energy, "Energy has been Staked");
+        uint[2] inputAmounts = [_currency, _energy]
+        ce.safeBatchTransferFrom(msg.sender, address(this), ids, inputAmounts, "Tokens have been staked");   
         u.stakedEnergy += _energy;
         u.stakedCurrency += _currency;
         if(u.rewardRate>0){
@@ -72,8 +73,8 @@ constructor() {
         u.rewardRate = CalculateRewardRate(_currency, _energy);
         u.stakedEnergy -= _energy;
         u.stakedCurrency -= _currency;
-        ce.safeTransferFrom(address(this), msg.sender, 0, _currency, "currency withdrawn");
-        ce.safeTransferFrom(address(this), msg.sender, 1, _energy, "energy withdrawn");
+        uint[2] inputAmounts = [_currency, _energy]
+        ce.safeBatchTransferFrom(address(this), msg.sender, ids, inputAmounts, "Tokens Withdrawn");
     }
 
     function CalculateRewardAmount(uint rewardRate, uint _lastClaim) public view returns (uint rewardAmount) {
