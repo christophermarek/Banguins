@@ -25,10 +25,6 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
 
     const [currInput, setCurrInput] = useState<string>('');
 
-    const [currencyStaked, setCurrencyStaked] = useState<string>('');
-    const [energyStaked, setEnergyStaked] = useState<string>('');
-
-
 
     // unimplemented   
     // fetch exchange rate
@@ -36,19 +32,16 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
         return Number(currInput) * 3;
     }
 
-
-    // unimplemented
-    const exchangeCurrency = () => {
+    const mintPack = () => {
         // create transaction popup
         // send transaction
-        alert('currency transfer complete, please wait for wallet balance to update');
+        alert('Pack minted');
     }
 
-    // unimplemented
-    const stakeCurrency = () => {
+    const buyItems = () => {
         // create transaction popup
         // send transaction
-        alert('currency staked')
+        alert('Items Bought');
     }
 
 
@@ -73,10 +66,10 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                         <h2 className="subheading">Mint a Pack for 3 MATIC</h2>
                         <p className="subsubheading" >Limit 3 packs per week.</p>
                         <div className="flex center">
-                        <input className="inputStyling" type='number' value={currInput} onChange={(event) => setCurrencyStaked(event.target.value)} />
+                        <input className="inputStyling" type='number' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
                         <div className="stakingLabel">For {calculateNumberPacksCost()} MATIC</div>
                         </div>
-                        <input type='button' className="buttonStyle" value='Mint Pack' onClick={() => stakeCurrency()} />
+                        <input type='button' className="buttonStyle" value='Mint Pack' onClick={() => mintPack()} />
                         </div>       
                 </div>
                 <div id='right'>
@@ -91,7 +84,7 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                     </ul>
                     <div id='buyItems'>
                         <p className="stakingLabel">Cost {calculateNumberPacksCost()} MATIC</p>
-                        <input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => stakeCurrency()} />
+                        <input id="storebutton" className="buttonStyle" type='button' value='Buy' onClick={() => buyItems()} />
                     </div>
                 </div>
                 </div>

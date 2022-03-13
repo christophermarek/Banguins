@@ -175,7 +175,7 @@ background-color: #00E0FF;
     margin-top: 15px;
 }
 
-#stakebutton {
+#stakebutton, #unstakebutton, #claimrewards{
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -217,7 +217,7 @@ background-color: #00E0FF;
     width: 90%;
     margin-left: 5%;
     margin-right: 5%;
-    height: 45px;
+    max-height: 205px;
     border-radius: 15px;
 }
 
@@ -257,8 +257,6 @@ background-color: #00E0FF;
 .inputStyling{
     height: 55px;
     font-family: 'Sigmar One', cursive;
-    color: white !important;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     font-size: 2vw;
     max-width: 100px;
     //padding: 100;
@@ -277,7 +275,7 @@ background-color: #00E0FF;
   font-size: 25px;
 }
 
-#calcSwap{text-align: center;}
+#calcSwap,#calcRewards{text-align: center;}
 
 #innerleft{display: flex;
     align-items: center;
