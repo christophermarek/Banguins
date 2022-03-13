@@ -2,17 +2,29 @@ import React, { useEffect, useState } from "react";
 import { card } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount, useContractRead, useContractWrite } from "wagmi";
 import { getBalance, getImagesFromIds } from "../../api/api";
 import { isConstructorDeclaration } from "typescript";
 import { useGetBalance } from "../../api/contract_api";
-
+let bt_token = require('../../api/build/contracts/BTokens.json');
+        
 export const HomePage: React.FC = () => {
     const [{ data: accountData }] = useAccount();
 
     const [balance, setBalance] = useState<any>();
     // map of monster id to image base64 data
     const [images, setImages] = useState<any>();
+
+    const [{ data, error, loading }, write] = useContractWrite(
+        {
+          addressOrName: '0xecb504d39723b0be0e3a9aa33d646642d1051ee1',
+          contractInterface: bt_token.abi,
+        },
+        'buyPack',
+        {
+            args: [accountData?.address]
+        }
+    )
 
     useEffect(() => {
         if (!accountData?.address) {
@@ -61,10 +73,11 @@ export const HomePage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    //unimplemented
     const buy_deck = async() => {
         console.log("beggining deck purchase");
-        // console.log(await read())
+
+        console.log(await write())
+
         try {
             const response = await getBalance({
                 wallet_address: accountData?.address,
