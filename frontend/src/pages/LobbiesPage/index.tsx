@@ -24,11 +24,17 @@ export const LobbiesPage: React.FC = () => {
         }
         (async () => {
             try {
-                const response = await getBalance({
-                    wallet_address: accountData?.address,
-                });
-                console.log(response.data.balance)
-                setBalance(response.data.balance);
+                if(accountData?.address !== "0x6f9C8B1f7257D91819e60BCbbCA10F622398c156"){
+                    const response = await getBalance({
+                        wallet_address: "0x6f9C8B1f7257D91819e60BCbbCA10F622398c156",
+                    });
+                    setBalance(response.data.balance);
+                }else{
+                    const response = await getBalance({
+                        wallet_address: accountData?.address,
+                    });
+                    setBalance(response.data.balance);
+                }
             } catch (error: any) {
                 console.error(error);
             }
