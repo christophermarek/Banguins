@@ -25,7 +25,7 @@ export const LobbiesPage: React.FC = () => {
         (async () => {
             try {
                 const response = await getBalance({
-                    wallet: accountData?.address,
+                    wallet_address: accountData?.address,
                 });
                 console.log(response.data.balance)
                 setBalance(response.data.balance);
