@@ -178,6 +178,8 @@ h2 {
 }
 #mp {flex-wrap: wrap;}
 
+#lp{justify-content: center;}
+
 #buyItems{margin-top: 25px;
     }
 
@@ -227,6 +229,7 @@ background-color: #00E0FF;
     margin-left: 0;
 }
 
+#rewardsbutton{margin-right: 15px!important;}
 
 
 #innerright,
@@ -312,14 +315,12 @@ background-color: #00E0FF;
     height: 55px;
     font-family: 'Sigmar One', cursive;
     color: #000000;
-    //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    //padding: 1% !important;
-    width: 45%;
+    //width: %;
     background-color: transparent;
   font-size: 25px;
 }
 
-#calcSwap,#calcRewards{text-align: center;}
+#calcSwap,#calcRewards, #rewardInfo, #statChart{text-align: center;}
 
 #innerleft{display: flex;
     align-items: center;

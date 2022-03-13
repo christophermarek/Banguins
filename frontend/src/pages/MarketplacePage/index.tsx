@@ -66,7 +66,7 @@ export const MarketplacePage: React.FC<MarketPlaceProps> = ({ }) => {
                         <h2 className="subheading">Mint a Pack for 3 MATIC</h2>
                         <p className="subsubheading" >Limit 3 packs per week.</p>
                         <div className="flex center">
-                        <input className="inputStyling" type='number' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
+                        <input className="inputStyling" max='99' type='number' value={currInput} onChange={(event) => setCurrInput(event.target.value)} />
                         <div className="stakingLabel">For {calculateNumberPacksCost()} MATIC</div>
                         </div>
                         <input type='button' className="buttonStyle" value='Mint Pack' onClick={() => mintPack()} />

@@ -18,8 +18,9 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
     // unimplemented   
     // fetch exchange rate
     const calculateExchangeRate = () => {
-        return Number(currInput) * 1.15;
-
+        
+        let num = Number(currInput) * 1.15;
+        return num.toFixed(0);
         //  function CalculateRewardRate(uint _currency, uint _energy) public view returns (uint rewardRate6)
     }
 
@@ -59,8 +60,8 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
 
     const calculateRewards = () => {
         //    function CalculateRewardAmount(uint rewardRate, uint _lastClaim) public view returns (uint rewardAmount) {
-
-        return Number(currInput) * 1.15;
+        let num = Number(currInput) * 1.15;
+        return num.toFixed(0);
     }
 
     return (
@@ -112,7 +113,9 @@ export const LiquidityPoolsPage: React.FC<LiquidityPoolsProps> = ({ }) => {
                     <p id="calcRewards" className="stakingLabel">Staking Rewards:<div> {calculateRewards()} energy</div> </p>
                     <input id="rewardsbutton" className="buttonStyle" type='button' value='Claim' onClick={() => claimRewards()} />
                     </div>
-                    <div id="statChart"></div>
+                    <div className="stakingLabel" id="rewardInfo">info example</div>
+                    <div id="statChart">
+                    </div>
                     <ul>
                         {/* {placeholder_items.map((item, index) =>
                             <li key={index}>
